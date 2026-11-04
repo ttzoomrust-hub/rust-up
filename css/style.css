@@ -1654,3 +1654,12 @@ button.chip.chip-icon svg { width: 18px; height: 18px; flex-shrink: 0; }
 .free-help li { counter-increment: fh; display: flex; gap: 12px; font-size: 14px; line-height: 1.45; color: var(--text-subtitle); }
 .free-help li::before { content: counter(fh); flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
 .free-help .btn { height: 48px; margin-top: 4px; }.case-wait { margin: 0; padding: 14px 0 4px; text-align: center; font-weight: 700; font-size: 16px; color: #fff; }
+
+/* daily gift: week streak (2026-11-05) */
+.daily-week { display: flex; gap: 4px; margin-top: 6px; }
+.daily-week i { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.12); }
+.daily-week i.done { background: linear-gradient(90deg, #ff6b6b, #e5383b); }
+.daily-week i.now { background: rgba(255,255,255,.55); box-shadow: 0 0 8px rgba(255,255,255,.35); }
+.tg-sub-row { justify-content: flex-start; gap: 10px; padding: 0 16px; }
+.tg-sub-row .sub-ok { margin-left: auto; display: inline-flex; }
+.tg-sub-row .sub-ok svg { width: 18px; height: 18px; }

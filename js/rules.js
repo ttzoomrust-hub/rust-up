@@ -6,16 +6,21 @@ window.RUSTUP_RULES = {
   MIN_CHANCE: 1,
   MAX_SLOTS: 6,           // items in one upgrade stake
   TG_CHANNEL: 'up_rust',
-  TG_BONUS: 10000,        // one-time reward for subscribing to the Telegram channel
+  TG_BONUS_RUB: 50,       // one-time reward in rubles for subscribing to all SUB_CHANNELS (credited in coins at the CBR rate)
   PROMOS: { RUSTUP: 50, WIPE: 30, DEMO: 20 },   // in rubles (20–50 ₽), credited in coins at the CBR rate
   DAILY_MS: 24 * 60 * 60 * 1000,
-  DAILY_BONUS: 3500,
+  // daily gift in rubles: day 1 of the streak gives DAILY_RUB, each next day in a row +DAILY_GROWTH (compound) for DAILY_DAYS days,
+  // then (or after a missed day) it starts again from day 1
+  DAILY_RUB: 15,
+  DAILY_GROWTH: 0.02,
+  DAILY_DAYS: 7,
   CASHBACK: 0.02,         // share of a lost upgrade stake / of a paid case that paid out less than its price
   CASE_RTP: 0.9,          // average win is 90% of a paid case's price
   TIMER_MS: 15 * 60 * 1000,
   SUB_CHANNELS: [
     { id: 'up_rust', name: 'RUST UP', sub: 'Новости, промокоды, розыгрыши' },
-    { id: 'rustuper', name: 'RUST UP · Отзывы', sub: 'Отзывы игроков о выводах' }
+    { id: 'rustuper', name: 'RUST UP · Отзывы', sub: 'Отзывы игроков о выводах' },
+    { id: 'rustuptiktok', name: 'RUST UP · Заработок', sub: 'Заработок на роликах в TikTok' }
   ],
   // tiers: [min price, max price, items, chance % of the whole tier]; the items are taken from the catalog by price
   CASES: [

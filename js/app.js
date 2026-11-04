@@ -4,9 +4,21 @@
 
   // ---------- constants: game rules are shared with the server (js/rules.js → bot/gamedata.js) ----------
   const R = window.RUSTUP_RULES;
-  const { RTP, MAX_CHANCE, MIN_CHANCE, MAX_SLOTS, TG_CHANNEL, TG_BONUS, PROMOS, DAILY_MS, DAILY_BONUS } = R;
+  const { RTP, MAX_CHANCE, MIN_CHANCE, MAX_SLOTS, TG_CHANNEL, TG_BONUS_RUB, PROMOS, DAILY_MS, DAILY_RUB, DAILY_GROWTH, DAILY_DAYS } = R;
   const MIN_TOPUP = 10;           // below this balance the upgrader suggests getting coins
-  const bonusTxt = () => moneyInt(TG_BONUS);
+  const bonusTxt = () => moneyInt(tgBonus());
+  // the subscription gift and the daily gift are set in rubles (js/rules.js) and credited in coins at the CBR rate
+  function rubCoins(r) { return r / (COIN_USD * usdRub); }
+  function tgBonus() { return rubCoins(TG_BONUS_RUB); }
+  // daily gift streak, same as bot/game.js: each claim within 48 h of the last one is the next day of the week,
+  // the amount grows by DAILY_GROWTH a day; after day DAILY_DAYS or a missed day it starts again from day 1
+  function dailyStep(now = Date.now()) {
+    const last = S.rewards.lastDaily || 0, streak = S.rewards.dailyStreak || 0;
+    const at = Math.max(now, last + DAILY_MS);   // while waiting: the day the next claim will be
+    return last && at - last < 2 * DAILY_MS && streak < DAILY_DAYS - 1 ? streak + 1 : 0;
+  }
+  function dailyRubOf(step) { return Math.round(DAILY_RUB * Math.pow(1 + DAILY_GROWTH, step) * 100) / 100; }
+  function dailyBonus() { return rubCoins(dailyRubOf(dailyStep())); }
   const STORE_KEY = 'rustup_demo_v1';
 
   // one catalog for all games; names don't collide ("AK47" in Rust vs "AK-47 | ..." in CS2)
@@ -859,7 +871,7 @@
       <div class="tg-promo-icon"><span class="nav-icon icon-gift"></span></div>
       <div class="tg-promo-body">
         <span class="tg-promo-kicker">Ежедневный подарок</span>
-        <b class="tg-promo-title">Забирай ${coinInt(DAILY_BONUS, 22)} прямо сейчас</b>
+        <b class="tg-promo-title">Забирай ${coinInt(dailyBonus(), 22)} прямо сейчас</b>
         <span class="tg-promo-text">Новый подарок — каждые 24 часа</span>
       </div>
       <button class="btn btn-accent tg-promo-go">Забрать подарок</button>` : `
@@ -867,8 +879,8 @@
       <div class="tg-promo-icon">${ICON.tg}</div>
       <div class="tg-promo-body">
         <span class="tg-promo-kicker">Бонус за подписку</span>
-        <b class="tg-promo-title">Забирай ${coinInt(TG_BONUS, 22)} на аккаунт</b>
-        <span class="tg-promo-text">за подписку на <b>@${TG_CHANNEL}</b></span>
+        <b class="tg-promo-title">Забирай ${coinInt(tgBonus(), 22)} на аккаунт</b>
+        <span class="tg-promo-text">за подписку на ${SUB_CHANNELS.length} канала RUST UP</span>
       </div>
       <button class="btn btn-tg tg-promo-go">Забрать</button>`;
     const hide = snooze => {
@@ -888,30 +900,25 @@
   }
   function openTgBonus() {
     requireLogin(() => {
-      if (tgBonusDone()) return modal('Бонус за подписку', `<p class="note" style="font-size:14px">Бонус ${coinInt(TG_BONUS)} уже получен. Спасибо, что с нами в <b>@${TG_CHANNEL}</b>! Ещё больше бонусов — в разделе <a href="#/rewards" data-close-go>Rewards</a>.</p>`,
+      if (tgBonusDone()) return modal('Бонус за подписку', `<p class="note" style="font-size:14px">Бонус уже получен. Спасибо, что вы с нами! Ещё больше бонусов — в разделе <a href="#/rewards" data-close-go>Бонусы</a>.</p>`,
         m => $('[data-close-go]', m).addEventListener('click', closeModal));
-      let opened = !!S.rewards.tgOpened;
+      // all channels of SUB_CHANNELS (the same ones that open the free cases); the server checks each of them
       modal('Бонус за подписку', `
-        <div class="tg-bonus"><span class="big">${coinInt(TG_BONUS, 30)}</span><p>Подпишитесь на наш Telegram-канал <b>@${TG_CHANNEL}</b> и получите бонус на баланс. Один раз на аккаунт.</p></div>
-        <button class="btn btn-tg" id="tgSub" style="height:48px">${ICON.tg}<span>1. Подписаться на @${TG_CHANNEL}</span></button>
-        <button class="btn btn-accent" id="tgClaim" style="height:48px" ${opened ? '' : 'disabled'}><span>2. Получить ${bonusTxt()}</span></button>
-        <p class="note">Бонусный баланс виртуальный и не выводится.</p>`,
+        <div class="tg-bonus"><span class="big">${coinInt(tgBonus(), 30)}</span><p>Подпишитесь на <b>${SUB_CHANNELS.length} канала RUST UP</b> и получите бонус на баланс. Один раз на аккаунт.</p></div>
+        ${SUB_CHANNELS.map((c, i) => `<button class="btn btn-tg tg-sub-row" data-tgsub="${c.id}" style="height:46px">${ICON.tg}<span>${i + 1}. @${c.id}</span>${S.rewards.subs[c.id] ? ` <span class="sub-ok">${ICON.check}</span>` : ''}</button>`).join('')}
+        <button class="btn btn-accent" id="tgClaim" style="height:48px"><span>Получить ${bonusTxt()}</span></button>`,
       m => {
-        $('#tgSub', m).onclick = () => {
-          openChannel();
-          opened = true;
-          $('#tgClaim', m).disabled = false;
-        };
+        m.querySelectorAll('[data-tgsub]').forEach(b => { b.onclick = () => openChannel(b.dataset.tgsub); });
         // the server asks Telegram whether the player really joined
         $('#tgClaim', m).onclick = () => {
-          if (!opened || tgBonusDone()) return;
+          if (tgBonusDone()) return;
           const b = $('#tgClaim', m); b.disabled = true;
           api('tgbonus').then(d => {
             b.disabled = false;
-            if (!d.ok) return toast(d.error === 'subs' ? `Подпишитесь на @${TG_CHANNEL} и нажмите ещё раз` : gameErr(d), 'error');
+            if (!d.ok) return toast(d.error === 'subs' ? `Не видим подписку на ${SUB_CHANNELS.filter(c => !(d.subs || {})[c.id]).map(c => '@' + c.id).join(', ')}` : gameErr(d), 'error');
             $('.tg-promo')?.remove();
             closeModal(); sfxWin(); bumpBalance();
-            toast(`Бонус за подписку: ${coinInt(TG_BONUS)}`, 'success');
+            toast(`Бонус за подписку: ${coinInt(tgBonus())}`, 'success');
             refreshUpgrade();
             if (location.hash === '#/rewards') rewardsPage();
           });
@@ -1398,7 +1405,7 @@
         ? `<div class="empty-overlay"><div class="empty-content"><p>Инвентарь пуст</p><span class="muted" style="font-size:12px">Купите скины в магазине или используйте баланс в апгрейде</span><button class="btn btn-accent" data-tab="shop">${ICON.shop}<span>В магазин</span></button></div></div>`
         : tgBonusDone()
           ? `<div class="empty-overlay"><div class="empty-content"><p>Недостаточно средств</p><span class="muted" style="font-size:12px">Заберите ежедневный бонус или введите промокод</span><a class="btn btn-accent" href="#/rewards"><span>Награды</span></a></div></div>`
-          : `<div class="empty-overlay"><div class="empty-content"><p>Получите ${coinInt(TG_BONUS, 20)}</p><span class="muted" style="font-size:12px">за подписку на Telegram-канал @${TG_CHANNEL}</span><button class="btn btn-tg" data-tg-bonus>${ICON.tg}<span>Получить</span></button></div></div>`;
+          : `<div class="empty-overlay"><div class="empty-content"><p>Получите ${coinInt(tgBonus(), 20)}</p><span class="muted" style="font-size:12px">за подписку на каналы RUST UP</span><button class="btn btn-tg" data-tg-bonus>${ICON.tg}<span>Получить</span></button></div></div>`;
     }
     const sel = [...U.inputs];
     html = head + `<div class="grid-container"><div class="grid">${cells.join('')}</div>${overlay}</div>
@@ -1667,7 +1674,7 @@
         if (!d.ok) return netToast(d);
         $('.tg-promo.daily')?.remove();
         sfxWin(); bumpBalance();
-        toast(`Ежедневный подарок: ${coinInt(DAILY_BONUS)}`, 'success');
+        toast(`Подарок дня · день ${d.day} из ${DAILY_DAYS}: +${String(d.rub).replace('.', ',')} ₽`, 'success');
         refreshUpgrade();
         if (location.hash === '#/rewards') rewardsPage();
       });
@@ -1708,11 +1715,13 @@
 
       <div class="row-head"><h2 class="home-title">Ежедневные</h2></div>
       <div class="bonus-grid">
-        ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, 'Подарок дня', coinInt(DAILY_BONUS), 'Каждые 24 часа, не копится',
+        ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, 'Подарок дня', coin(dailyBonus()),
+          `День ${dailyStep() + 1} из ${DAILY_DAYS} · +${Math.round(DAILY_GROWTH * 100)}% каждый день подряд
+          <span class="daily-week">${Array.from({ length: DAILY_DAYS }, (_, i) => `<i class="${i < dailyStep() ? 'done' : i === dailyStep() ? 'now' : ''}"></i>`).join('')}</span>`,
           `<button class="btn ${dailyReady() ? 'btn-accent' : 'btn-ghost'} bt-btn" id="claimDaily" ${dailyReady() ? '' : 'disabled'}>${dailyReady() ? 'Забрать' : `${hh} ч ${mm} мин`}</button>`)}
         ${tile('bt-cash', `<span class="bt-coin">${ICON.coin}</span>`, `Кешбэк ${CASHBACK * 100}%`, coin(cb), 'С проигрышей в апгрейде и кейсах',
           `<button class="btn ${cb >= 0.01 ? 'btn-accent' : 'btn-ghost'} bt-btn" id="claimCashback" ${cb >= 0.01 ? '' : 'disabled'}>${cb >= 0.01 ? 'Забрать' : 'Пока пусто'}</button>`)}
-        ${tile('bt-tg wide', `<span class="bt-tg-ico">${ICON.tg}</span>`, 'Подписка на Telegram', `+${coinInt(TG_BONUS)}`, `Канал <b>@${TG_CHANNEL}</b> — новости, промокоды и розыгрыши. Один раз на аккаунт`,
+        ${tile('bt-tg wide', `<span class="bt-tg-ico">${ICON.tg}</span>`, 'Подписка на Telegram', `+${coinInt(tgBonus())}`, `Каналы ${SUB_CHANNELS.map(c => `<b>@${c.id}</b>`).join(', ')} — новости, отзывы и заработок. Один раз на аккаунт`,
           `<button class="btn ${tgBonusDone() ? 'btn-ghost' : 'btn-tg'} bt-btn" data-tg-bonus>${tgBonusDone() ? 'Получено' : 'Получить'}</button>`)}
         <div class="bonus-tile bt-promo wide"><span class="bt-art"><span class="bt-promo-ico">%</span></span>
           <span class="bt-body"><b class="bt-title">Промокод</b><span class="bt-text">Новый промокод дня — в боте в 15:00 МСК. Для демо: <b>RUSTUP</b>, <b>WIPE</b>, <b>DEMO</b></span>
@@ -2188,7 +2197,7 @@
 
   function subsBlock() {
     return `<div class="panel subs-panel">
-      <div class="subs-head"><b>Бесплатные кейсы каждые 24 часа</b><span>Подпишитесь на 2 канала — и крутите кейсы за друзей</span></div>
+      <div class="subs-head"><b>Бесплатные кейсы каждые 24 часа</b><span>Подпишитесь на ${SUB_CHANNELS.length} канала — и крутите кейсы за друзей</span></div>
       ${SUB_CHANNELS.map((c, i) => {
         const ok = S.rewards.subs[c.id];
         return `<div class="sub-row${ok ? ' done' : ''}">
@@ -2486,7 +2495,7 @@
       if (!d.ok) {
         caseSpinning = false;
         if (onFail) onFail();
-        if (d.error === 'subs') toast('Сначала подпишитесь на оба канала', 'error');
+        if (d.error === 'subs') toast('Сначала подпишитесь на все каналы', 'error');
         else if (d.error === 'cooldown') toast('Кейс уже открыт сегодня — приходи через 24 часа', 'error');
         else if (d.error === 'pending') toast('Сначала забери прошлый приз за друзей', 'error');
         else netToast(d);
@@ -2632,10 +2641,10 @@
         <span class="hero-art">${heroes.map((s, i) => `<img class="ha-${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`).join('')}</span></a>`,
       tgBonusDone()
         ? `<a class="hero-slide hs-daily" href="#/rewards">
-          <span class="hero-text"><span class="hero-kicker">Каждые 24 часа</span><b class="hero-title">Подарок<br>${moneyInt(DAILY_BONUS)}</b><span class="hero-sub">на баланс — бесплатно</span><span class="hero-btn">Забрать ${ICON.right}</span></span>
+          <span class="hero-text"><span class="hero-kicker">Каждые 24 часа</span><b class="hero-title">Подарок<br>${moneyInt(dailyBonus())}</b><span class="hero-sub">на баланс · +2% каждый день подряд</span><span class="hero-btn">Забрать ${ICON.right}</span></span>
           <span class="hero-art"><img class="ha-gift" src="${giftImg('Подарок')}" alt="" draggable="false">${coins}</span></a>`
         : `<button class="hero-slide hs-tg" data-tg-bonus>
-          <span class="hero-text"><span class="hero-kicker">Бонус за подписку</span><b class="hero-title">+${bonusTxt()}<br>на баланс</b><span class="hero-sub">за подписку на @${TG_CHANNEL}</span><span class="hero-btn">Забрать ${ICON.right}</span></span>
+          <span class="hero-text"><span class="hero-kicker">Бонус за подписку</span><b class="hero-title">+${bonusTxt()}<br>на баланс</b><span class="hero-sub">за подписку на каналы RUST UP</span><span class="hero-btn">Забрать ${ICON.right}</span></span>
           <span class="hero-art"><span class="ha-tg">${ICON.tg}</span>${coins}</span></button>`
     ];
   }
