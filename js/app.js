@@ -1091,7 +1091,7 @@
       <span class="drop-img"><img src="${d.skin.img}" alt="${esc(d.skin.name)}" draggable="false"></span>
       <span class="drop-info">
         <span class="drop-user">${avatarHtml(d.user, d.color, 'mini-ava', avaUrl(d.uid))}<span>${esc(d.user)}</span></span>
-        <span class="drop-price">${coin(d.skin.price)}</span>
+        <span class="drop-price">${moneyInt(d.skin.price)}</span>
       </span>
     </a>`;
   }
@@ -2707,15 +2707,15 @@
     const playing = share => fmtInt(Math.round(online * share));
     const games = [
       // upgrade tiles: item on a pedestal with golden chevrons (assets/games, made by tools/build-game-art.ps1)
-      { href: '#/upgrade?game=rust', cls: 'gc-rust', title: 'Апгрейд Rust', share: 0.27, art: `<img class="gc-art" src="assets/games/upgrade-rust.png" alt="" draggable="false">` },
-      { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', share: 0.18, art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
-      { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', share: 0.12, art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
-      { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', share: 0.21, badge: 'FREE', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
+      { href: '#/upgrade?game=rust', cls: 'gc-rust', title: 'Апгрейд Rust', share: 0.27, cover: 'upgrade-rust', art: `<img class="gc-art" src="assets/games/upgrade-rust.png" alt="" draggable="false">` },
+      { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', share: 0.18, cover: 'upgrade-cs2', art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
+      { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', share: 0.12, cover: 'upgrade-nft', art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
+      { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', share: 0.21, badge: 'FREE', cover: 'cases', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
       // game modes (js/modes.js)
       ...window.RUSTUP_MODES.tiles(),
       // Бонусы and Друзья are not games: no «playing» counter on them
-      { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', share: 0, art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
-      { href: '#/friends', cls: 'gc-friends', title: 'Друзья', share: 0, badge: 'NFT', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
+      { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', share: 0, cover: 'bonus', art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
+      { href: '#/friends', cls: 'gc-friends', title: 'Друзья', share: 0, badge: 'NFT', cover: 'friends', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
     ];
     $('#page').innerHTML = `<div class="page home">
       <div class="hero">
@@ -2723,8 +2723,8 @@
         <div class="hero-dots" id="heroDots">${slides.map((_, i) => `<i${i ? '' : ' class="on"'}></i>`).join('')}</div>
       </div>
       <div class="row-head"><h2 class="home-title">Игры</h2></div>
-      <div class="games-grid">${games.map(g => `<a class="game-card ${g.cls}" href="${g.href}">
-        ${g.art}
+      <div class="games-grid">${games.map(g => `<a class="game-card ${g.cls}${g.cover ? ' covered' : ''}" href="${g.href}">
+        ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.jpg?v=2" alt="" draggable="false">` : g.art}
         ${g.share ? `<span class="gc-online" title="Сейчас играют" data-share="${g.share}"${Math.round(online * g.share) ? '' : ' hidden'}><i class="dot-online"></i>${playing(g.share)}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>

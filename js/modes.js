@@ -24,9 +24,9 @@
     const skins = Object.values(A().byName).filter(s => s.game === 'cs2' && s.price > 300 && s.price < 3000).slice(0, 3);
     const cases = A().PAID_CASES.slice(0, 2);
     return [
-      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', share: 0.08, badge: 'NEW', art: ROCKET },
-      { href: '#/contract', cls: 'gc-contract', title: 'Контракты', share: 0.05, art: skins.map((s, i) => `<img class="gc-mini m${i}" src="${s.img}" alt="" draggable="false">`).join('') },
-      { href: '#/battles', cls: 'gc-battle', title: 'Кейс-баттл', share: 0.06, art: `${cases.map((c, i) => { const s = A().caseItems(c)[0].skin; return `<img class="gc-bt b${i}${A().imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('')}<b class="gc-vs">VS</b>` }
+      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', share: 0.08, badge: 'NEW', cover: 'crash', art: ROCKET },
+      { href: '#/contract', cls: 'gc-contract', title: 'Контракты', share: 0.05, cover: 'contract', art: skins.map((s, i) => `<img class="gc-mini m${i}" src="${s.img}" alt="" draggable="false">`).join('') },
+      { href: '#/battles', cls: 'gc-battle', title: 'Кейс-баттл', share: 0.06, badge: 'PvP', cover: 'battle', art: `${cases.map((c, i) => { const s = A().caseItems(c)[0].skin; return `<img class="gc-bt b${i}${A().imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('')}<b class="gc-vs">VS</b>` }
     ];
   }
 
@@ -36,28 +36,45 @@
   const CRASH_BETS = [10, 50, 100, 500, 1000];   // quick bets in coins
   const C = { bet: 50, auto: '', phase: 'idle', t0: 0, mult: 1, point: 0, cashed: null, busy: false, peekAt: 0 };
   const multAt = ms => Math.min(CR.MAX, Math.floor(Math.exp(CR.K * Math.max(0, ms)) * 100) / 100);
-  const msAt = m => Math.log(m) / CR.K;
+  const x2 = n => n.toFixed(2).replace('.', ',') + '×';
+  // the rocket of the page: side view, nose to the right, a flickering flame
+  const SHIP = `<svg class="cr-svg" viewBox="0 0 400 200">
+    <defs><linearGradient id="crb" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#e7e9ef"/><stop offset="1" stop-color="#a9afbd"/></linearGradient>
+      <linearGradient id="crf" x1="1" x2="0"><stop offset="0" stop-color="#fff6c4"/><stop offset=".35" stop-color="#ffb23a"/><stop offset=".75" stop-color="#ff4a2e"/><stop offset="1" stop-color="#ff4a2e" stop-opacity="0"/></linearGradient>
+      <radialGradient id="crw" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#bfe3ff"/><stop offset=".6" stop-color="#3b8cff"/><stop offset="1" stop-color="#1b3f9e"/></radialGradient></defs>
+    <g class="cr-flame"><path d="M118 100 C80 60 20 70 0 100 C20 130 80 140 118 100Z" fill="url(#crf)"/><path d="M118 100 C95 84 60 86 46 100 C60 114 95 116 118 100Z" fill="#fff6c4" opacity=".9"/></g>
+    <path d="M150 62 L118 30 L170 52Z M150 138 L118 170 L170 148Z" fill="#e5383b" stroke="#7a0c0f" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M120 80 Q120 62 150 60 L300 60 Q370 70 392 100 Q370 130 300 140 L150 140 Q120 138 120 120Z" fill="url(#crb)" stroke="#3a3f4d" stroke-width="5"/>
+    <path d="M300 60 Q370 70 392 100 Q370 130 300 140 Q322 100 300 60Z" fill="#e5383b" stroke="#3a3f4d" stroke-width="5"/>
+    <rect x="170" y="60" width="18" height="80" fill="#e5383b"/><rect x="196" y="60" width="8" height="80" fill="#e5383b"/>
+    <circle cx="250" cy="100" r="24" fill="url(#crw)" stroke="#3a3f4d" stroke-width="6"/><circle cx="242" cy="92" r="7" fill="#fff" opacity=".8"/>
+    <text x="150" y="133" font-family="Montserrat, Arial Black" font-weight="900" font-size="15" fill="#3a3f4d">RUST UP</text></svg>`;
 
   function crashPage() {
     const { S, coin } = A();
-    const hist = (S.crashLast || []).map(h => `<span class="ch-chip ${h.point >= 2 ? (h.point >= 10 ? 'gold' : 'good') : 'bad'}">x${h.point.toFixed(2)}</span>`).join('');
+    const hist = (S.crashLast || []).map(h => `<span class="cr-chip ${h.point >= 5 ? 'hi' : h.point >= 2 ? 'mid' : ''}">${x2(h.point)}</span>`).join('');
     page(`<div class="page crash-page">
       ${back}
-      <div class="mode-head"><h1 class="up-title">Ракетка</h1><button class="pp-help" data-crash-help aria-label="Правила">?</button></div>
-      <div class="ch-row">${hist || '<span class="muted">Здесь будут последние раунды</span>'}</div>
-      <div class="crash-stage w-glass" id="crashStage">
-        <svg class="crash-graph" viewBox="0 0 100 60" preserveAspectRatio="none"><path id="crashFill" class="cg-fill" d=""/><path id="crashLine" class="cg-line" d=""/></svg>
-        <div class="crash-rocket" id="crashRocket">${ROCKET}</div>
-        <div class="crash-mult" id="crashMult">x1.00</div>
-        <div class="crash-status" id="crashStatus">Сделайте ставку и забирайте до взрыва</div>
+      <div class="cr-top"><div class="cr-hist">${hist}</div><button class="cr-ico" data-crash-help aria-label="Правила">?</button></div>
+      <div class="cr-stage" id="crashStage">
+        <div class="cr-stars"></div><div class="cr-stars s2"></div>
+        <div class="cr-mult" id="crashMult">1,00×</div>
+        <div class="cr-sub" id="crashStatus">Сделайте ставку — ракета взлетит</div>
+        <div class="cr-ship" id="crashRocket"><i class="cr-puff p1"></i><i class="cr-puff p2"></i><i class="cr-puff p3"></i><div class="cr-me" id="crashMe"></div>${SHIP}</div>
+        <div class="cr-clouds c1"></div><div class="cr-clouds c2"></div>
       </div>
-      <div class="crash-controls w-glass">
-        <div class="cc-field"><span>Ставка, ${A().curSym()}</span>
-          <div class="cc-input"><input id="crashBet" inputmode="decimal" value="${fmtIn(C.bet)}"><button data-bet="half">½</button><button data-bet="x2">×2</button><button data-bet="max">Макс</button></div>
-          <div class="cc-quick">${CRASH_BETS.map(b => `<button data-bet-set="${b}">${coin(b)}</button>`).join('')}</div></div>
-        <div class="cc-field"><span>Автовывод, x <small class="muted">(необязательно)</small></span>
-          <div class="cc-input"><input id="crashAuto" inputmode="decimal" placeholder="напр. 2.00" value="${C.auto}"></div></div>
-        <button class="btn btn-accent crash-btn" id="crashBtn"></button>
+      <button class="cr-btn" id="crashBtn"></button>
+      <div class="cr-bet w-glass">
+        <div class="cr-row"><span>Ставка, ${A().curSym()}</span><span>Автовывод</span></div>
+        <div class="cr-row">
+          <div class="cr-amount"><button data-bet="half">½</button><input id="crashBet" inputmode="decimal" value="${fmtIn(C.bet)}"><button data-bet="x2">×2</button></div>
+          <div class="cr-auto"><input id="crashAuto" inputmode="decimal" placeholder="выкл" value="${C.auto}"><i>×</i></div>
+        </div>
+        <div class="cr-quick">${CRASH_BETS.map(b => `<button data-bet-set="${b}">${coin(b)}</button>`).join('')}<button data-bet="max">Макс</button></div>
+      </div>
+      <div class="cr-players">
+        <div class="cr-ph">Игроков <b id="crPlayers">0</b> · банк <b id="crBank">${coin(0)}</b></div>
+        <div id="crList"><div class="cr-empty">Здесь появятся ставки игроков</div></div>
       </div>
     </div>`);
     const bet = A().$('#crashBet'), auto = A().$('#crashAuto');
@@ -80,12 +97,30 @@
         if (d.ok && d.crashed === false) startFlight(d.elapsed, A().S.crash.bet);
         else { C.phase = 'idle'; if (d.ok && d.point) endFlight(d.point, d.win ? d.mult : null, d.amount); }
       });
-    } else if (C.phase === 'fly') { /* page re-rendered mid-flight: keep animating */ draw(); }
+    } else if (C.phase === 'fly') { const st = A().$('#crashStage'); if (st) st.classList.add('flying'); }
     paintBtn(); draw();
+    loadCrashFeed();
+    every(() => { if (!document.hidden) loadCrashFeed(); }, 3000);
+  }
+  // the bets of all players: the last finished rounds
+  function loadCrashFeed() {
+    A().api('crash_feed').then(d => {
+      const list = A().$('#crList');
+      if (!list || !d.ok) return;
+      const { coin, esc, avatarHtml, avaUrl } = A();
+      A().$('#crPlayers').textContent = d.players;
+      A().$('#crBank').innerHTML = coin(d.bank);
+      list.innerHTML = d.rounds.length ? d.rounds.map(r => `<div class="cr-pl${r.mult ? ' win' : ''}">
+        ${avatarHtml(r.nick, r.color || '#e5383b', 'cr-ava', avaUrl(r.user_id))}
+        <span class="cr-who"><b>${esc(r.nick)}</b>${coin(r.bet)}</span>
+        <span class="cr-x">${r.mult ? x2(r.mult) : `💥 ${x2(r.point)}`}</span>
+        <span class="cr-win">${r.mult ? coin(r.amount) : '—'}</span></div>`).join('')
+        : '<div class="cr-empty">Пока никто не играл — будьте первым!</div>';
+    });
   }
   function crashHelp() {
     A().modal('Ракетка', `<div class="free-help"><b>Забери выигрыш до взрыва</b><ol>
-      <li>Сделайте ставку — ракета взлетает, множитель растёт: x1.00, x1.50, x2.00…</li>
+      <li>Сделайте ставку — ракета взлетает, множитель растёт: 1,00×, 1,50×, 2,00×…</li>
       <li>Нажмите «Забрать» в любой момент — ставка умножится на текущий множитель.</li>
       <li>Ракета взрывается в случайный момент. Не успели — ставка сгорает.</li>
       <li>Автовывод забирает сам на выбранном множителе — даже если закрыть игру.</li>
@@ -97,9 +132,13 @@
     if (!b) return;
     const { coin } = A();
     b.classList.toggle('cash', C.phase === 'fly' && !C.cashed);
-    if (C.phase === 'fly' && !C.cashed) { b.disabled = C.busy; b.innerHTML = `Забрать ${coin(C.bet * C.mult)}`; }
-    else if (C.phase === 'fly' || C.phase === 'sync' || C.busy) { b.disabled = true; b.innerHTML = C.cashed ? `Забрано x${C.cashed.toFixed(2)} · ждём взрыв…` : 'Ракета летит…'; }
-    else { b.disabled = false; b.innerHTML = `Играть ${coin(C.bet)}`; }
+    if (C.phase === 'fly' && !C.cashed) { b.disabled = C.busy; b.innerHTML = `<b>Забрать ${coin(C.bet * C.mult)}</b><small>${x2(C.mult)}</small>`; }
+    else if (C.phase === 'fly' || C.phase === 'sync' || C.busy) { b.disabled = true; b.innerHTML = C.cashed ? `<b>Забрано ${x2(C.cashed)}</b><small>ракета летит дальше…</small>` : '<b>Ракета летит…</b>'; }
+    else { b.disabled = false; b.innerHTML = `<b>Сделать ставку</b><small>${coin(C.bet)}${Number(C.auto) >= 1.01 ? ` · автовывод ${x2(Number(C.auto))}` : ''}</small>`; }
+    // the player's own bet rides next to the rocket
+    const me = A().$('#crashMe');
+    if (me) me.innerHTML = C.phase === 'fly' ? `${A().avatarHtml(A().S.user ? A().S.user.name : '', (A().S.user && A().S.user.color) || '#e5383b', 'cr-ava', A().S.user && A().avaUrl(A().S.user.id))}<span>${coin(C.cashed ? C.amount : C.bet)}</span>` : '';
+    if (me) me.classList.toggle('won', !!C.cashed);
   }
   function crashClick() {
     if (C.phase === 'fly' && !C.cashed) return cashOut();
@@ -108,7 +147,7 @@
       const bet = Math.round(C.bet * 100) / 100, auto = Number(C.auto) || 0;
       if (!(bet >= CR.MIN_BET)) return A().toast(`Минимальная ставка ${A().money(CR.MIN_BET)}`, 'error');
       if (bet > A().S.balance) return A().toast('Недостаточно средств', 'error');
-      if (C.auto && auto < 1.01) return A().toast('Автовывод — от x1.01', 'error');
+      if (C.auto && auto < 1.01) return A().toast('Автовывод — от 1,01×', 'error');
       C.busy = true; paintBtn();
       A().api('crash_start', { bet, auto: auto || undefined }).then(d => {
         C.busy = false;
@@ -121,8 +160,8 @@
   function startFlight(elapsed, bet, auto) {
     C.phase = 'fly'; C.bet = bet; C.cashed = null; C.point = 0; C.autoX = auto || (A().S.crash && A().S.crash.auto) || null;
     C.t0 = performance.now() - (elapsed || 0); C.peekAt = 0;
-    const st = A().$('#crashStage'); if (st) st.classList.remove('boom', 'won');
-    status('Ракета летит! Забирайте до взрыва');
+    const st = A().$('#crashStage'); if (st) { st.classList.remove('boom', 'won'); st.classList.add('flying'); }
+    status('Забирайте до взрыва!');
     let lastBeep = 1;
     cancelAnimationFrame(raf);
     const frame = () => {
@@ -135,7 +174,7 @@
       if (C.autoX && !C.cashed && !C.busy && C.mult >= C.autoX) cashOut();
       // the server says when it crashed
       if (!C.point && !C.busy && ms - C.peekAt > 700) { C.peekAt = ms; peek(); }
-      draw(); paintBtn();
+      draw(ms); paintBtn();
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
@@ -161,9 +200,9 @@
       if (d.win) {
         C.cashed = d.mult; C.amount = d.amount;
         A().sfxWin(); A().haptic('success');
-        A().toast(`Забрали на x${d.mult.toFixed(2)}: +${A().money(d.amount)}`, 'success');
+        A().toast(`Забрали на ${x2(d.mult)}: +${A().money(d.amount)}`, 'success');
         const st = A().$('#crashStage'); if (st) st.classList.add('won');
-        status(`Вы забрали x${d.mult.toFixed(2)} — ракета летит дальше…`);
+        status(`Вы забрали ${x2(d.mult)} — ракета летит дальше`);
       }
       // a late press: it had already exploded
       if (!d.win || C.mult >= C.point) endFlight(C.point, C.cashed, C.amount);
@@ -173,32 +212,26 @@
   function endFlight(point, cashed, amount) {
     cancelAnimationFrame(raf);
     C.phase = 'idle'; C.mult = point; C.point = 0;
-    draw(true);
-    const st = A().$('#crashStage'), rk = A().$('#crashRocket');
-    if (st) { st.style.setProperty('--bx', `calc(${rk ? rk.style.left : '70%'} - 32px)`); st.classList.add('boom'); }
+    const st = A().$('#crashStage');
+    if (st) { st.classList.remove('flying'); st.classList.add('boom'); }
     A().beep(110, 0.35, 'sawtooth', 0.05);
-    status(cashed ? `Взрыв на x${point.toFixed(2)} · вы забрали x${cashed.toFixed(2)} (+${A().money(amount)})` : `Взрыв на x${point.toFixed(2)}${C.bet ? ' · ставка сгорела' : ''}`);
+    const m = A().$('#crashMult'); if (m) m.textContent = x2(point);
+    status(cashed ? `Улетела на ${x2(point)} · вы забрали ${x2(cashed)} (+${A().money(amount)})` : `Улетела на ${x2(point)}${C.bet ? ' · ставка сгорела' : ''}`);
     A().renderHeader();
-    setTimeout(() => { if (A().curPath() === '/crash' && C.phase === 'idle') crashPage(); }, 1800);
+    loadCrashFeed();
+    setTimeout(() => { if (A().curPath() === '/crash' && C.phase === 'idle') crashPage(); }, 2200);
     C.cashed = null;
     paintBtn();
   }
   const status = t => { const el = A().$('#crashStatus'); if (el) el.textContent = t; };
-  // the curve: time on x, the multiplier on y; the scale grows with the flight
-  function draw(boom) {
-    const line = A().$('#crashLine'), fill = A().$('#crashFill'), rocket = A().$('#crashRocket'), mult = A().$('#crashMult');
-    if (!line) return;
-    const m = C.mult || 1, ms = msAt(Math.max(1, m));
-    const tMax = Math.max(8000, ms * 1.25), mMax = Math.max(2, 1 + (m - 1) * 1.3);
-    const pt = t => { const v = multAt(t); return [(t / tMax) * 100, 60 - ((v - 1) / (mMax - 1)) * 52 - 4]; };
-    const pts = Array.from({ length: 41 }, (_, i) => pt((ms * i) / 40));
-    const d = 'M' + pts.map(p => p.map(n => n.toFixed(2)).join(' ')).join(' L');
-    line.setAttribute('d', C.phase === 'idle' && !boom ? '' : d);
-    fill.setAttribute('d', C.phase === 'idle' && !boom ? '' : `${d} L${pts[40][0].toFixed(2)} 60 L0 60 Z`);
-    const [x, y] = C.phase === 'idle' && !boom ? [4, 56] : pts[40];
-    rocket.style.left = x + '%'; rocket.style.top = (y / 60) * 100 + '%';
-    mult.textContent = 'x' + m.toFixed(2);
-    mult.classList.toggle('hot', m >= 2);
+  // the rocket climbs from the lower left to the middle in the first seconds, then the sky moves past it
+  function draw(ms = 0) {
+    const ship = A().$('#crashRocket'), mult = A().$('#crashMult');
+    if (!ship) return;
+    const p = C.phase === 'fly' ? Math.min(1, ms / 2600) : 0, e = 1 - Math.pow(1 - p, 3);
+    ship.style.left = (26 + 24 * e) + '%';
+    ship.style.top = (76 - 26 * e) + '%';
+    if (C.phase === 'fly') { mult.textContent = x2(C.mult || 1); mult.classList.toggle('hot', C.mult >= 2); }
   }
 
   // =====================================================================================
