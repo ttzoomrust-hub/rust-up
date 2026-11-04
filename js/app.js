@@ -839,37 +839,14 @@
   const avatarHtml = (name, color, cls = 'avatar', photo = '') => `<span class="${cls}" style="background:linear-gradient(135deg,${color},#111)">${esc((name || '?').trim()[0] || '?').toUpperCase()}${photo ? `<img class="ava-img" src="${esc(photo)}" alt="" loading="lazy" draggable="false" onerror="this.remove()">` : ''}</span>`;
 
   // inside Telegram the account is already known: sign in silently with the Telegram name
-  // the account is the Telegram one; after the game server loaded it, a new player gets the starter pack
+  // the account is the Telegram one (the starter pack for new players was removed on 2026-11-05)
   function tgLogin() {
-    if (!gameReady) return false;
-    if (!S.rewards.starter) giveStarterPack();
-    return true;
+    return gameReady;
   }
 
   function requireLogin(then) {
     if (gameReady && S.user) return then && then();
     toast('Профиль ещё загружается, попробуйте через секунду', 'error');
-  }
-
-  // ---------- starter pack: chosen by the server, once per account ----------
-  function giveStarterPack() {
-    api('starter').then(d => {
-      if (!d.ok) return;
-      refreshUpgrade();
-      showStarter(d.names);
-    });
-  }
-  function showStarter(names) {
-    const total = sum(names.map(n => byName[n].price));
-    modal('Стартовый набор', `
-      <p class="note" style="font-size:13px;color:var(--text-subtitle)">Подарок за первый вход — ${names.length} скинов на ${coin(total)}. Они уже в вашем инвентаре: продайте их или поставьте в апгрейд.</p>
-      <div class="starter-grid">${names.map((n, i) => `<div class="starter-cell" style="animation-delay:${i * 0.12}s">${card(byName[n], { static: true })}</div>`).join('')}</div>
-      <div class="row">
-        <a class="btn btn-ghost" href="#/inventory" data-close-go style="flex:1">В инвентарь</a>
-        <a class="btn btn-accent" href="#/cases" data-close-go style="flex:1">Бесплатные кейсы</a>
-      </div>`,
-    m => { m.querySelectorAll('[data-close-go]').forEach(a => a.addEventListener('click', closeModal)); });
-    sfxWin();
   }
 
   // ---------- wallet ----------
