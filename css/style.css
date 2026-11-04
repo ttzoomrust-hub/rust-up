@@ -1460,3 +1460,121 @@ button.chip.on { color: #fff; background: var(--grad-accent); border-color: tran
   .case-foot { flex-direction: column; align-items: stretch; }
   .case-btn { width: 100%; }
 }
+
+/* ============ Liquid glass v3 (2026-11-05): one flat gray background, every surface is liquid glass —
+   translucent, blurred, a bright rim on top, a soft inner glow and a thin dark edge below. Overrides everything above. ============ */
+:root {
+  --bg-global: #2a2b2f;
+  --lg-fill: linear-gradient(160deg, rgba(255,255,255,.115) 0%, rgba(255,255,255,.045) 42%, rgba(255,255,255,.065) 100%);
+  --lg-sheen: linear-gradient(180deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,0) 38%);
+  --lg-rim: rgba(255,255,255,.16);
+  --lg-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.2), inset 1px 0 0 rgba(255,255,255,.06), inset -1px 0 0 rgba(255,255,255,.04), 0 10px 28px rgba(0,0,0,.24);
+  --lg-blur: blur(22px) saturate(170%);
+  --lg-input: rgba(0,0,0,.22);
+}
+html, body { background: #2a2b2f; }
+body { background: #2a2b2f !important; background-attachment: initial; }
+.w-glow { display: none; }
+
+/* background v4 (2026-11-05): much darker, a slow flowing black-red gradient. Big blurred blobs move with transforms only
+   (GPU, no repaint per frame); the glass surfaces above refract it. Calm when the system asks for reduced motion. */
+:root { --bg-global: #08080a; }
+/* the dark color sits on html only: a body background would paint over the moving layers below */
+html { background: #08080a !important; }
+body { background: transparent !important; }
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; border-radius: 50%; filter: blur(70px); will-change: transform; }
+body::before {
+  width: 120vmax; height: 120vmax; left: -40vmax; top: -50vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(190,24,32,.3) 0%, rgba(110,8,16,.16) 32%, rgba(40,4,8,0) 60%);
+  animation: bgFlowA 22s ease-in-out infinite alternate;
+}
+body::after {
+  width: 110vmax; height: 110vmax; right: -45vmax; bottom: -55vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(240,60,45,.22) 0%, rgba(140,12,22,.13) 30%, rgba(30,2,6,0) 60%);
+  animation: bgFlowB 28s ease-in-out infinite alternate;
+}
+.app::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 70% 50% at 50% 60%, rgba(100,6,14,.14), transparent 70%),
+    linear-gradient(115deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.15) 45%, rgba(0,0,0,.55) 100%);
+  animation: bgPulse 14s ease-in-out infinite alternate; }
+@keyframes bgFlowA { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30vmax, 25vmax) scale(1.15); } 100% { transform: translate(55vmax, 55vmax) scale(.9); } }
+@keyframes bgFlowB { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-30vmax, -20vmax) scale(1.2); } 100% { transform: translate(-55vmax, -60vmax) scale(.95); } }
+@keyframes bgPulse { from { opacity: .6; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { body::before, body::after, .app::before { animation: none; } }
+/* on the darker background the glass gets a touch more fill to stay readable */
+:root { --lg-fill: linear-gradient(160deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.07) 100%); }
+.header-wrap { background: rgba(10,10,12,.55) !important; }
+
+/* surfaces */
+.panel, .case-card, .timer-case, .drop, .inv, .item-panel, .balance-bar, .game-switch, .subs-panel, .bonus-tile, .dep-bonus,
+.friend-step, .w-glass, .wm, .wm-detail, .wallet-tabs, .pf-stat, .cur-menu, .inv-toolbar, .inv-grid, .inv-pager, .road-step .skin-card,
+.earn-offer, .clip-row, .sub-row, .case-items .skin-card, .roulette, .w-req, .tg-only .btn-ghost {
+  background: var(--lg-sheen), var(--lg-fill) !important;
+  backdrop-filter: var(--lg-blur); -webkit-backdrop-filter: var(--lg-blur);
+  border: 1px solid var(--lg-rim) !important;
+  box-shadow: var(--lg-shadow) !important;
+}
+.w-req { border-width: 0 !important; box-shadow: none !important; background: transparent !important; }
+.inv-grid, .inv-toolbar, .inv-pager { box-shadow: none !important; }
+.inv-toolbar { border-bottom: 0 !important; }
+.inv-pager { border-top: 0 !important; }
+.inv-grid { border-top: 0 !important; border-bottom: 0 !important; }
+/* selected / active surfaces keep a red glass tint */
+.wm.on, .dep-bonus.on, .wm-detail, .item-panel.left {
+  background: radial-gradient(ellipse 110% 80% at 50% 0%, rgba(229,56,59,.28), transparent 70%), var(--lg-sheen), var(--lg-fill) !important;
+  border-color: rgba(229,56,59,.6) !important;
+  box-shadow: var(--lg-shadow), 0 0 0 1px rgba(229,56,59,.25), 0 10px 26px rgba(229,56,59,.18) !important;
+}
+.item-panel.win { border-color: var(--win) !important; }
+.item-panel.lose { border-color: var(--lose) !important; }
+/* skin cards: glass with the rarity light inside */
+.skin-card { background: var(--lg-sheen), radial-gradient(ellipse 80% 60% at 50% 100%, var(--rc60), transparent 70%), var(--lg-fill); border: 1px solid var(--lg-rim); box-shadow: var(--lg-shadow); backdrop-filter: var(--lg-blur); -webkit-backdrop-filter: var(--lg-blur); }
+.skin-card.selected { border-color: var(--accent); box-shadow: var(--lg-shadow), 0 0 0 1px var(--accent), 0 0 18px #e5383b55; }
+/* live strip: glass tinted by rarity */
+.drop { background: var(--lg-sheen), linear-gradient(120deg, color-mix(in srgb, var(--rc) 24%, transparent) 0%, transparent 70%), var(--lg-fill) !important; }
+.drop.best { background: var(--lg-sheen), linear-gradient(135deg, rgba(255,209,102,.24), transparent 70%), var(--lg-fill) !important; border-color: rgba(255,209,102,.5) !important; }
+/* header, bottom nav, menus and popups */
+.header-wrap { background: rgba(42,43,47,.62); backdrop-filter: var(--lg-blur); -webkit-backdrop-filter: var(--lg-blur); border-bottom: 1px solid rgba(255,255,255,.1); box-shadow: inset 0 -1px 0 rgba(0,0,0,.18); }
+.nav-mobile { background: var(--lg-sheen), linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.06)) !important; backdrop-filter: blur(26px) saturate(180%); -webkit-backdrop-filter: blur(26px) saturate(180%); border: 1px solid rgba(255,255,255,.2) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 0 rgba(0,0,0,.2), 0 14px 34px rgba(0,0,0,.4) !important; }
+.nav-mobile .nav-item.active { background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(229,56,59,.45), 0 0 16px rgba(229,56,59,.3); }
+.modal { background: var(--lg-sheen), linear-gradient(160deg, rgba(70,72,78,.86), rgba(48,49,54,.9)) !important; backdrop-filter: blur(28px) saturate(170%); -webkit-backdrop-filter: blur(28px) saturate(170%); border: 1px solid rgba(255,255,255,.18) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 24px 60px rgba(0,0,0,.5) !important; }
+.modal-head { border-bottom-color: rgba(255,255,255,.08); }
+.modal-backdrop { background: rgba(20,21,24,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.toast { background: var(--lg-sheen), linear-gradient(160deg, rgba(70,72,78,.88), rgba(52,53,58,.92)); backdrop-filter: var(--lg-blur); -webkit-backdrop-filter: var(--lg-blur); border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 12px 30px rgba(0,0,0,.4); }
+.toast.success { background: linear-gradient(90deg, rgba(79,194,122,.22), transparent), var(--lg-sheen), linear-gradient(160deg, rgba(70,72,78,.88), rgba(52,53,58,.92)); }
+.toast.error { background: linear-gradient(90deg, rgba(229,56,59,.24), transparent), var(--lg-sheen), linear-gradient(160deg, rgba(70,72,78,.88), rgba(52,53,58,.92)); }
+.tg-promo { background: var(--lg-sheen), linear-gradient(160deg, rgba(72,74,80,.9), rgba(50,51,56,.94)) !important; backdrop-filter: var(--lg-blur); -webkit-backdrop-filter: var(--lg-blur); border: 1px solid rgba(255,255,255,.18) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 18px 46px rgba(0,0,0,.45) !important; }
+/* pills: balance, online, ghost buttons, chips, tabs, multipliers */
+.balance, .online-pill, .btn-ghost, .btn-icon, .controls-bar .btn-icon, button.chip, .mult, .dep-sum, .dep-way, .wtab:not(.on), .cc-btn, .case-btn.locked, .road-btn, .wm-min, .pf-balance, .strip-nav .chip-icon {
+  background: var(--lg-sheen), linear-gradient(160deg, rgba(255,255,255,.13), rgba(255,255,255,.05)) !important;
+  backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.16) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.26), inset 0 -1px 0 rgba(0,0,0,.18) !important;
+}
+.wtab:not(.on) { background: transparent !important; border-color: transparent !important; box-shadow: none !important; backdrop-filter: none; }
+/* red controls stay red, as glossy liquid drops */
+.btn-accent, .btn-wallet, .case-btn:not(.locked), .hero-btn, .upgrade-btn:not(:disabled), button.chip.on, .mult.on, .wtab.on, .game-tab.active, .dep-seg button.on, .btn.road-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 46%), linear-gradient(180deg, #ff6b5d 0%, #e5383b 55%, #c42a2d 100%) !important;
+  border: 1px solid rgba(255,160,150,.55) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 4px rgba(120,10,15,.35), 0 8px 22px rgba(229,56,59,.38) !important;
+}
+button.chip.chip-icon { width: 40px; height: 40px; padding: 0; flex-shrink: 0; }
+button.chip.chip-icon svg { width: 18px; height: 18px; flex-shrink: 0; }
+.strip-nav button.chip.chip-icon { width: 36px; height: 36px; }
+.case-card.locked .case-btn, .case-card.opened .case-btn, .timer-case.cooldown .case-btn {
+  background: var(--lg-sheen), linear-gradient(160deg, rgba(255,255,255,.13), rgba(255,255,255,.05)) !important;
+  border: 1px solid rgba(255,255,255,.16) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.26) !important; color: var(--text-subtitle);
+}
+.timer-case:not(.cooldown):not(.login) .case-btn { background: linear-gradient(180deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,0) 46%), linear-gradient(180deg, #6fe39a, #2f9e5c) !important; border-color: rgba(160,255,190,.5) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 22px rgba(79,194,122,.35) !important; }
+.dep-sum.on, .dep-way.on { background: linear-gradient(180deg, rgba(229,56,59,.42), rgba(229,56,59,.16)) !important; border-color: rgba(255,120,110,.7) !important; color: #fff; }
+.btn-tg { background: linear-gradient(180deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,0) 46%), linear-gradient(180deg, #4cc0f5, #1d8fcf) !important; border: 1px solid rgba(160,220,255,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 22px rgba(34,158,217,.35) !important; }
+.upgrade-btn:disabled { background: var(--lg-sheen), linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.04)) !important; border: 1px solid rgba(255,255,255,.12) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.18) !important; }
+/* inputs: glass wells */
+.text-input, .select, .wallet-page .text-input { background: var(--lg-input) !important; border: 1px solid rgba(255,255,255,.12) !important; box-shadow: inset 0 2px 8px rgba(0,0,0,.28), inset 0 -1px 0 rgba(255,255,255,.06) !important; }
+.text-input:focus { border-color: rgba(229,56,59,.8) !important; }
+/* icon tiles on the gray */
+.tx-ico, .w-req-ico, .pf-link .tx-ico { box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 6px 14px rgba(0,0,0,.28); }
+.tx { border-bottom-color: rgba(255,255,255,.08); }
+.road-line { background: rgba(255,255,255,.1); }
+.footer, .footer-top { background: transparent; }
+.lang-btn, .socials a { background: var(--lg-sheen), linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.05)) !important; border: 1px solid rgba(255,255,255,.14) !important; }

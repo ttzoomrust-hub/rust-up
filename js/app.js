@@ -469,8 +469,8 @@
     TG.ready();
     TG.expand();
     try {
-      if (tgVer('6.1')) { TG.setHeaderColor('#141518'); TG.setBackgroundColor('#141518'); }
-      if (tgVer('7.10')) TG.setBottomBarColor('#141518');
+      if (tgVer('6.1')) { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); }
+      if (tgVer('7.10')) TG.setBottomBarColor('#08080a');
       if (tgVer('7.7')) TG.disableVerticalSwipes();   // scrolling the page must not collapse the app
     } catch (e) { /* older client */ }
     if (tgVer('6.1')) TG.BackButton.onClick(() => { if (history.length > 1) history.back(); else location.hash = '#/'; });
