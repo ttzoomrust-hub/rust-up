@@ -668,7 +668,7 @@
   const DEP_METHODS = [
     ['rub', 'Рубли', 500, 0, ['sbp'], 'СБП и карты', ['SberPay', 'T-Pay', 'Банковская карта']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
-    ['gifts', 'Telegram Stars', 10, 7, ['star'], 'Звёзды Telegram', ['Оплата через Telegram Stars']]];
+    ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Звёзды Telegram', ['Оплата только Telegram Stars']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
   const WD_METHODS = [
     ['rub', 'Рубли', 2000, 5, 'card', 'Номер карты', '0000 0000 0000 0000'],
@@ -729,6 +729,7 @@
     const params = new URLSearchParams(q || '');
     if (['deposit', 'withdraw', 'history'].includes(params.get('tab'))) WF.tab = params.get('tab');
     if (+params.get('sum') > 0) WF.amount = Math.floor(+params.get('sum'));
+    if (params.get("method") === "stars") WF.dep = "gifts";
     const tabs = [['deposit', 'Пополнить'], ['withdraw', 'Вывести'], ['history', 'История']];
     $('#page').innerHTML = `<div class="page wallet-page">
       <span class="w-glow g1"></span><span class="w-glow g2"></span><span class="w-glow g3"></span>
@@ -743,6 +744,13 @@
     if (!box) return;
     document.querySelectorAll('.wtab').forEach(b => b.classList.toggle('on', b.dataset.wtab === WF.tab));
     box.innerHTML = WF.tab === 'withdraw' ? walletWithdraw() : WF.tab === 'history' ? walletHistory() : walletDeposit();
+    /* RUSTUP_STARS_WALLET_EMBED_V1 */
+    if (WF.tab === 'deposit' && WF.dep === 'gifts') {
+      box.innerHTML = '<div id="rustupStarsBody"></div>';
+      if (window.RUSTUP_STARS_PANEL) window.RUSTUP_STARS_PANEL.render(document.getElementById('rustupStarsBody'));
+    } else if (WF.tab === 'deposit' && WF.dep === 'crypto') {
+      box.innerHTML = '<div class="w-glass w-panel"><h3 class="w-h3">Криптовалюта</h3><p class="w-note">Цифровые покупки в Telegram доступны только за Stars. Криптоплатежи здесь отключены, внешний провайдер проверяется отдельно.</p></div>';
+    }
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
