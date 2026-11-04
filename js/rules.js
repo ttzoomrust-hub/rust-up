@@ -7,7 +7,7 @@ window.RUSTUP_RULES = {
   MAX_SLOTS: 6,           // items in one upgrade stake
   TG_CHANNEL: 'up_rust',
   TG_BONUS: 10000,        // one-time reward for subscribing to the Telegram channel
-  PROMOS: { RUSTUP: 50, WIPE: 25, DEMO: 100 },
+  PROMOS: { RUSTUP: 50, WIPE: 30, DEMO: 20 },   // in rubles (20–50 ₽), credited in coins at the CBR rate
   DAILY_MS: 24 * 60 * 60 * 1000,
   DAILY_BONUS: 3500,
   CASHBACK: 0.02,         // share of a lost upgrade stake / of a paid case that paid out less than its price
