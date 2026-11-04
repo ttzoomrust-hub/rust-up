@@ -16,7 +16,8 @@ window.RUSTUP_RULES = {
   DAILY_DAYS: 7,
   // «Ракетка» (crash): the multiplier grows as e^(K·ms) from the start; the crash point is RTP / u (u uniform 0..1),
   // so cashing out at any x pays RTP on average. Bets in coins.
-  CRASH: { RTP: 0.96, K: 0.0001, MAX: 1000, MIN_BET: 1, MAX_BET: 50000 },
+  // one shared round for everybody: BET_MS to place bets, the flight, PAUSE_MS showing the result, then the next round starts by itself
+  CRASH: { RTP: 0.96, K: 0.0001, MAX: 1000, MIN_BET: 1, MAX_BET: 50000, BET_MS: 10000, PAUSE_MS: 3000 },
   // contracts: MIN..MAX items of one game → one item worth (inputs value × multiplier); [multiplier, chance %], ~95% on average
   CONTRACT: { MIN: 3, MAX: 10, MULTS: [[0.3, 30], [0.6, 25], [1, 20], [1.5, 15], [2.5, 7.5], [4, 2.5]] },
   // case battles: 2–4 players open the same paid case for ROUNDS rounds, the biggest total takes every item; empty seats → bots

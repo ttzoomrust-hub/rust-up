@@ -34,7 +34,8 @@
   // «Ракетка»
   // =====================================================================================
   const CRASH_BETS = [10, 50, 100, 500, 1000];   // quick bets in coins
-  const C = { bet: 50, auto: '', phase: 'idle', t0: 0, mult: 1, point: 0, cashed: null, busy: false, peekAt: 0 };
+  // one shared round for everybody (bot/modes.js crash_state): R.CRASH.BET_MS for bets, the flight, a short pause, the next round
+  const C = { bet: 50, auto: '', phase: 'idle', st: null, off: 0, round: 0, me: null, cashed: null, amount: 0, busy: false, queued: false, boomed: 0 };
   const multAt = ms => Math.min(CR.MAX, Math.floor(Math.exp(CR.K * Math.max(0, ms)) * 100) / 100);
   const x2 = n => n.toFixed(2).replace('.', ',') + '×';
   // the rocket of the page: side view, nose to the right, a flickering flame
@@ -51,15 +52,15 @@
     <text x="150" y="133" font-family="Montserrat, Arial Black" font-weight="900" font-size="15" fill="#3a3f4d">RUST UP</text></svg>`;
 
   function crashPage() {
-    const { S, coin } = A();
-    const hist = (S.crashLast || []).map(h => `<span class="cr-chip ${h.point >= 5 ? 'hi' : h.point >= 2 ? 'mid' : ''}">${x2(h.point)}</span>`).join('');
+    const { coin } = A();
     page(`<div class="page crash-page">
       ${back}
-      <div class="cr-top"><div class="cr-hist">${hist}</div><button class="cr-ico" data-crash-help aria-label="Правила">?</button></div>
+      <div class="cr-top"><div class="cr-hist" id="crHist"></div><button class="cr-ico" data-crash-help aria-label="Правила">?</button></div>
       <div class="cr-stage" id="crashStage">
         <div class="cr-stars"></div><div class="cr-stars s2"></div>
-        <div class="cr-mult" id="crashMult">1,00×</div>
-        <div class="cr-sub" id="crashStatus">Сделайте ставку — ракета взлетит</div>
+        <div class="cr-mult" id="crashMult">…</div>
+        <div class="cr-sub" id="crashStatus">Подключаемся…</div>
+        <div class="cr-timer" id="crTimer"><i></i></div>
         <div class="cr-ship" id="crashRocket"><i class="cr-puff p1"></i><i class="cr-puff p2"></i><i class="cr-puff p3"></i><div class="cr-me" id="crashMe"></div>${SHIP}</div>
         <div class="cr-clouds c1"></div><div class="cr-clouds c2"></div>
       </div>
@@ -74,120 +75,170 @@
       </div>
       <div class="cr-players">
         <div class="cr-ph">Игроков <b id="crPlayers">0</b> · банк <b id="crBank">${coin(0)}</b></div>
-        <div id="crList"><div class="cr-empty">Здесь появятся ставки игроков</div></div>
+        <div id="crList"><div class="cr-empty">Ставок пока нет — будьте первым!</div></div>
       </div>
     </div>`);
     const bet = A().$('#crashBet'), auto = A().$('#crashAuto');
     bet.addEventListener('input', () => { C.bet = toCoins(numIn(bet)); paintBtn(); });
-    auto.addEventListener('input', () => { C.auto = auto.value.replace(',', '.'); });
+    auto.addEventListener('input', () => { C.auto = auto.value.replace(',', '.'); paintBtn(); });
     A().$('#crashBtn').onclick = crashClick;
     document.querySelectorAll('[data-bet],[data-bet-set]').forEach(b => { b.onclick = () => {
-      const S = A().S;
       if (b.dataset.betSet) C.bet = +b.dataset.betSet;
       else if (b.dataset.bet === 'half') C.bet = Math.max(CR.MIN_BET, C.bet / 2);
       else if (b.dataset.bet === 'x2') C.bet = Math.min(CR.MAX_BET, C.bet * 2);
-      else C.bet = Math.min(CR.MAX_BET, Math.floor(S.balance * 100) / 100);
+      else C.bet = Math.min(CR.MAX_BET, Math.floor(A().S.balance * 100) / 100);
       bet.value = fmtIn(C.bet); paintBtn();
     }; });
     A().$('[data-crash-help]').onclick = crashHelp;
-    // a round that is still flying (the app was reopened): ask the server how far it got
-    if (A().S.crash && C.phase !== 'fly') {
-      C.phase = 'sync';
-      A().api('crash_peek').then(d => {
-        if (d.ok && d.crashed === false) startFlight(d.elapsed, A().S.crash.bet);
-        else { C.phase = 'idle'; if (d.ok && d.point) endFlight(d.point, d.win ? d.mult : null, d.amount); }
-      });
-    } else if (C.phase === 'fly') { const st = A().$('#crashStage'); if (st) st.classList.add('flying'); }
-    paintBtn(); draw();
-    loadCrashFeed();
-    every(() => { if (!document.hidden) loadCrashFeed(); }, 3000);
-  }
-  // the bets of all players: the last finished rounds
-  function loadCrashFeed() {
-    A().api('crash_feed').then(d => {
-      const list = A().$('#crList');
-      if (!list || !d.ok) return;
-      const { coin, esc, avatarHtml, avaUrl } = A();
-      A().$('#crPlayers').textContent = d.players;
-      A().$('#crBank').innerHTML = coin(d.bank);
-      list.innerHTML = d.rounds.length ? d.rounds.map(r => `<div class="cr-pl${r.mult ? ' win' : ''}">
-        ${avatarHtml(r.nick, r.color || '#e5383b', 'cr-ava', avaUrl(r.user_id))}
-        <span class="cr-who"><b>${esc(r.nick)}</b>${coin(r.bet)}</span>
-        <span class="cr-x">${r.mult ? x2(r.mult) : `💥 ${x2(r.point)}`}</span>
-        <span class="cr-win">${r.mult ? coin(r.amount) : '—'}</span></div>`).join('')
-        : '<div class="cr-empty">Пока никто не играл — будьте первым!</div>';
-    });
+    C.phase = 'live';
+    poll();
+    every(() => { if (!document.hidden) poll(); }, 500);
+    cancelAnimationFrame(raf);
+    const frame = () => { if (A().curPath() !== '/crash') return; tick(); raf = requestAnimationFrame(frame); };
+    raf = requestAnimationFrame(frame);
   }
   function crashHelp() {
     A().modal('Ракетка', `<div class="free-help"><b>Забери выигрыш до взрыва</b><ol>
-      <li>Сделайте ставку — ракета взлетает, множитель растёт: 1,00×, 1,50×, 2,00×…</li>
+      <li>Раунды идут сами, один за другим. Перед каждым стартом — ${CR.BET_MS / 1000} секунд на ставки.</li>
+      <li>Ракета взлетает, множитель растёт: 1,00×, 1,50×, 2,00×… Все игроки летят в одном раунде.</li>
       <li>Нажмите «Забрать» в любой момент — ставка умножится на текущий множитель.</li>
       <li>Ракета взрывается в случайный момент. Не успели — ставка сгорает.</li>
       <li>Автовывод забирает сам на выбранном множителе — даже если закрыть игру.</li>
-      <li>Точка взрыва выбирается сервером до взлёта и не меняется.</li></ol>
+      <li>Опоздали к старту — нажмите «Ставка на следующий раунд», и она сделается сама.</li></ol>
       <button class="btn btn-accent" id="chOk">Понятно</button></div>`, m => { A().$('#chOk', m).onclick = A().closeModal; });
   }
-  function paintBtn() {
-    const b = A().$('#crashBtn');
-    if (!b) return;
-    const { coin } = A();
-    b.classList.toggle('cash', C.phase === 'fly' && !C.cashed);
-    if (C.phase === 'fly' && !C.cashed) { b.disabled = C.busy; b.innerHTML = `<b>Забрать ${coin(C.bet * C.mult)}</b><small>${x2(C.mult)}</small>`; }
-    else if (C.phase === 'fly' || C.phase === 'sync' || C.busy) { b.disabled = true; b.innerHTML = C.cashed ? `<b>Забрано ${x2(C.cashed)}</b><small>ракета летит дальше…</small>` : '<b>Ракета летит…</b>'; }
-    else { b.disabled = false; b.innerHTML = `<b>Сделать ставку</b><small>${coin(C.bet)}${Number(C.auto) >= 1.01 ? ` · автовывод ${x2(Number(C.auto))}` : ''}</small>`; }
-    // the player's own bet rides next to the rocket
-    const me = A().$('#crashMe');
-    if (me) me.innerHTML = C.phase === 'fly' ? `${A().avatarHtml(A().S.user ? A().S.user.name : '', (A().S.user && A().S.user.color) || '#e5383b', 'cr-ava', A().S.user && A().avaUrl(A().S.user.id))}<span>${coin(C.cashed ? C.amount : C.bet)}</span>` : '';
-    if (me) me.classList.toggle('won', !!C.cashed);
-  }
-  function crashClick() {
-    if (C.phase === 'fly' && !C.cashed) return cashOut();
-    if (C.phase !== 'idle' || C.busy) return;
-    A().requireLogin(() => {
-      const bet = Math.round(C.bet * 100) / 100, auto = Number(C.auto) || 0;
-      if (!(bet >= CR.MIN_BET)) return A().toast(`Минимальная ставка ${A().money(CR.MIN_BET)}`, 'error');
-      if (bet > A().S.balance) return A().toast('Недостаточно средств', 'error');
-      if (C.auto && auto < 1.01) return A().toast('Автовывод — от 1,01×', 'error');
-      C.busy = true; paintBtn();
-      A().api('crash_start', { bet, auto: auto || undefined }).then(d => {
-        C.busy = false;
-        if (!d.ok) { paintBtn(); return A().netToast(d); }
-        A().haptic('medium');
-        startFlight(0, bet, auto || null);
-      });
+  const serverNow = () => Date.now() + C.off;
+  const phaseOf = r => (!r ? 'wait' : r.crashed ? 'crashed' : serverNow() < r.launch_at ? 'bet' : 'fly');
+  function poll() {
+    const t0 = Date.now();
+    A().api('crash_state').then(d => {
+      if (!d.ok || A().curPath() !== '/crash') return;
+      C.off = d.now - (t0 + Date.now()) / 2;
+      const r = d.round;
+      if (r.id !== C.round) {
+        // a new round: reset the stage
+        C.round = r.id; C.cashed = null; C.amount = 0; C.boomed = 0;
+        const st = A().$('#crashStage'); if (st) st.classList.remove('boom', 'won', 'flying');
+      }
+      C.st = d; C.me = d.me || (C.me && C.me.round === r.id ? C.me : null);
+      if (d.me) C.me = { ...d.me, round: r.id };
+      if (d.settled && d.settled.win) { A().sfxWin(); A().toast(`Автовывод на ${x2(d.settled.mult)}: +${A().money(d.settled.amount)}`, 'success'); }
+      // the bet the player asked for while the rocket was flying goes in as soon as bets open
+      if (C.queued && !C.me && !C.busy && phaseOf(r) === 'bet') { C.queued = false; placeBet(); }
+      if (r.crashed && C.boomed !== r.id) boom(r);
+      renderRound(d);
     });
   }
-  function startFlight(elapsed, bet, auto) {
-    C.phase = 'fly'; C.bet = bet; C.cashed = null; C.point = 0; C.autoX = auto || (A().S.crash && A().S.crash.auto) || null;
-    C.t0 = performance.now() - (elapsed || 0); C.peekAt = 0;
-    const st = A().$('#crashStage'); if (st) { st.classList.remove('boom', 'won'); st.classList.add('flying'); }
-    status('Забирайте до взрыва!');
-    let lastBeep = 1;
-    cancelAnimationFrame(raf);
-    const frame = () => {
-      if (C.phase !== 'fly') return;
-      const ms = performance.now() - C.t0;
-      C.mult = multAt(ms);
-      // after a cash-out we know the point: fly up to it and explode there
-      if (C.point && C.mult >= C.point) { C.mult = C.point; return endFlight(C.point, C.cashed, C.amount); }
-      if (C.mult - lastBeep >= 0.1) { lastBeep = C.mult; A().beep(300 + C.mult * 60, 0.02, 'sine', 0.015); }
-      if (C.autoX && !C.cashed && !C.busy && C.mult >= C.autoX) cashOut();
-      // the server says when it crashed
-      if (!C.point && !C.busy && ms - C.peekAt > 700) { C.peekAt = ms; peek(); }
-      draw(ms); paintBtn();
-      raf = requestAnimationFrame(frame);
-    };
-    raf = requestAnimationFrame(frame);
+  function boom(r) {
+    C.boomed = r.id;
+    const st = A().$('#crashStage');
+    if (st) { st.classList.remove('flying'); st.classList.add('boom'); }
+    A().beep(110, 0.35, 'sawtooth', 0.05);
+    const mine = C.me && C.me.round === r.id;
+    status(mine && C.cashed ? `Улетела на ${x2(r.point)} · вы забрали ${x2(C.cashed)} (+${A().money(C.amount)})` : mine && !(C.me.auto && C.me.auto < r.point) ? `Улетела на ${x2(r.point)} · ставка сгорела` : `Улетела на ${x2(r.point)}`);
+    if (mine) setTimeout(() => A().api('load'), 600);
+  }
+  function renderRound(d) {
+    const { coin, esc, avatarHtml, avaUrl } = A();
+    const hist = A().$('#crHist');
+    if (hist) hist.innerHTML = d.history.map(p => `<span class="cr-chip ${p >= 5 ? 'hi' : p >= 2 ? 'mid' : ''}">${x2(p)}</span>`).join('');
+    const pl = A().$('#crPlayers'), bank = A().$('#crBank'), list = A().$('#crList');
+    if (!list) return;
+    pl.textContent = d.players; bank.innerHTML = coin(d.bank);
+    const crashed = d.round.crashed;
+    list.innerHTML = d.bets.length ? d.bets.map(b => `<div class="cr-pl${b.mult ? ' win' : crashed ? ' lost' : ''}">
+      ${avatarHtml(b.nick, b.color || '#e5383b', 'cr-ava', avaUrl(b.id))}
+      <span class="cr-who"><b>${esc(b.nick)}</b>${coin(b.bet)}</span>
+      <span class="cr-x">${b.mult ? x2(b.mult) : crashed ? '💥' : '—'}</span>
+      <span class="cr-win">${b.mult ? coin(b.amount) : ''}</span></div>`).join('')
+      : '<div class="cr-empty">Ставок пока нет — будьте первым!</div>';
+  }
+  // every frame: the countdown, the multiplier, the rocket, the button
+  function tick() {
+    const d = C.st;
+    if (!d) return;
+    const r = d.round, ph = phaseOf(r), t = serverNow();
+    const st = A().$('#crashStage'), mult = A().$('#crashMult'), timer = A().$('#crTimer');
+    if (!st) return;
+    st.classList.toggle('betting', ph === 'bet');
+    if (ph === 'bet') {
+      const left = Math.max(0, r.launch_at - t);
+      mult.textContent = (left / 1000).toFixed(1).replace('.', ',') + ' c';
+      mult.classList.remove('hot');
+      status('Приём ставок — ракета стартует через');
+      timer.firstElementChild.style.width = (100 * left / CR.BET_MS) + '%';
+      draw(0);
+    } else if (ph === 'fly') {
+      if (!st.classList.contains('flying')) { st.classList.add('flying'); A().haptic('light'); }
+      const m = multAt(t - r.launch_at);
+      mult.textContent = x2(m); mult.classList.toggle('hot', m >= 2);
+      const mine = C.me && C.me.round === r.id;
+      status(mine && !C.cashed ? 'Забирайте до взрыва!' : mine ? `Вы забрали ${x2(C.cashed)} — летим дальше` : 'Ракета летит!');
+      if (mine && !C.cashed && !C.busy && C.me.auto && m >= C.me.auto) cashOut();
+      draw(t - r.launch_at);
+      C.mult = m;
+    } else if (ph === 'crashed') {
+      mult.textContent = x2(r.point); mult.classList.remove('hot');
+    }
     paintBtn();
   }
-  function peek() {
-    A().api('crash_peek').then(d => {
-      if (C.phase !== 'fly' || C.point || !d.ok || d.crashed === false) return;
-      // crashed (an auto cash-out may have paid on the server)
-      if (d.none) return endFlight(C.mult, C.cashed, C.amount);
-      C.point = d.point;
-      if (d.win && !C.cashed) { C.cashed = d.mult; C.amount = d.amount; }
-      if (C.mult >= C.point) endFlight(C.point, C.cashed, C.amount);
+  function paintBtn() {
+    const b = A().$('#crashBtn'), d = C.st;
+    if (!b) return;
+    const { coin } = A();
+    const r = d && d.round, ph = phaseOf(r), mine = r && C.me && C.me.round === r.id;
+    const auto = Number(C.auto) >= 1.01 ? ` · автовывод ${x2(Number(C.auto))}` : '';
+    let cls = '', html, dis = C.busy;
+    if (!d) { html = '<b>Подключаемся…</b>'; dis = true; }
+    else if (ph === 'fly' && mine && !C.cashed) { cls = 'cash'; html = `<b>Забрать ${coin(C.me.bet * (C.mult || 1))}</b><small>${x2(C.mult || 1)}</small>`; }
+    else if (mine && (C.cashed || ph === 'crashed') && C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ✓</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
+    else if (mine && (C.cashed || ph === 'crashed')) html = `<b>Сделать ставку</b><small>на следующий раунд · ${coin(C.bet)}</small>`;
+    else if (mine) { html = `<b>Ставка принята</b><small>${coin(C.me.bet)}${C.me.auto ? ` · автовывод ${x2(C.me.auto)}` : ''}</small>`; dis = true; }
+    else if (ph === 'bet') html = `<b>Сделать ставку</b><small>${coin(C.bet)}${auto}</small>`;
+    else if (C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ✓</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
+    else html = `<b>Сделать ставку</b><small>на следующий раунд · ${coin(C.bet)}</small>`;
+    b.className = 'cr-btn' + (cls ? ' ' + cls : '');
+    if (b.dataset.h !== html) { b.innerHTML = html; b.dataset.h = html; }
+    b.disabled = !!dis;
+    // the player's own bet rides next to the rocket
+    const me = A().$('#crashMe');
+    if (me) {
+      const show = mine && (ph === 'fly' || ph === 'bet' || C.cashed);
+      const h = show ? `${A().avatarHtml(A().S.user ? A().S.user.name : '', (A().S.user && A().S.user.color) || '#e5383b', 'cr-ava', A().S.user && A().avaUrl(A().S.user.id))}<span>${coin(C.cashed ? C.amount : C.me.bet)}</span>` : '';
+      if (me.dataset.h !== h) { me.innerHTML = h; me.dataset.h = h; }
+      me.classList.toggle('won', !!C.cashed);
+    }
+  }
+  function crashClick() {
+    const d = C.st;
+    if (!d || C.busy) return;
+    const ph = phaseOf(d.round), mine = C.me && C.me.round === d.round.id;
+    if (ph === 'fly' && mine && !C.cashed) return cashOut();
+    if (mine && !C.cashed && ph !== 'crashed') return;
+    A().requireLogin(() => {
+      if (ph === 'bet') return placeBet();
+      // flying or the pause: the bet goes into the next round
+      C.queued = !C.queued;
+      A().haptic('light');
+      paintBtn();
+    });
+  }
+  function placeBet() {
+    const bet = Math.round(C.bet * 100) / 100, auto = Number(C.auto) || 0;
+    if (!(bet >= CR.MIN_BET)) return A().toast(`Минимальная ставка ${A().money(CR.MIN_BET)}`, 'error');
+    if (bet > A().S.balance) return A().toast('Недостаточно средств', 'error');
+    if (C.auto && auto < 1.01) return A().toast('Автовывод — от 1,01×', 'error');
+    C.busy = true; paintBtn();
+    A().api('crash_bet', { bet, auto: auto || undefined }).then(d => {
+      C.busy = false;
+      if (!d.ok) {
+        if (d.error === 'late') { C.queued = true; A().toast('Старт уже был — ставка уйдёт в следующий раунд', 'success'); }
+        else A().netToast(d);
+        return paintBtn();
+      }
+      C.me = { bet, auto: auto || null, round: d.round };
+      A().haptic('medium');
+      poll();
     });
   }
   function cashOut() {
@@ -195,43 +246,24 @@
     C.busy = true; paintBtn();
     A().api('crash_cash').then(d => {
       C.busy = false;
-      if (!d.ok) { if (d.error === 'noround') return; return A().netToast(d); }
-      C.point = d.point;
+      if (!d.ok) { if (d.error !== 'noround' && d.error !== 'wait') A().netToast(d); return; }
       if (d.win) {
         C.cashed = d.mult; C.amount = d.amount;
         A().sfxWin(); A().haptic('success');
         A().toast(`Забрали на ${x2(d.mult)}: +${A().money(d.amount)}`, 'success');
         const st = A().$('#crashStage'); if (st) st.classList.add('won');
-        status(`Вы забрали ${x2(d.mult)} — ракета летит дальше`);
       }
-      // a late press: it had already exploded
-      if (!d.win || C.mult >= C.point) endFlight(C.point, C.cashed, C.amount);
       paintBtn();
     });
   }
-  function endFlight(point, cashed, amount) {
-    cancelAnimationFrame(raf);
-    C.phase = 'idle'; C.mult = point; C.point = 0;
-    const st = A().$('#crashStage');
-    if (st) { st.classList.remove('flying'); st.classList.add('boom'); }
-    A().beep(110, 0.35, 'sawtooth', 0.05);
-    const m = A().$('#crashMult'); if (m) m.textContent = x2(point);
-    status(cashed ? `Улетела на ${x2(point)} · вы забрали ${x2(cashed)} (+${A().money(amount)})` : `Улетела на ${x2(point)}${C.bet ? ' · ставка сгорела' : ''}`);
-    A().renderHeader();
-    loadCrashFeed();
-    setTimeout(() => { if (A().curPath() === '/crash' && C.phase === 'idle') crashPage(); }, 2200);
-    C.cashed = null;
-    paintBtn();
-  }
-  const status = t => { const el = A().$('#crashStatus'); if (el) el.textContent = t; };
-  // the rocket climbs from the lower left to the middle in the first seconds, then the sky moves past it
+  const status = t => { const el = A().$('#crashStatus'); if (el && el.textContent !== t) el.textContent = t; };
+  // the rocket waits low on the left while bets are taken, climbs to the middle in the first seconds, then the sky moves past it
   function draw(ms = 0) {
-    const ship = A().$('#crashRocket'), mult = A().$('#crashMult');
+    const ship = A().$('#crashRocket');
     if (!ship) return;
-    const p = C.phase === 'fly' ? Math.min(1, ms / 2600) : 0, e = 1 - Math.pow(1 - p, 3);
+    const p = Math.min(1, ms / 2600), e = 1 - Math.pow(1 - p, 3);
     ship.style.left = (26 + 24 * e) + '%';
     ship.style.top = (76 - 26 * e) + '%';
-    if (C.phase === 'fly') { mult.textContent = x2(C.mult || 1); mult.classList.toggle('hot', C.mult >= 2); }
   }
 
   // =====================================================================================
@@ -462,7 +494,7 @@
     // called by the router with the new path: polls always stop; the rocket keeps flying only while its page is open
     leave: path => {
       timers.forEach(clearInterval); timers.clear();
-      if (path !== '/crash') { cancelAnimationFrame(raf); raf = 0; if (C.phase !== 'idle') { C.phase = 'idle'; C.busy = false; } }
+      if (path !== '/crash') { cancelAnimationFrame(raf); raf = 0; if (C.phase !== 'idle') { C.phase = 'idle'; C.busy = false; } C.queued = false; C.st = null; }
     },
     '/crash': crashPage, '/contract': contractPage, '/battles': battlesPage, battle: battlePage
   };
