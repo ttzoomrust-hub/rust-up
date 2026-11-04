@@ -19,9 +19,20 @@ window.RUSTUP_RULES = {
   ],
   // tiers: [min price, max price, items, chance % of the whole tier]; the items are taken from the catalog by price
   CASES: [
-    { id: 'rust', game: 'rust', name: 'Кейс RUST', color: '#e5383b', tiers: [[20, 80, 6, 70], [80, 300, 3, 22], [300, 800, 2, 7], [1000, Infinity, 1, 1]] },
-    { id: 'cs2', game: 'cs2', name: 'Кейс CS2', color: '#f0a030', tiers: [[10, 60, 6, 70], [60, 400, 3, 22], [400, 2500, 2, 7], [8000, 30000, 1, 1]] },
-    { id: 'nft', game: 'nft', name: 'Кейс Telegram NFT', color: '#2ea6e0', tiers: [[0, 100, 6, 70], [300, 450, 3, 22], [450, 1500, 2, 7], [1500, 5000, 1, 1]] }
+    { id: 'rust', game: 'rust', name: 'Rust-кейс', color: '#e5383b', tiers: [[20, 80, 6, 70], [80, 300, 3, 22], [300, 800, 2, 7], [1000, Infinity, 1, 1]] },
+    { id: 'cs2', game: 'cs2', name: 'CS-кейс', color: '#f0a030', tiers: [[10, 60, 6, 70], [60, 400, 3, 22], [400, 2500, 2, 7], [8000, 30000, 1, 1]] },
+    { id: 'nft', game: 'nft', name: 'NFT-кейс', color: '#2ea6e0', tiers: [[0, 100, 6, 70], [300, 450, 3, 22], [450, 1500, 2, 7], [1500, 5000, 1, 1]] }
+  ],
+  // free cases above: once a day; the prize waits until FREE_FRIENDS friends came by the player's link and spun a free case,
+  // then it goes to the inventory or is sold; the next spin opens FREE_COOLDOWN after that
+  FREE_FRIENDS: 5,
+  FREE_COOLDOWN: 24 * 60 * 60 * 1000,
+  // cases of the day: once in 24 hours, the prize is the player's at once. money: [rubles, chance %] go to the balance,
+  // tiers add cheap items (prices in coins; 60 coins ≈ 100 ₽). Mostly +1 / +3 / +5 / +15 ₽.
+  DAILY_CASES: [
+    { id: 'rust-day', game: 'rust', name: 'Скин дня', color: '#ff7a45', daily: true, money: [[1, 38], [3, 26], [5, 17], [15, 9]], tiers: [[5, 60, 6, 10]] },
+    { id: 'cs2-day', game: 'cs2', name: 'CS-кейс дня', color: '#f5b84d', daily: true, money: [[1, 38], [3, 26], [5, 17], [15, 9]], tiers: [[3, 60, 6, 10]] },
+    { id: 'nft-day', game: 'nft', name: 'Подарок дня', color: '#e86bd8', daily: true, money: [[1, 38], [3, 26], [5, 17], [15, 9]], tiers: [[5, 60, 6, 10]] }
   ],
   // paid cases: opened any number of times; the price follows from the contents
   PAID_CASES: [

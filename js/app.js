@@ -143,6 +143,7 @@
   // ---------- game server (bot/game.js): balance, items, rewards and every roll live there ----------
   // The app only shows the state and asks the server to act; the device copy is a cache for the first paint.
   let gameReady = false;
+  let FREEC = {};                 // { caseId: { friends, need } } from the server
   const GAME_ERR = {
     funds: 'Недостаточно средств', items: 'Предметы уже не в инвентаре — обновили данные', chance: 'Шанс должен быть от 1% до 75%',
     game: 'В апгрейде предметы только одной игры', cooldown: 'Пока недоступно — подождите', opened: 'Этот кейс уже открыт',
@@ -155,7 +156,7 @@
   const gameErr = d => GAME_ERR[d && d.error] || 'Не удалось выполнить — попробуйте ещё раз';
   function applyState(st) {
     S.balance = st.balance; S.inventory = st.inventory.filter(i => byName[i.name]); S.withdrawals = st.withdrawals;
-    S.history = st.history; S.stats = st.stats; S.seeds = st.seeds; S.rewards = st.rewards; S.tx = st.tx || [];
+    S.history = st.history; S.stats = st.stats; S.seeds = st.seeds; S.rewards = st.rewards; S.tx = st.tx || []; S.free = st.free || {};
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
     if (!S.user.color) S.user.color = AVA_COLORS[(u.id || 0) % AVA_COLORS.length];
@@ -167,6 +168,7 @@
     return fetch(window.RUSTUP_API.replace(/\/$/, '') + '/api/game', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ initData: TG.initData, action, ...extra })
     }).then(r => r.json()).then(d => {
+      if (d && d.free) FREEC = d.free;   // friends counted for the free-case prizes that wait
       if (d && d.state && !(defer && d.ok)) { applyState(d.state); renderHeader(); }
       if (d && d.error === 'items') refreshUpgrade();
       return d || { ok: false };
@@ -828,7 +830,8 @@
   function scheduleTgPromo(delay) {
     setTimeout(() => {
       if ($('.tg-promo')) return;
-      const casesWanted = S.user && casesLeft().length === CASES.length && !curPath().startsWith('/case') && Date.now() - (S.rewards.casesPromoHidden || 0) >= PROMO_SNOOZE;
+      // free cases are daily now: invite while some free case of any game can be spun
+      const casesWanted = S.user && [...CASES, ...DAILY_CASES].some(c => caseState(c) === 'ready' || caseState(c) === 'locked') && !curPath().startsWith('/case') && Date.now() - (S.rewards.casesPromoHidden || 0) >= PROMO_SNOOZE;
       const tgWanted = !tgBonusDone() && Date.now() - (S.rewards.promoHidden || 0) >= PROMO_SNOOZE;
       const dailyWanted = S.user && dailyReady() && !dailyPopupClosed;
       if (!casesWanted && !tgWanted && !dailyWanted) return;
@@ -845,9 +848,9 @@
       <button class="tg-promo-x" aria-label="Закрыть">${ICON.x}</button>
       <div class="tg-promo-icon"><span class="nav-icon icon-gift"></span></div>
       <div class="tg-promo-body">
-        <span class="tg-promo-kicker">Для новых игроков</span>
-        <b class="tg-promo-title">${CASES.length} кейса бесплатно</b>
-        <span class="tg-promo-text">Rust, CS2 и Telegram NFT — за подписку на 2 канала</span>
+        <span class="tg-promo-kicker">Каждые 24 часа</span>
+        <b class="tg-promo-title">${CASES.length + DAILY_CASES.length} бесплатных кейсов</b>
+        <span class="tg-promo-text">Скины Rust, CS2 и NFT-подарки — крути каждый день</span>
       </div>
       <button class="btn btn-accent tg-promo-go">Открыть кейсы</button>` : daily ? `
       <button class="tg-promo-x" aria-label="Закрыть">${ICON.x}</button>
@@ -2091,9 +2094,23 @@
   const timerLeft = () => Math.max(0, TIMER_MS - (Date.now() - (S.rewards.timerCase || 0)));
   const mmss = ms => { const s = Math.ceil(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
   const { CASE_RTP } = R;         // average win is 90% of a paid case's price
-  // the 15-minute case was removed (2026-11-05): its old link leads back to the cases page
-  const caseById = id => CASES.find(c => c.id === id) || PAID_CASES.find(c => c.id === id) || null;
-  const casesLeft = () => CASES.filter(c => !S.rewards.cases[c.id]);
+  // free cases (CASES) and cases of the day (DAILY_CASES) open once a day; the 15-minute case was removed (2026-11-05)
+  const { DAILY_CASES, FREE_FRIENDS, FREE_COOLDOWN } = R;
+  const caseById = id => CASES.find(c => c.id === id) || DAILY_CASES.find(c => c.id === id) || PAID_CASES.find(c => c.id === id) || null;
+  const casesLeft = () => CASES;
+  const isFree = c => !c.paid && !c.daily;
+  // a ruble prize of a case of the day ('RUB:5') shown as an item: a coin picture, the price in coins at today's rate
+  const RUB_IMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#7fb2ff"/><stop offset=".6" stop-color="#2f7cf6"/><stop offset="1" stop-color="#1a4fb0"/></radialGradient></defs><circle cx="50" cy="50" r="44" fill="url(#g)" stroke="#9cc3ff" stroke-width="3"/><circle cx="50" cy="50" r="35" fill="none" stroke="#ffffff55" stroke-width="2"/><path d="M42 74V27h15a12 12 0 010 24H34M34 62h24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  const moneySkin = key => {
+    const rub = Number(key.slice(4));
+    return { name: `+${rub} ₽`, key, rub, money: true, game: 'money', img: RUB_IMG, price: rub / (COIN_USD * usdRub), rarity: rub >= 15 ? 'red' : rub >= 5 ? 'fiol' : rub >= 3 ? 'blue' : 'gray' };
+  };
+  const skinOf = name => (String(name).startsWith('RUB:') ? moneySkin(name) : byName[name]);
+  // the state of a case for the current player: login | buy | ready | locked (subscriptions) | pending (prize waits for friends) | cooldown
+  const freeOf = c => (S.free && S.free[c.id]) || {};
+  const cooldownLeft = c => c.daily ? Math.max(0, FREE_COOLDOWN - (Date.now() - ((S.rewards.daily || {})[c.id] || 0)))
+    : isFree(c) ? Math.max(0, (freeOf(c).next || 0) - Date.now()) : 0;
+  const hhmm = ms => { const m = Math.max(1, Math.floor(ms / 60000)); return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`; };
   const casePrice = c => {
     if (!c.paid) return 0;
     if (c.price) return c.price;
@@ -2105,7 +2122,8 @@
   // evenly spread picks inside each price band, so a case holds the same items on every visit
   function caseItems(c) {
     if (caseCache[c.id]) return caseCache[c.id];
-    const out = [];
+    // same order as tools/build-server-data.js: ruble prizes first, then the items of the tiers
+    const out = (c.money || []).map(([r, pct]) => ({ skin: moneySkin('RUB:' + r), chance: pct }));
     const games = c.game === 'mix' ? GAMES.map(g => g.id) : [c.game];
     c.tiers.forEach(([lo, hi, n, pct]) => {
       const groups = games.map(g => {
@@ -2168,7 +2186,7 @@
 
   function subsBlock() {
     return `<div class="panel subs-panel">
-      <div class="subs-head"><b>Откройте ${CASES.length} кейса бесплатно</b><span>Выполните 2 условия — и кейсы ваши</span></div>
+      <div class="subs-head"><b>Бесплатные кейсы каждые 24 часа</b><span>Подпишитесь на 2 канала — и крутите кейсы за друзей</span></div>
       ${SUB_CHANNELS.map((c, i) => {
         const ok = S.rewards.subs[c.id];
         return `<div class="sub-row${ok ? ' done' : ''}">
@@ -2190,15 +2208,31 @@
       <img class="ca-hero${imgCls(items[0].skin)}" src="${items[0].skin.img}" alt="" draggable="false">
       <i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i>`;
   }
-  const caseState = c => (!S.user ? 'login' : c.paid ? 'buy' : c.timer ? (timerLeft() ? 'cooldown' : 'ready') : S.rewards.cases[c.id] ? 'opened' : subsOk() ? 'ready' : 'locked');
+  const caseState = c => (!S.user ? 'login' : c.paid ? 'buy'
+    : isFree(c) && freeOf(c).prize ? 'pending'
+    : cooldownLeft(c) ? 'cooldown'
+    : c.daily || subsOk() ? 'ready' : 'locked');
+  const prizeWord = c => (c.game === 'nft' ? 'Подарок' : 'Скин');
   function caseCard(c) {
     const st = caseState(c);
-    const btn = c.paid ? coinInt(casePrice(c)) : st === 'opened' ? 'Открыт' : `${st === 'locked' ? ICON.lock : ''}Бесплатно`;
-    return `<a class="case-card ${st}${c.paid ? ' paid' : ''}" href="#/case/${c.id}" style="--cc:${c.color}">
-      <span class="case-art">${caseArt(c)}${st === 'opened' ? '<span class="case-badge">Открыт</span>' : ''}</span>
+    const btn = c.paid ? coinInt(casePrice(c))
+      : st === 'pending' ? `${prizeWord(c)} ждёт`
+      : st === 'cooldown' ? `Через <span data-cd="${c.id}">${hhmm(cooldownLeft(c))}</span>`
+      : `${st === 'locked' ? ICON.lock : ''}Бесплатно`;
+    return `<a class="case-card ${st}${c.paid ? ' paid' : ''}${c.daily ? ' daily' : ''}" href="#/case/${c.id}" style="--cc:${c.color}">
+      <span class="case-art">${caseArt(c)}${c.daily ? '<span class="case-badge day">раз в 24 ч</span>' : isFree(c) ? '<span class="case-badge day">за друзей</span>' : ''}</span>
       <span class="case-foot"><b>${c.name}</b><span class="case-btn">${btn}</span></span>
     </a>`;
   }
+  // countdowns on case cards and buttons tick every 20 seconds; a case that became available re-renders the page
+  setInterval(() => {
+    let ready = false;
+    document.querySelectorAll('[data-cd]').forEach(el => {
+      const c = caseById(el.dataset.cd), left = c ? cooldownLeft(c) : 0;
+      if (!left) ready = true; else el.textContent = hhmm(left);
+    });
+    if (ready && !caseSpinning) refreshCases();
+  }, 20000);
 
   // cases page like RubUP: game switch, filter chips (search, all / free / cheap / premium, price sort), sections of the chosen game
   const CASE_CHIPS = [['all', 'Все'], ['free', 'Бесплатные'], ['cheap', 'Недорогие'], ['premium', 'Премиум']];
@@ -2208,7 +2242,9 @@
     if (!CF.game) CF.game = GAMES.some(g => g.id === U.game) ? U.game : GAMES[0].id;
     const left = casesLeft().length, game = GAMES.find(g => g.id === CF.game);
     const q = CF.q.trim().toLowerCase(), match = c => !q || c.name.toLowerCase().includes(q);
-    const free = CF.chip === 'all' || CF.chip === 'free' ? CASES.filter(c => c.game === CF.game && match(c)) : [];
+    // per game two free cases, as on RubUP: «CS-кейс» (prize for 5 friends) and «CS-кейс дня» (small prize at once)
+    const free = CF.chip === 'all' || CF.chip === 'free' ? [...CASES, ...DAILY_CASES].filter(c => c.game === CF.game && match(c)) : [];
+    const freeReady = free.filter(c => ['ready', 'locked'].includes(caseState(c))).length;
     const paid = CF.chip === 'free' ? [] : PAID_CASES.filter(c => c.game === CF.game && match(c)
       && (CF.chip !== 'cheap' || casePrice(c) <= CHEAP_MAX) && (CF.chip !== 'premium' || casePrice(c) >= PREMIUM_MIN))
       .sort((a, b) => (casePrice(a) - casePrice(b)) * (CF.sort === 'asc' ? 1 : -1));
@@ -2223,7 +2259,7 @@
         <button type="button" class="chip chip-icon" data-cchip="sort" aria-label="Сортировка по цене" title="${CF.sort === 'asc' ? 'Сначала дешёвые' : 'Сначала дорогие'}"><svg viewBox="0 0 24 24"><path d="M8 4v16M8 20l-4-4M8 20l4-4M16 20V4M16 4l-4 4M16 4l4 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${CF.sort === 'asc' ? '' : 'transform="scale(1 -1) translate(0 -24)"'}/></svg></button>
       </div>
       ${CF.search ? `<input class="text-input cases-search" id="caseSearch" placeholder="Название кейса" value="${esc(CF.q)}" maxlength="30">` : ''}
-      ${free.length ? `<div class="row-head"><h2 class="home-title">Бесплатные</h2><span class="muted">${left ? `Доступно ${left} из ${CASES.length}` : 'Все открыты'}</span></div>
+      ${free.length ? `<div class="row-head"><h2 class="home-title">Бесплатные</h2><span class="muted">${S.user ? (freeReady ? `Доступно ${freeReady} из ${free.length}` : 'Каждые 24 часа') : ''}</span></div>
         <div class="cases-grid">${free.map(caseCard).join('')}</div>` : ''}
       ${free.length && !S.user ? `<div class="panel cases-login"><p>Войдите, чтобы забрать бесплатные кейсы</p><button class="btn btn-steam" data-login>${ICON.steam}<span>Войти</span></button></div>` : ''}
       ${paid.length ? `<div class="row-head"><h2 class="home-title">${CF.chip === 'premium' ? 'Премиум' : CF.chip === 'cheap' ? 'Недорогие' : 'Кейсы ' + game.name}</h2><span class="muted">${paid.length}</span></div>
@@ -2269,7 +2305,8 @@
     const st = caseState(c);
     if (st === 'login') return `<button class="btn btn-accent case-open" data-login>Войти и открыть</button>`;
     if (st === 'locked') return subsBlock();
-    if (st === 'cooldown') return `<button class="btn btn-accent case-open" disabled>Следующий через&nbsp;<span data-timer-left>${mmss(timerLeft())}</span></button>
+    if (st === 'pending') return `<p class="case-wait">Сначала забери ${c.game === 'nft' ? 'подарок' : 'скин'} за друзей</p>`;
+    if (st === 'cooldown') return `<button class="btn btn-accent case-open" disabled>Следующий через&nbsp;<span data-cd="${c.id}">${hhmm(cooldownLeft(c))}</span></button>
         <a class="btn btn-ghost case-next" href="#/upgrade">К апгрейду</a>`;
     if (st === 'buy') {
       const n = countFor(c), price = casePrice(c) * n;
@@ -2279,34 +2316,146 @@
         : `<button class="btn btn-accent case-open" disabled>Не хватает ${coin(price - S.balance, 18)}</button>
           <a class="btn btn-ghost case-next" href="#/rewards">Получить бонусы</a>`);
     }
-    if (st === 'opened') {
-      const next = casesLeft()[0];
-      return `<button class="btn btn-accent case-open" disabled>Кейс уже открыт</button>
-        ${next ? `<a class="btn btn-ghost case-next" href="#/case/${next.id}">Открыть ${next.name}</a>` : `<a class="btn btn-ghost case-next" href="#/upgrade?game=${c.game}">К апгрейду</a>`}`;
-    }
     return `<button class="btn btn-accent case-open" data-open-case="${c.id}">Открыть бесплатно</button>`;
   }
+
+  // ---------- free case prize: waits for 5 friends (like RubUP) ----------
+  // a friend counts when they came by the player's link, have a @username and spun a free case after the prize was won
+  const prizeNoun = c => (c.game === 'nft' ? 'подарок' : 'скин');
+  function prizeBlock(c) {
+    const f = freeOf(c);
+    if (!f.prize) return '';
+    const s = skinOf(f.prize), info = FREEC[c.id] || { friends: 0, need: FREE_FRIENDS }, have = Math.min(info.friends, info.need);
+    const done = have >= info.need, noun = prizeNoun(c);
+    return `<div class="panel prize-panel${done ? ' done' : ''}" id="prizePanel">
+      <div class="pp-top">
+        <span class="pp-img rarity-${s ? s.rarity : 'gray'}">${s ? `<img class="${imgCls(s).trim()}" src="${s.img}" alt="">` : ''}</span>
+        <span class="pp-text"><small>Твой ${noun}</small><b>${esc(f.prize)}</b><span class="pp-price">${s ? money(s.price) : ''}</span></span>
+      </div>
+      <div class="pp-count"><span>Засчитано друзей</span><b>${have} из ${info.need}</b></div>
+      <div class="pp-bar">${Array.from({ length: info.need }, (_, i) => `<i${i < have ? ' class="on"' : ''}></i>`).join('')}</div>
+      ${done
+        ? `<p class="pp-note">Все друзья засчитаны — ${noun} твой! Забери его в инвентарь или продай.</p>
+          <div class="pp-btns"><button class="btn btn-accent" data-free-claim="${c.id}" data-mode="inv">Забрать в инвентарь</button>
+          <button class="btn btn-ghost" data-free-claim="${c.id}" data-mode="sell">Продать за ${s ? money(s.price) : ''}</button></div>`
+        : `<p class="pp-note">Скинь ссылку ${info.need} друзьям. ${noun[0].toUpperCase() + noun.slice(1)} твой, как только каждый из них крутанёт бесплатный кейс.</p>
+          <div class="pp-btns"><button class="btn btn-accent" data-free-share="${c.id}">Позвать друзей</button>
+          <button class="btn btn-ghost" data-free-copy="${c.id}">Скопировать ссылку</button></div>`}
+    </div>`;
+  }
+  function freeHelp(c) {
+    const noun = prizeNoun(c), what = c.game === 'nft' ? 'NFT-подарок' : `скин ${c.game === 'cs2' ? 'CS2' : 'Rust'}`;
+    const steps = c.daily ? [
+      `Крути кейс бесплатно раз в 24 часа.`,
+      `Чаще всего выпадает +1 ₽, +3 ₽, +5 ₽ или +15 ₽ — деньги сразу идут на баланс.`,
+      `Иногда выпадает ${what} до 100 ₽ — он сразу попадает в инвентарь.`,
+      `Новый спин откроется через 24 часа после прошлого.`
+    ] : [
+      `Крути кейс бесплатно: каждый раз выпадает ${what}.`,
+      `Отправь свою ссылку ${FREE_FRIENDS} друзьям. ${noun[0].toUpperCase() + noun.slice(1)} откроется, когда каждый из них зайдёт по ней и крутанёт бесплатный кейс.`,
+      `Засчитываются только настоящие аккаунты Telegram с ником (@username). Твинки и друзья, которые крутили кейс раньше, не считаются.`,
+      `Новый спин откроется через 24 часа после того, как заберёшь или продашь прошлый ${noun}.`
+    ];
+    modal(c.name, `<div class="free-help"><b>${c.daily ? 'Бесплатный приз каждый день' : `Бесплатный ${c.game === 'nft' ? 'NFT' : noun} за друзей`}</b>
+      <ol>${steps.map(t => `<li>${t}</li>`).join('')}</ol>
+      <button class="btn btn-accent" id="fhOk">Понятно</button></div>`, m => { $('#fhOk', m).onclick = closeModal; });
+  }
+  // «Позвать друзей»: Telegram's share dialog with the advert card (picture, text, «Крутить бесплатно» button);
+  // without it (old Telegram, outside the app) — a plain share link with the same text
+  function shareText(c, prize) {
+    const s = skinOf(prize), noun = prizeNoun(c), caseName = { rust: 'Rust-кейс', cs2: 'CS-кейс', nft: 'NFT-кейс' }[c.game];
+    return `Мне выпал ${noun} ${prize}${s ? ` за ${money(s.price)}` : ''} с бесплатного ${caseName.replace(/кейс$/, 'кейса')} в RUST UP 🔥\n\nЗаходи и крути бесплатный ${caseName} в RUST UP — так ты поможешь мне забрать ${noun} 🎁`;
+  }
+  function freeShare(c, btn) {
+    const f = freeOf(c);
+    if (!f.prize) return;
+    const fallback = link => {
+      const url = `https://t.me/share/url?url=${encodeURIComponent(link || (REF && REF.link) || '')}&text=${encodeURIComponent(shareText(c, f.prize))}`;
+      if (TG && tgVer('6.1')) TG.openTelegramLink(url); else window.open(url, '_blank', 'noopener');
+    };
+    if (!(TG && tgVer('8.0') && TG.shareMessage)) return fallback();
+    btn.disabled = true;
+    api('share', { id: c.id }).then(d => {
+      btn.disabled = false;
+      if (!d.ok) return fallback(d.link);
+      TG.shareMessage(d.id, sent => { if (sent) { haptic('success'); toast('Отправлено! Ждём, когда друг крутанёт кейс', 'success'); } });
+    });
+  }
+  function freeCopy(c) {
+    const f = freeOf(c);
+    if (!REF) { refSync(); return toast('Ссылка ещё загружается, попробуйте через секунду', 'error'); }
+    const text = shareText(c, f.prize || '') + '\n' + REF.link;
+    const done = () => { toast('Ссылка и текст скопированы — отправь друзьям', 'success'); haptic('light'); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => toast('Скопируйте ссылку: ' + REF.link, 'error'));
+    else toast('Скопируйте ссылку: ' + REF.link, 'error');
+  }
+  function freeClaim(c, mode, btn) {
+    btn.disabled = true;
+    api('freeclaim', { id: c.id, mode: mode === 'sell' ? 'sell' : 'inv' }).then(d => {
+      if (!d.ok) {
+        btn.disabled = false;
+        if (d.error === 'friends') { toast(`Засчитано ${d.friends} из ${FREE_FRIENDS} друзей`, 'error'); FREEC[c.id] = { friends: d.friends, need: FREE_FRIENDS }; return refreshCases(); }
+        return netToast(d);
+      }
+      sfxWin(); haptic('success'); bumpBalance();
+      toast(d.sold ? `Продано за ${coin(d.sold)}` : `${d.prize} — в инвентаре!`, 'success');
+      reportDrops();
+      refreshCases();
+    });
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-free-help],[data-free-share],[data-free-copy],[data-free-claim]');
+    if (!t) return;
+    const d = t.dataset, c = caseById(d.freeHelp || d.freeShare || d.freeCopy || d.freeClaim);
+    if (!c) return;
+    if (d.freeHelp) freeHelp(c);
+    else if (d.freeShare) freeShare(c, t);
+    else if (d.freeCopy) freeCopy(c);
+    else freeClaim(c, d.mode, t);
+  });
+  // friends are counted on the server: refresh the counter when the player comes back to the app
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden || !gameReady || !curPath().startsWith('/case') || !Object.values(S.free || {}).some(f => f && f.prize)) return;
+    api('load').then(() => refreshCases());
+  });
+
   function casePage(id) {
     const c = caseById(id);
     if (!c) { location.hash = '#/cases'; return; }
     const items = caseItems(c);
     const gameName = (GAMES.find(g => g.id === c.game) || GAMES[0]).name;
+    const pending = isFree(c) && freeOf(c).prize;
+    if (!REF && isFree(c)) refSync();
     $('#page').innerHTML = `<div class="page case-page" style="--cc:${c.color}">
       <a class="back-link" href="#/cases">${ICON.left}<span>Все кейсы</span></a>
       <div class="case-hero">
         <span class="case-art big">${caseArt(c)}</span>
         <div class="case-hero-text">${c.paid
           ? `<span class="case-kicker paid">Кейс ${gameName}</span><h1>${c.name}</h1><span class="muted">${items.length} предметов · ${coinInt(casePrice(c))}</span>`
-          : c.timer
-          ? `<span class="case-kicker">Бесплатно каждые 15 минут</span><h1>${c.name}</h1><span class="muted">${items.length} предметов · Rust, CS2 и NFT · до ${coinInt(500)}</span>`
-          : `<span class="case-kicker">Бесплатный кейс</span><h1>${c.name}</h1><span class="muted">${items.length} предметов · один раз на аккаунт</span>`}</div>
+          : c.daily
+          ? `<span class="case-kicker">Бесплатно раз в 24 часа</span><h1>${c.name}</h1><span class="muted">+1 ₽ … +15 ₽ на баланс или ${prizeNoun(c)} до 100 ₽</span>`
+          : `<span class="case-kicker">Бесплатно за ${FREE_FRIENDS} друзей</span><h1>${c.name}</h1><span class="muted">${items.length} предметов · раз в 24 часа</span>`}</div>
+        ${c.paid ? '' : `<button type="button" class="pp-help hero-help" data-free-help="${c.id}" aria-label="Как это работает">?</button>`}
       </div>
-      <div class="roulettes" id="roulettes">${roulettes(c, countFor(c))}</div>
+      <div class="roulettes" id="roulettes">${pending ? prizeRoulette(c) : roulettes(c, countFor(c))}</div>
       <div class="case-actions" id="caseActions">${caseActions(c)}</div>
-      <div class="row-head"><h2 class="home-title">Содержимое кейса</h2></div>
+      ${isFree(c) ? prizeBlock(c) : ''}
+      <div class="row-head"><h2 class="home-title">Что может выпасть</h2></div>
       <div class="case-items">${items.map(i => `<div class="case-item">${card(i.skin, { static: true })}<span class="chance-tag">${i.chance < 1 ? i.chance.toFixed(2) : i.chance.toFixed(1)}%</span></div>`).join('')}</div>
     </div>`;
+    const hold = $('.prize-hold');
+    if (hold) {
+      const tr = hold.firstElementChild, cell = tr.children[7];
+      tr.style.transform = `translateX(${hold.clientWidth / 2 - cell.offsetLeft - cell.offsetWidth / 2}px)`;
+    }
     if (caseState(c) === 'locked') autoCheckSubs();
+  }
+  // a waiting prize stays in the middle of the roulette, between two random items
+  function prizeRoulette(c) {
+    const s = skinOf(freeOf(c).prize);
+    if (!s) return roulettes(c, 1);
+    const cells = Array.from({ length: 14 }, (_, i) => (i === 7 ? s : rollCase(c)));
+    return `<div class="roulette prize-hold"><div class="roulette-track">${cells.map((x, i) => rollCell(x).replace('roll-cell', 'roll-cell' + (i === 7 ? ' win' : ''))).join('')}</div><span class="roulette-marker"></span></div>`;
   }
 
   function openCase(id, btn) {
@@ -2317,8 +2466,10 @@
       if (S.balance < price) return toast(`Недостаточно средств: нужно ${coin(price)}`, 'error');
       return spinCase(c, n);
     }
-    if (c.timer) return timerLeft() ? toast(`Следующий кейс через ${mmss(timerLeft())}`, 'error') : spinCase(c);
-    if (S.rewards.cases[c.id]) return;
+    const st = caseState(c);
+    if (st === 'cooldown') return toast(`Следующий спин через ${hhmm(cooldownLeft(c))}`, 'error');
+    if (st === 'pending' || st === 'locked') return;
+    if (c.daily) return spinCase(c);
     // the server checks both subscriptions itself before opening a free case
     btn.disabled = true; btn.textContent = 'Проверяем подписку…';
     spinCase(c, 1, () => { btn.disabled = false; btn.textContent = 'Открыть бесплатно'; });
@@ -2333,14 +2484,17 @@
       if (!d.ok) {
         caseSpinning = false;
         if (onFail) onFail();
-        if (d.error === 'subs') toast('Сначала подпишитесь на оба канала', 'error'); else netToast(d);
+        if (d.error === 'subs') toast('Сначала подпишитесь на оба канала', 'error');
+        else if (d.error === 'cooldown') toast('Кейс уже открыт сегодня — приходи через 24 часа', 'error');
+        else if (d.error === 'pending') toast('Сначала забери прошлый приз за друзей', 'error');
+        else netToast(d);
         return refreshCases();
       }
       spinRoulettes(c, n, d);
     });
   }
   function spinRoulettes(c, n, d) {
-    const wins = d.wins.map(name => byName[name]), uids = d.uids;
+    const wins = d.wins.map(skinOf), uids = d.uids || [];
     // until the strips stop, the header shows the price as paid
     if (c.paid) { S.balance = Math.round((S.balance - casePrice(c) * n) * 100) / 100; renderHeader(); }
     $('#caseActions').innerHTML = `<button class="btn btn-accent case-open" disabled>Открываем${n > 1 ? ` ${n} шт.` : ''}…</button>`;
@@ -2381,14 +2535,41 @@
       // paid cases that paid out less than their price count as a loss for cashback (counted by the server)
       if (d.cashback) toast(`Кешбэк +${coin(d.cashback)} — забрать в «Бонусах»`, 'success');
       reportDrops();
-      if (curPath() === '/case/' + c.id) $('#caseActions').innerHTML = caseActions(c);
-      showCaseWin(c, wins, uids);
+      if (curPath() === '/case/' + c.id) {
+        $('#caseActions').innerHTML = caseActions(c);
+        if (d.pending) $('#caseActions').insertAdjacentHTML('afterend', prizeBlock(c));
+      }
+      if (d.pending) showPrizeWait(c, wins[0]);
+      else if (d.rub) showRubWin(c, wins[0]);
+      else showCaseWin(c, wins, uids);
     }, dur + 30);
+  }
+  // free case: the prize is shown and kept aside until the friends come
+  function showPrizeWait(c, s) {
+    const noun = prizeNoun(c);
+    modal(`Тебе выпал ${noun}!`, `
+      <div class="case-win">${card(s, { static: true })}</div>
+      <p class="note" style="text-align:center">Чтобы забрать ${noun} в инвентарь или продать, позови <b>${FREE_FRIENDS} друзей</b>: каждый должен зайти по твоей ссылке и крутануть бесплатный кейс.</p>
+      <button class="btn btn-accent" id="pwShare">Позвать друзей</button>
+      <button class="btn btn-ghost" id="pwCopy">Скопировать ссылку</button>`,
+    m => {
+      $('#pwShare', m).onclick = e => { closeModal(); freeShare(c, e.currentTarget); };
+      $('#pwCopy', m).onclick = () => freeCopy(c);
+    });
+  }
+  // case of the day: rubles went to the balance at once
+  function showRubWin(c, s) {
+    bumpBalance();
+    modal('Ваш выигрыш', `
+      <div class="case-win">${card(s, { static: true })}</div>
+      <p class="note" style="text-align:center"><b>+${s.rub} ₽</b> уже на балансе. Следующий спин — через 24 часа.</p>
+      <div class="row"><a class="btn btn-accent" href="#/upgrade" id="rwUp" style="flex:1">В апгрейд</a><button class="btn btn-ghost" id="rwOk" style="flex:1">Отлично</button></div>`,
+    m => { $('#rwOk', m).onclick = closeModal; $('#rwUp', m).addEventListener('click', closeModal); });
   }
 
   function showCaseWin(c, wins, uids) {
     const n = wins.length, total = sum(wins.map(w => w.price));
-    const next = c.paid ? null : casesLeft()[0];
+    const next = null;
     const again = c.paid && S.balance >= casePrice(c) * n;
     const owned = () => uids.filter(u => invItem(u));
     modal(n > 1 ? `Ваш выигрыш · ${n} шт.` : 'Ваш выигрыш', `
