@@ -24,9 +24,9 @@
     const skins = Object.values(A().byName).filter(s => s.game === 'cs2' && s.price > 300 && s.price < 3000).slice(0, 3);
     const cases = A().PAID_CASES.slice(0, 2);
     return [
-      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', share: 0.08, badge: 'NEW', cover: 'crash', art: ROCKET },
-      { href: '#/contract', cls: 'gc-contract', title: 'Контракты', share: 0.05, cover: 'contract', art: skins.map((s, i) => `<img class="gc-mini m${i}" src="${s.img}" alt="" draggable="false">`).join('') },
-      { href: '#/battles', cls: 'gc-battle', title: 'Кейс-баттл', share: 0.06, badge: 'PvP', cover: 'battle', art: `${cases.map((c, i) => { const s = A().caseItems(c)[0].skin; return `<img class="gc-bt b${i}${A().imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('')}<b class="gc-vs">VS</b>` }
+      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', on: 'crash', badge: 'NEW', cover: 'crash', art: ROCKET },
+      { href: '#/contract', cls: 'gc-contract', title: 'Контракты', on: 'contract', cover: 'contract', art: skins.map((s, i) => `<img class="gc-mini m${i}" src="${s.img}" alt="" draggable="false">`).join('') },
+      { href: '#/battles', cls: 'gc-battle', title: 'Кейс-баттл', on: 'battle', badge: 'PvP', cover: 'battle', art: `${cases.map((c, i) => { const s = A().caseItems(c)[0].skin; return `<img class="gc-bt b${i}${A().imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('')}<b class="gc-vs">VS</b>` }
     ];
   }
 

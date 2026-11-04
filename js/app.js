@@ -1081,7 +1081,6 @@
 
   // ---------- live feed: real wins of all players, Rust + CS2 + NFT in one strip (server: /api/drop, /api/feed) ----------
   const FEED_MS = 6000;           // poll period; the server caches the answer for a few seconds
-  const ONLINE_MULT = 4;          // owner's choice: the site shows 4× the players counted by the server (admin /stats stays exact)
   const feed = [];
   const seenDrops = new Set();    // server ids already in the strip (our own wins are shown before the server has them)
   let best = null;
@@ -1119,18 +1118,51 @@
     setTimeout(() => loadFeed(false), 1500);
     setTimeout(() => loadFeed(false), 5500);
   }
-  let online = 0;
+  // ---------- shown online (owner's decision, 2026-11-05) ----------
+  // Each game shows players by the Moscow time of day: morning 30–100, lunch 50–160, evening 200–430, the night going down
+  // from the evening to the morning; the upgraders highest. It is a smooth function of the time, so everybody sees the same
+  // numbers. «Ракетка» and «Кейс-баттл» show only the real players (server: /api/feed games). Header: all games + real, 400–3000.
+  let online = 0, realOnline = 0, realGames = {};
+  const GAME_POS = { rust: [0.72, 1], cs2: [0.62, 0.95], nft: [0.55, 0.9], cases: [0.3, 0.68], contract: [0.05, 0.42] };
+  const REAL_GAMES = ['crash', 'battle'];
+  function onlineBand(h) {
+    const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    const MORNING = [30, 100], LUNCH = [50, 160], EVENING = [200, 430];
+    if (h < 7) return mix(EVENING, MORNING, Math.min(1, h / 4));   // the night: down to the morning level by 4:00
+    if (h < 12) return MORNING;
+    if (h < 17) return mix(MORNING, LUNCH, Math.min(1, (h - 12) / 0.66));
+    return mix(LUNCH, EVENING, Math.min(1, (h - 17) / 0.66));
+  }
+  function gameOnline(key, now = Date.now()) {
+    if (REAL_GAMES.includes(key)) return realGames[key] || 0;
+    const pos = GAME_POS[key];
+    if (!pos) return 0;
+    const msk = new Date(now + 3 * 3600e3), h = msk.getUTCHours() + msk.getUTCMinutes() / 60;
+    const [lo, hi] = onlineBand(h);
+    const t = now / 60000, ph = Object.keys(GAME_POS).indexOf(key) * 1.7;
+    const wave = 0.5 + 0.3 * Math.sin(t / 23 + ph) + 0.2 * Math.sin(t / 6.1 + ph * 2.3);
+    return Math.round(lo + (hi - lo) * (pos[0] + (pos[1] - pos[0]) * Math.max(0, Math.min(1, wave))));
+  }
+  function totalOnline() {
+    const fake = Object.keys(GAME_POS).reduce((a, k) => a + gameOnline(k), 0);
+    return Math.max(400, Math.min(3000, Math.round(fake * 1.6) + realOnline));
+  }
+  function paintOnline() {
+    online = totalOnline();
+    $('#statOnline').textContent = fmtInt(online);
+    document.querySelectorAll('.gc-online[data-on]').forEach(el => {
+      const n = gameOnline(el.dataset.on);
+      el.hidden = !n;
+      el.lastChild.textContent = fmtInt(n);
+    });
+  }
+  setInterval(paintOnline, 20000);
   function loadFeed(first) {
     if (!window.RUSTUP_API) return renderFeedEmpty();
     fetch(window.RUSTUP_API.replace(/\/$/, '') + '/api/feed').then(r => r.json()).then(d => {
       if (!d || !d.ok) return;
-      online = (d.online || 0) * ONLINE_MULT;
-      $('#statOnline').textContent = fmtInt(Math.max(1, online));
-      document.querySelectorAll('.gc-online[data-share]').forEach(el => {
-        const n = Math.round(online * el.dataset.share);
-        el.hidden = !n;
-        el.lastChild.textContent = fmtInt(n);
-      });
+      realOnline = d.online || 0; realGames = d.games || {};
+      paintOnline();
       const fresh = d.drops.filter(r => !seenDrops.has(r.id)).reverse();   // oldest first, so the newest ends up on the left
       fresh.forEach(r => seenDrops.add(r.id));
       const items = fresh.map(fromServer).filter(Boolean);
@@ -2703,19 +2735,17 @@
   }
   function homePage() {
     const slides = heroSlides();
-    // the real online split between the tiles by a fixed share (the server counts players, not what they are playing)
-    const playing = share => fmtInt(Math.round(online * share));
     const games = [
       // upgrade tiles: item on a pedestal with golden chevrons (assets/games, made by tools/build-game-art.ps1)
-      { href: '#/upgrade?game=rust', cls: 'gc-rust', title: 'Апгрейд Rust', share: 0.27, cover: 'upgrade-rust', art: `<img class="gc-art" src="assets/games/upgrade-rust.png" alt="" draggable="false">` },
-      { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', share: 0.18, cover: 'upgrade-cs2', art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
-      { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', share: 0.12, cover: 'upgrade-nft', art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
-      { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', share: 0.21, badge: 'FREE', cover: 'cases', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
+      { href: '#/upgrade?game=rust', cls: 'gc-rust', title: 'Апгрейд Rust', on: 'rust', cover: 'upgrade-rust', art: `<img class="gc-art" src="assets/games/upgrade-rust.png" alt="" draggable="false">` },
+      { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', on: 'cs2', cover: 'upgrade-cs2', art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
+      { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', on: 'nft', cover: 'upgrade-nft', art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
+      { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', on: 'cases', badge: 'FREE', cover: 'cases', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
       // game modes (js/modes.js)
       ...window.RUSTUP_MODES.tiles(),
       // Бонусы and Друзья are not games: no «playing» counter on them
-      { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', share: 0, cover: 'bonus', art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
-      { href: '#/friends', cls: 'gc-friends', title: 'Друзья', share: 0, badge: 'NFT', cover: 'friends', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
+      { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', cover: 'bonus', art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
+      { href: '#/friends', cls: 'gc-friends', title: 'Друзья', badge: 'NFT', cover: 'friends', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
     ];
     $('#page').innerHTML = `<div class="page home">
       <div class="hero">
@@ -2725,7 +2755,7 @@
       <div class="row-head"><h2 class="home-title">Игры</h2></div>
       <div class="games-grid">${games.map(g => `<a class="game-card ${g.cls}${g.cover ? ' covered' : ''}" href="${g.href}">
         ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.jpg?v=2" alt="" draggable="false">` : g.art}
-        ${g.share ? `<span class="gc-online" title="Сейчас играют" data-share="${g.share}"${Math.round(online * g.share) ? '' : ' hidden'}><i class="dot-online"></i>${playing(g.share)}</span>` : ''}
+        ${g.on ? `<span class="gc-online" title="Сейчас играют" data-on="${g.on}"${gameOnline(g.on) ? '' : ' hidden'}><i class="dot-online"></i>${fmtInt(gameOnline(g.on))}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
       <a class="top-banner w-glass" href="#/top"><span class="top-banner-ico">🏆</span><span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
