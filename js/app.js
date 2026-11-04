@@ -1108,8 +1108,8 @@
   // from the evening to the morning; the upgraders highest. It is a smooth function of the time, so everybody sees the same
   // numbers. «Ракетка» and «Кейс-баттл» show only the real players (server: /api/feed games). Header: all games + real, 400–3000.
   let online = 0, realOnline = 0, realGames = {};
-  const GAME_POS = { rust: [0.72, 1], cs2: [0.62, 0.95], nft: [0.55, 0.9], cases: [0.3, 0.68], contract: [0.05, 0.42] };
-  const REAL_GAMES = ['crash', 'battle'];
+  const GAME_POS = { rust: [0.72, 1], cs2: [0.62, 0.95], nft: [0.55, 0.9], cases: [0.3, 0.68], plinko: [0.2, 0.55], mines: [0.12, 0.48], contract: [0.05, 0.42] };
+  const REAL_GAMES = ['crash', 'battle', 'wheel'];
   function onlineBand(h) {
     const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
     const MORNING = [30, 100], LUNCH = [50, 160], EVENING = [200, 430];
@@ -2739,7 +2739,7 @@
       </div>
       <div class="row-head"><h2 class="home-title">Игры</h2></div>
       <div class="games-grid">${games.map(g => `<a class="game-card ${g.cls}${g.cover ? ' covered' : ''}" href="${g.href}">
-        ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.jpg?v=2" alt="" draggable="false">` : g.art}
+        ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.jpg?v=3" alt="" draggable="false">` : g.art}
         ${g.on ? `<span class="gc-online" title="Сейчас играют" data-on="${g.on}"${gameOnline(g.on) ? '' : ' hidden'}><i class="dot-online"></i>${fmtInt(gameOnline(g.on))}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
