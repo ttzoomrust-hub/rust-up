@@ -240,7 +240,8 @@
     }).catch(() => { /* offline: next tick */ });
   }
   // ---------- referrals (server: bot/worker.js /api/ref) ----------
-  let REF = null;          // last answer from /api/ref: { link, invited, active, earned, refBonus, welcomeBonus }
+  let REF = null;          // last answer from /api/ref: { link, invited, active, earned, income, refPercent, welcomeBonus }
+  const REF_PCT = 10;      // the inviter gets 10% of every deposit of the friend (bot/worker.js REF_PERCENT)
   let refBusy = false;
   const refAvailable = () => !!(TG && window.RUSTUP_API);
   function refSync() {
@@ -253,8 +254,9 @@
       if (!d.ok) return;
       REF = d;
       // the server already put them on the account balance: pull the new state
-      if (d.credited > 0 || d.granted > 0) api('load').then(() => { bumpBalance(); refreshUpgrade(); });
-      if (d.credited > 0) { sfxWin(); toast(`Награда за друзей: ${coinInt(d.credited)}`, 'success'); }
+      if (d.income > 0) { sfxWin(); toast(`${REF_PCT}% с пополнений друзей: +${coinInt(d.income)}`, 'success'); }
+      if (d.credited > 0 || d.granted > 0 || d.income > 0) api('load').then(() => { bumpBalance(); refreshUpgrade(); });
+      if (d.credited > 0) { sfxWin(); toast(`Бонус за вход по ссылке друга: ${coinInt(d.credited)}`, 'success'); }
       if (d.granted > 0) { sfxWin(); haptic('success'); toast(`Начислено администрацией: ${coinInt(d.granted)}${d.grantNote ? ` — ${esc(d.grantNote)}` : ''}`, 'success'); }
       if ($('#refPanel')) renderRefPanel();
       syncRoadWithdrawals();
@@ -263,7 +265,7 @@
   }
   function shareRef() {
     if (!REF) return;
-    const text = `Залетай в RUST UP — апгрейд скинов Rust, CS2 и NFT-подарков! По моей ссылке +${moneyInt(REF.welcomeBonus)} на старт 🎁`;
+    const text = `Залетай в RUST UP — апгрейд скинов Rust, CS2 и NFT-подарков! По моей ссылке +${moneyInt(REF.welcomeBonus)} на старт, а ещё бесплатные кейсы каждый день 🎁`;
     const url = `https://t.me/share/url?url=${encodeURIComponent(REF.link)}&text=${encodeURIComponent(text)}`;
     if (TG && tgVer('6.1')) TG.openTelegramLink(url); else window.open(url, '_blank', 'noopener');
   }
@@ -278,15 +280,15 @@
     if (!box) return;
     const bot = window.RUSTUP_BOT;
     if (!refAvailable()) {
-      box.innerHTML = `<div class="ref-head"><h4>Пригласи друзей</h4><span class="ref-bonus">${coinInt(5000)} за друга</span></div>
+      box.innerHTML = `<div class="ref-head"><h4>Пригласи друзей</h4><span class="ref-bonus">${REF_PCT}% с пополнений</span></div>
         <p class="muted">Реферальная ссылка работает в Telegram-боте. Откройте игру через бота — там будет ваша личная ссылка.</p>
         ${bot ? `<a class="btn btn-tg" href="https://t.me/${esc(bot)}" target="_blank" rel="noopener">${ICON.tg}<span>Открыть @${esc(bot)}</span></a>` : ''}`;
       return;
     }
     if (!REF) { box.innerHTML = `<div class="ref-head"><h4>Пригласи друзей</h4></div><p class="muted">Загрузка…</p>`; return; }
     box.innerHTML = `
-      <div class="ref-head"><h4>Пригласи друзей</h4><span class="ref-bonus">${coinInt(REF.refBonus)} за друга</span></div>
-      <p class="muted">Друг получает ${coinInt(REF.welcomeBonus)} на старт, а вы — ${coinInt(REF.refBonus)}, как только он зайдёт в игру. Награды начисляются сами.</p>
+      <div class="ref-head"><h4>Пригласи друзей</h4><span class="ref-bonus">${REF_PCT}% с пополнений</span></div>
+      <p class="muted">Друг получает ${coinInt(REF.welcomeBonus)} на старт, а вы — ${REF_PCT}% с каждого его пополнения баланса, навсегда. Деньги начисляются сами.</p>
       <div class="ref-link"><input id="refLink" class="text-input mono" readonly value="${esc(REF.link)}"><button class="btn btn-ghost" data-ref="copy">Копировать</button></div>
       <button class="btn btn-tg" data-ref="share" style="height:44px">${ICON.tg}<span>Отправить друзьям</span></button>
       <div class="ref-stats">
@@ -373,15 +375,15 @@
   }
   function friendsPage() {
     const nfts = ROAD_ITEMS.filter(r => r.skin.img.includes('assets/nft/')).slice(-3).reverse().map(r => r.skin);
-    const refBonus = REF ? REF.refBonus : 5000, welcome = REF ? REF.welcomeBonus : 2500;
+    const welcome = REF ? REF.welcomeBonus : 25 / (COIN_USD * usdRub);   // 25 ₽ for the invited friend
     const steps = [
       [ICON.tg, 'Отправь ссылку', 'Своя ссылка — ниже. Скинь её в чаты, сторис или под ролики'],
       [ICON.gift, `Друг получает ${coinInt(welcome)}`, 'Сразу, как только зайдёт в игру по твоей ссылке'],
-      [ICON.coin, `Тебе ${coinInt(refBonus)} и шаг по дороге`, `За каждого друга в игре. ${ROAD.length} наград — до РЕАЛЬНЫХ NFT`]];
+      [ICON.coin, `Тебе ${REF_PCT}% с его пополнений`, `С каждого пополнения друга — навсегда. И шаг по дороге: ${ROAD.length} наград до РЕАЛЬНЫХ NFT`]];
     $('#page').innerHTML = `<div class="page friends-page">
       <button class="hero-slide hs-friends" type="button" data-ref-invite>
         <span class="hero-text"><span class="hero-kicker real">РЕАЛЬНЫЕ NFT</span><b class="hero-title">Зови друзей —<br>забирай NFT</b>
-          <span class="hero-sub">${coinInt(refBonus)} за каждого друга и ${ROAD.length} наград на дороге</span><span class="hero-btn">Пригласить ${ICON.right}</span></span>
+          <span class="hero-sub">${REF_PCT}% с пополнений друзей и ${ROAD.length} наград на дороге</span><span class="hero-btn">Пригласить ${ICON.right}</span></span>
         <span class="hero-art">${nfts.map((s, i) => `<img class="hr-${i} nft" src="${s.img}" alt="" draggable="false">`).join('')}</span>
       </button>
       <div class="row-head"><h2 class="home-title">Как это работает</h2></div>
@@ -419,7 +421,7 @@
       <h3 class="earn-sub">Как получить ещё</h3>
       <a class="earn-offer earn-friend" href="#/friends">
         <span class="earn-ico">${FRIEND_ICO}</span><b>Пригласить друга</b>
-        <span class="earn-amount">+<b>${coinInt(5000)}</b></span>
+        <span class="earn-amount"><b>${REF_PCT}%</b> с пополнений</span>
       </a>
     </div>`;
   }

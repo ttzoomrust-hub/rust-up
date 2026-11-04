@@ -15,7 +15,7 @@
     const m = Math.round((Date.now() - t) / 60000);
     return m < 2 ? 'сейчас в игре' : m < 60 ? `${m} мин назад` : m < 1440 ? `${Math.round(m / 60)} ч назад` : new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
-  const ACT = { give: ['Выдача', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'] };
+  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'] };
 
   function toast(text, kind = '') {
     const li = document.createElement('li');
@@ -125,6 +125,7 @@
         <h3>Баланс</h3>
         <div class="row2"><input id="aRub" inputmode="decimal" placeholder="Сумма, ₽"><input id="aNote" placeholder="Комментарий (виден игроку)" maxlength="100"></div>
         <div class="row2"><button class="btn good" data-adj="1">+ Выдать</button><button class="btn ghost" data-adj="-1">− Списать</button></div>
+        <button class="btn good dep-btn" data-adj="dep">💳 Пополнение (+10% пригласившему)</button>
         ${a ? '' : '<p class="muted">Игрок ещё не заходил в новую версию: выдача дойдёт, когда он откроет игру; списывать пока нечего.</p>'}
       </div>
       <button class="btn ${u.banned ? 'good' : 'danger'} wide" data-ban="${u.banned ? 0 : 1}">${u.banned ? 'Разблокировать' : 'Заблокировать'}</button>
@@ -135,14 +136,17 @@
       ${log.length ? `<h3>Действия админов</h3><div class="glass list">${log.map(logRow).join('')}</div>` : ''}`;
   }
   function closeSheet() { $('#modal').classList.remove('open'); $('#modal').innerHTML = ''; CUR = null; }
+  // sign: 1 give, -1 take, 'dep' — a deposit of the player (10% of it goes to the friend who invited them)
   function adjust(sign) {
+    const deposit = sign === 'dep';
+    if (deposit) sign = 1;
     const v = Number(($('#aRub').value || '').replace(',', '.').replace(/\s/g, ''));
     if (!(v > 0)) return toast('Укажите сумму в рублях', 'error');
     const note = $('#aNote').value.trim();
-    if (!confirm(`${sign > 0 ? 'Выдать' : 'Списать'} ${int(v)} ₽ игроку ${CUR.user.nick || CUR.user.name}?`)) return;
-    api('adjust', { id: CUR.user.id, rub: sign * v, note }).then(d => {
+    if (!confirm(`${deposit ? 'Зачислить пополнение' : sign > 0 ? 'Выдать' : 'Списать'} ${int(v)} ₽ игроку ${CUR.user.nick || CUR.user.name}?${deposit && CUR.user.ref_by ? `\n10% (${int(v / 10)} ₽) получит ${CUR.user.ref_by.name}.` : ''}`)) return;
+    api('adjust', { id: CUR.user.id, rub: sign * v, note, deposit: deposit ? 1 : 0 }).then(d => {
       if (!d.ok) return toast({ funds: 'На балансе меньше этой суммы', noacc: 'У игрока ещё нет аккаунта', amount: 'Неверная сумма' }[d.error] || 'Не удалось', 'error');
-      toast(sign > 0 ? `Выдано ${int(v)} ₽` : `Списано ${int(v)} ₽`, 'success');
+      toast(deposit ? `Пополнение ${int(v)} ₽ зачислено${d.refIncome ? ' · 10% ушло пригласившему' : ''}` : sign > 0 ? `Выдано ${int(v)} ₽` : `Списано ${int(v)} ₽`, 'success');
       openUser(CUR.user.id); USERS = null; loadStats();
     });
   }
@@ -238,7 +242,7 @@
     if ('tsend' in t.dataset) return sendReply();
     if ('tclose' in t.dataset) return closeT();
     if ('close' in t.dataset) return closeSheet();
-    if (t.dataset.adj) return adjust(+t.dataset.adj);
+    if (t.dataset.adj) return adjust(t.dataset.adj === 'dep' ? 'dep' : +t.dataset.adj);
     if (t.dataset.ban) return ban(t.dataset.ban === '1');
   });
 

@@ -129,3 +129,4 @@ textarea { font: inherit; color: inherit; }
 .toast.success { border-color: rgba(79,194,122,.5); }
 .toast.error { border-color: rgba(255,79,74,.5); }
 .toast.out { opacity: 0; transform: translateY(-8px); }
+.adjust .dep-btn { width: 100%; margin-top: 8px; }
