@@ -1226,6 +1226,39 @@ button.chip > .chip-n { color: inherit; display: inline-grid; place-items: cente
 .tx-ico, .w-req-ico { width: 40px; height: 40px; border-radius: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 6px 14px rgba(0,0,0,.4); }
 .w-period { background: rgba(255,255,255,.06) !important; }
 
+/* top players */
+.top-banner { flex-direction: row !important; align-items: center; gap: 12px !important; padding: 14px 16px !important; margin-top: 14px; color: var(--text-title); border-radius: 22px !important; }
+.top-banner-ico { font-size: 30px; filter: drop-shadow(0 4px 10px rgba(255,209,102,.5)); }
+.top-banner-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.top-banner-txt b { font-size: 17px; font-weight: 900; }
+.top-banner-txt small { font-size: 12px; color: var(--text-subtitle); }
+.top-banner > svg { width: 20px; height: 20px; color: var(--text-other); }
+.top-tabs { grid-template-columns: repeat(2, 1fr) !important; }
+.top-podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: end; gap: 8px; margin: 18px 0 6px; }
+.pod { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 0; }
+.pod b { margin-top: 10px; font-size: 14px; font-weight: 900; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod-won { font-size: 13px; font-weight: 800; color: var(--mc); --coin-size: 13px; }
+.pod-ava { position: relative; }
+.pod-ava .avatar { width: 64px; height: 64px; font-size: 26px; box-shadow: 0 0 0 3px var(--mc), 0 0 22px color-mix(in srgb, var(--mc) 55%, transparent); }
+.pod-1 .pod-ava .avatar { width: 84px; height: 84px; font-size: 34px; }
+.pod-n { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 900; color: #1b1407; background: var(--mc); box-shadow: 0 3px 8px rgba(0,0,0,.5); }
+.pod-base { width: 100%; height: 46px; margin-top: 8px; border-radius: 16px 16px 8px 8px !important; padding: 0 !important; }
+.pod-1 .pod-base { height: 70px; background: linear-gradient(180deg, rgba(255,209,102,.3), transparent), var(--lg-sheen), var(--lg-fill) !important; }
+.pod-2 .pod-base { height: 52px; }
+.pod-3 .pod-base { height: 38px; }
+.top-list { gap: 0; padding: 4px 12px !important; }
+.top-row { display: flex; align-items: center; gap: 10px; padding: 10px 2px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.top-row:last-child { border-bottom: 0; }
+.top-row.me { background: linear-gradient(90deg, rgba(229,56,59,.18), transparent); border-radius: 12px; padding-left: 8px; }
+.top-place { width: 24px; text-align: center; font-size: 14px; font-weight: 900; color: var(--text-other); flex-shrink: 0; }
+.top-row .avatar { width: 38px; height: 38px; font-size: 15px; flex-shrink: 0; }
+.top-who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.top-who b { font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-who b i { font-style: normal; font-size: 10px; padding: 1px 6px; border-radius: 999px; background: var(--accent); margin-left: 4px; vertical-align: 1px; }
+.top-who small { font-size: 11px; color: var(--text-other); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-won { flex-shrink: 0; font-size: 14px; font-weight: 900; color: var(--success); --coin-size: 14px; }
+.top-note { background: rgba(255,255,255,.04) !important; border-color: rgba(255,255,255,.08) !important; color: var(--text-other) !important; font-size: 12px; }
+
 /* Telegram avatars over the letter */
 .avatar, .mini-ava { position: relative; overflow: hidden; }
 .ava-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }

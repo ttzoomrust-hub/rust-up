@@ -149,7 +149,8 @@
     subs: 'Сначала подпишитесь на каналы', used: 'Промокод уже использован', not_found: 'Промокод не найден',
     expired: 'Срок промокода истёк — новый придёт в бота в 15:00 МСК', limit: 'Активации закончились — ждите новый промокод завтра в 15:00 МСК',
     done: 'Уже получено', empty: 'Пока пусто', mix: 'NFT-подарки и скины выводятся отдельно', busy: 'Сервер занят, попробуйте ещё раз',
-    noacc: 'Профиль ещё загружается, попробуйте через секунду'
+    noacc: 'Профиль ещё загружается, попробуйте через секунду',
+    banned: 'Аккаунт заблокирован администрацией. Вопросы — @rustuper_bot'
   };
   const gameErr = d => GAME_ERR[d && d.error] || 'Не удалось выполнить — попробуйте ещё раз';
   function applyState(st) {
@@ -611,6 +612,45 @@
   const TX_FILTERS = [['all', 'Все'], ['deposit', 'Пополнения'], ['withdraw', 'Выводы'], ['game', 'Игры'], ['bonus', 'Бонусы']];
   const WF = { tab: 'deposit', dep: 'rub', wd: 'rub', amount: 1500, out: 0, period: 30, filter: 'all', kinds: DEPOSIT_BONUSES.map(() => 'gift') };
   const NOT_YET = 'На данный момент такой возможности нет';
+
+  // ---------- top players (server: /api/top — the value of everything won, from the live feed) ----------
+  let TOPP = 'day';
+  const MEDAL = ['#ffd166', '#c9d1dc', '#e0965a'];
+  function topPage() {
+    $('#page').innerHTML = `<div class="page wallet-page top-page">
+      <h1 class="up-title">Топ игроков</h1>
+      <div class="wallet-tabs top-tabs">${[['day', 'За сутки'], ['week', 'За неделю']].map(([id, t]) => `<button type="button" class="wtab${TOPP === id ? ' on' : ''}" data-topp="${id}">${t}</button>`).join('')}</div>
+      <div id="topBody"><div class="w-glass pf-empty"><span class="muted">Загружаем…</span></div></div>
+    </div>`;
+    loadTop();
+  }
+  function loadTop() {
+    fetch(window.RUSTUP_API.replace(/\/$/, '') + '/api/top?period=' + TOPP).then(r => r.json()).then(d => {
+      const box = $('#topBody');
+      if (!box || !d.ok) return;
+      if (!d.top.length) { box.innerHTML = '<div class="w-glass pf-empty"><b>Пока пусто</b><span class="muted">Выигрывайте в апгрейде и кейсах — лучшие игроки появятся здесь</span><a class="btn btn-accent w-go" href="#/upgrade">Играть</a></div>'; return; }
+      const me = S.user && S.user.id;
+      const row = (p, i) => `<div class="top-row${p.uid === me ? ' me' : ''}">
+          <span class="top-place">${i + 1}</span>
+          ${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}
+          <span class="top-who"><b>${esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b><small>${fmtInt(p.n)} ${p.n % 10 === 1 && p.n % 100 !== 11 ? 'выигрыш' : p.n % 10 >= 2 && p.n % 10 <= 4 && (p.n % 100 < 12 || p.n % 100 > 14) ? 'выигрыша' : 'выигрышей'}${p.bestName ? ` · лучший ${esc(p.bestName)}` : ''}</small></span>
+          <span class="top-won">${coin(p.won)}</span></div>`;
+      const podium = d.top.slice(0, 3);
+      box.innerHTML = `
+        <div class="top-podium">${[1, 0, 2].map(i => { const p = podium[i]; if (!p) return '<div class="pod pod-empty"></div>'; return `<div class="pod pod-${i + 1}" style="--mc:${MEDAL[i]}">
+          <div class="pod-ava">${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}<span class="pod-n">${i + 1}</span></div>
+          <b>${esc(p.nick)}</b><span class="pod-won">${coin(p.won)}</span><span class="pod-base w-glass"></span></div>`; }).join('')}</div>
+        <div class="tx-list w-glass top-list">${d.top.map(row).join('')}</div>
+        <p class="w-note top-note">Считаются выигрыши в апгрейде и кейсах за ${TOPP === 'day' ? 'последние 24 часа' : 'последние 7 дней'}. Обновляется каждые 30 секунд.</p>`;
+    }).catch(() => { const box = $('#topBody'); if (box) box.innerHTML = '<div class="w-glass pf-empty"><span class="muted">Нет связи с сервером</span></div>'; });
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-topp]');
+    if (!b) return;
+    TOPP = b.dataset.topp; haptic('light');
+    document.querySelectorAll('[data-topp]').forEach(x => x.classList.toggle('on', x.dataset.topp === TOPP));
+    loadTop();
+  });
 
   function walletPage(q) {
     const params = new URLSearchParams(q || '');
@@ -1763,6 +1803,7 @@
       ${recent ? `<div class="tx-list w-glass">${recent}</div>` : '<div class="w-glass pf-empty"><span class="muted">Апгрейдов пока не было</span></div>'}
       <div class="pf-links">
         <a class="w-glass pf-link" href="#/wallet?tab=history"><span class="tx-ico">${TXICO.deposit}</span><b>Кошелёк и история</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/friends"><span class="tx-ico">${TXICO.friends}</span><b>Друзья и рефералы</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
       </div>
@@ -2453,6 +2494,7 @@
         ${g.share ? `<span class="gc-online" title="Сейчас играют" data-share="${g.share}"${Math.round(online * g.share) ? '' : ' hidden'}><i class="dot-online"></i>${playing(g.share)}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
+      <a class="top-banner w-glass" href="#/top"><span class="top-banner-ico">🏆</span><span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
       <div class="row-head"><h2 class="home-title">Бесплатные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
       ${timerCaseCard()}
       <div class="cases-grid">${CASES.map(caseCard).join('')}</div>
@@ -2497,6 +2539,7 @@
       case '/cases': casesPage(); break;
       case '/friends': friendsPage(); break;
       case '/wallet': walletPage(query); break;
+      case '/top': topPage(); break;
       case '/earn': earnPage(); break;
       case '/earn/tiktok': tiktokPage(); break;
       case '/rewards': rewardsPage(); break;
@@ -2541,6 +2584,7 @@
         return toast('Не удалось загрузить профиль — перезапустите игру', 'error');
       }
       gameReady = true;
+      if (d.banned) toast(GAME_ERR.banned, 'error');
       U.inputs.clear(); U.inv.sel.clear();
       renderHeader(); route();
       tgLogin();
