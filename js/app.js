@@ -676,7 +676,7 @@
   const DEP_METHODS = [
     ['rub', 'Рубли', 500, 0, ['sbp'], 'СБП и карты', ['SberPay', 'T-Pay', 'Банковская карта']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
-    ['gifts', 'Telegram и CS2', 10, 7, ['star', 'gift'], 'Звёзды, подарки, скины', ['Звёзды Telegram', 'Подарки и NFT', 'Скины CS2']]];
+    ['gifts', 'Telegram и CS2', 0, 0, ['star', 'gift'], 'Telegram Stars', ['Платежи отключены', 'Без игрового пополнения']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
   const WD_METHODS = [
     ['rub', 'Рубли', 2000, 5, 'card', 'Номер карты', '0000 0000 0000 0000'],
@@ -754,6 +754,29 @@
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
+
+    // RUSTUP_TELEGRAM_ONLY_WALLET_NOTICE_V1
+    // This is a Telegram-only read-only payment status, never game credit.
+    if (WF.dep === 'gifts') {
+      const cards = DEP_METHODS.map(([id, title, min, bonus, icons]) =>
+        '<button type="button" class="wm' + (WF.dep === id ? ' on' : '') +
+        '" data-wdep="' + id + '">' +
+        (WF.dep === id ? '<span class="wm-check"></span>' : '') +
+        '<span class="wm-icons">' + icons.map(icon => '<i>' + WICO[icon] + '</i>').join('') +
+        '</span><b>' + title + '</b><small>' +
+        (id === 'gifts' ? 'Telegram Stars' : 'от ' + rubFmt(min)) + '</small></button>'
+      ).join('');
+      return '<div class="wm-grid">' + cards + '</div>' +
+        '<div class="wm-detail"><span class="wm-icons big"><i>' + WICO.star +
+        '</i></span><span class="wm-lines"><b>Telegram Stars</b>' +
+        '<span>Только внутри Telegram</span></span></div>' +
+        '<div class="w-glass w-panel" role="status">' +
+        '<h3 class="w-h3">⭐ Telegram Stars</h3>' +
+        '<p class="w-note">Платежи пока отключены. Реальные деньги и Stars не принимаются.</p>' +
+        '<p class="w-note">Оплаченные Stars не пополняют игровой баланс для кейсов, ставок, апгрейдов или вывода.</p>' +
+        '<p class="w-note">Поддержка: <a href="https://t.me/rustuperhelp_bot" data-tg-link>@rustuperhelp_bot</a></p>' +
+        '</div>';
+    }
     return `
       <div class="wm-grid">${DEP_METHODS.map(([id, t, min, bonus, icons]) => `<button type="button" class="wm${WF.dep === id ? ' on' : ''}" data-wdep="${id}">
         ${bonus ? `<span class="wm-bonus">+${bonus}%</span>` : ''}${WF.dep === id ? '<span class="wm-check"></span>' : ''}<span class="wm-icons">${icons.map(i => `<i>${WICO[i]}</i>`).join('')}</span><b>${t}</b><small>от ${rubFmt(min)}</small></button>`).join('')}</div>
