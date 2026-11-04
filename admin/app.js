@@ -165,9 +165,67 @@
       : '<div class="loading"><i></i><i></i><i></i></div>';
   }
 
+  // ---------- support ----------
+  let TST = 'open', TICKETS = null, TCUR = null;
+  const tAgo = t => { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'только что' : m < 60 ? `${m} мин` : m < 1440 ? `${Math.round(m / 60)} ч` : `${Math.round(m / 1440)} дн`; };
+  function supportPage() {
+    $('#page').innerHTML = `<div class="seg glass"><button class="${TST === 'open' ? 'on' : ''}" data-tst="open">Открытые</button><button class="${TST === 'closed' ? 'on' : ''}" data-tst="closed">Закрытые</button></div>
+      <section class="glass list" id="tlist">${TICKETS ? ticketRows() : '<div class="loading"><i></i><i></i><i></i></div>'}</section>
+      <p class="muted hint">Ответить можно здесь или прямо в боте — ответом (reply) на сообщение «Обращение #…».</p>`;
+    if (!TICKETS) loadTickets();
+  }
+  const ticketRows = () => TICKETS.tickets.length ? TICKETS.tickets.map(t => `<button class="row" data-ticket="${t.id}">
+      <span class="dot ${t.status === 'closed' ? 'off' : t.last_from === 'user' ? 'wait' : 'ok'}"></span>
+      <span class="w">#${t.id} · ${esc(t.name || t.user_id)}${t.username ? ` <small>@${esc(t.username)}</small>` : ''}<small class="sub">${esc((t.last || '[вложение]').slice(0, 80))}</small></span>
+      <b class="t-ago">${tAgo(t.updated)}</b></button>`).join('') : `<p class="muted">${TST === 'open' ? 'Открытых обращений нет 🎉' : 'Закрытых пока нет'}</p>`;
+  function loadTickets() {
+    api('tickets', { status: TST }).then(d => {
+      if (!d.ok) return denied(d);
+      TICKETS = d; setBadge(d.waiting);
+      const l = $('#tlist'); if (l) l.innerHTML = ticketRows();
+    });
+  }
+  function setBadge(n) {
+    const b = $('[data-tab="support"]');
+    if (b) b.innerHTML = `Поддержка${n ? `<span class="badge">${n}</span>` : ''}`;
+  }
+  function openTicket(id) {
+    $('#modal').innerHTML = '<div class="sheet-back" data-close></div><div class="sheet"><div class="loading"><i></i><i></i><i></i></div></div>';
+    $('#modal').classList.add('open');
+    api('ticket', { id }).then(d => { if (!d.ok) { closeSheet(); return toast('Обращение не найдено', 'error'); } TCUR = d; renderTicket(); });
+  }
+  function renderTicket() {
+    const { ticket: t, msgs } = TCUR;
+    const media = m => m.media ? `<span class="att">📎 ${{ photo: 'фото', document: esc(m.media.name || 'файл'), video: 'видео', voice: 'голосовое', sticker: 'стикер' }[m.media.type] || 'вложение'} — открыть в боте</span>` : '';
+    $('#modal .sheet').innerHTML = `
+      <div class="sheet-head"><div><h2>Обращение #${t.id} ${t.status === 'closed' ? '<em class="tag">закрыто</em>' : ''}</h2>
+        <span class="muted"><button class="link" data-user="${t.user_id}">${esc(t.name || t.user_id)}</button>${t.username ? ` · @${esc(t.username)}` : ''} · id ${t.user_id}${t.balance != null ? ` · ${rub(t.balance)}` : ''}</span></div><button class="x" data-close>×</button></div>
+      <div class="chat">${msgs.map(m => `<div class="msg ${m.from_admin ? 'me' : ''}"><div class="bubble">${m.text ? esc(m.text).replace(/\n/g, '<br>') : ''}${media(m)}</div>
+        <small>${m.from_admin ? esc(m.from_admin) + ' · ' : ''}${new Date(m.t).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</small></div>`).join('')}</div>
+      <div class="reply glass"><textarea id="rText" rows="3" placeholder="Ответ игроку…" maxlength="3500"></textarea>
+        <div class="row2"><button class="btn ghost" data-tclose ${t.status === 'closed' ? 'disabled' : ''}>✅ Закрыть</button><button class="btn danger" data-tsend>Отправить</button></div></div>`;
+    const c = $('#modal .chat'); c.scrollTop = c.scrollHeight;
+  }
+  function sendReply() {
+    const text = $('#rText').value.trim();
+    if (!text) return toast('Напишите ответ', 'error');
+    const b = $('[data-tsend]'); b.disabled = true;
+    api('reply', { id: TCUR.ticket.id, text }).then(d => {
+      b.disabled = false;
+      if (!d.ok) return toast(d.error === 'blocked' ? 'Игрок заблокировал бота — ответ не доставлен' : 'Не удалось отправить', 'error');
+      toast('Ответ отправлен', 'success'); TICKETS = null; openTicket(TCUR.ticket.id);
+    });
+  }
+  function closeT() {
+    api('close', { id: TCUR.ticket.id }).then(d => {
+      if (!d.ok) return toast('Не удалось', 'error');
+      toast('Обращение закрыто', 'success'); TICKETS = null; closeSheet(); if (tab === 'support') supportPage();
+    });
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : statsPage();
+    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -175,6 +233,10 @@
     if (t.dataset.tab) { tab = t.dataset.tab; window.scrollTo(0, 0); return render(); }
     if (t.dataset.days) { days = +t.dataset.days; STATS = null; statsPage(); return loadStats(); }
     if (t.dataset.user) return openUser(+t.dataset.user);
+    if (t.dataset.ticket) return openTicket(+t.dataset.ticket);
+    if (t.dataset.tst) { TST = t.dataset.tst; TICKETS = null; return supportPage(); }
+    if ('tsend' in t.dataset) return sendReply();
+    if ('tclose' in t.dataset) return closeT();
     if ('close' in t.dataset) return closeSheet();
     if (t.dataset.adj) return adjust(+t.dataset.adj);
     if (t.dataset.ban) return ban(t.dataset.ban === '1');
@@ -194,14 +256,27 @@
       account: { balance: 920000, items: 14, itemsValue: 310000, nick: 'Олег', stats: { upgrades: 312, wins: 140, wagered: 2400000 }, topItems: [{ name: '★ Karambit | Fade', price: 120000 }, { name: 'Big Grin', price: 60741 }],
         tx: [{ t: now - 600e3, title: 'Апгрейд: выигрыш · Big Grin', amount: 60741 }, { t: now - 700e3, title: 'Апгрейд: ставка · шанс 38.20%', amount: -24000 }, { t: now - 3600e3, title: 'Зачисление от администрации · за конкурс', amount: 3067 }] },
       refs: { n: 6, active: 4 }, drops: { n: 58, v: 820000 }, log: [{ admin: '@NezoxFit', action: 'give', user_id: 100, amount: 5000, note: 'за конкурс', t: now - 3600e3 }] };
+    if (path === 'tickets') return { ok: true, waiting: 2, tickets: [
+      { id: 7, user_id: 100, name: 'Олег', username: 'oleg_rust', status: 'open', last_from: 'user', updated: now - 4 * 60e3, last: 'Не пришёл подарок за 10 друзей, прошло уже 2 дня' },
+      { id: 6, user_id: 103, name: 'Neon', username: null, status: 'open', last_from: 'user', updated: now - 40 * 60e3, last: 'Промокод пишет «уже использован», а я его не вводил' },
+      { id: 5, user_id: 104, name: 'kotik', username: 'kotik_rust', status: 'open', last_from: 'admin', updated: now - 3 * 3600e3, last: 'Проверили — подарок отправлен, загляните в профиль Telegram' }] };
+    if (path === 'ticket') return { ok: true, ticket: { id: 7, user_id: 100, name: 'Олег', username: 'oleg_rust', status: 'open', balance: 920000 }, msgs: [
+      { from_admin: null, text: 'Привет! Не пришёл подарок за 10 друзей, прошло уже 2 дня', t: now - 30 * 60e3 },
+      { from_admin: null, text: '', media: { type: 'photo' }, t: now - 29 * 60e3 },
+      { from_admin: '@NezoxFit', text: 'Здравствуйте! Проверяем, подарок отправим сегодня до вечера.', t: now - 10 * 60e3 },
+      { from_admin: null, text: 'Спасибо, жду', t: now - 4 * 60e3 }] };
     return { ok: true };
   }
 
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'log'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log'].includes(start)) tab = start;
   render();
   loadStats();
+  // the waiting-tickets badge on the tab, refreshed every half a minute
+  api('tickets', { status: 'open' }).then(d => { if (d.ok) setBadge(d.waiting); });
+  if (!DEMO) setInterval(() => { if (!document.hidden) api('tickets', { status: 'open' }).then(d => { if (d.ok) { setBadge(d.waiting); if (tab === 'support' && TST === 'open') { TICKETS = d; const l = $('#tlist'); if (l) l.innerHTML = ticketRows(); } } }); }, 30000);
   if (DEMO && /[?&]user=1/.test(location.search)) openUser(100);
+  if (DEMO && /[?&]ticket=1/.test(location.search)) openTicket(7);
 })();

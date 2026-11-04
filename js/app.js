@@ -150,7 +150,7 @@
     expired: 'Срок промокода истёк — новый придёт в бота в 15:00 МСК', limit: 'Активации закончились — ждите новый промокод завтра в 15:00 МСК',
     done: 'Уже получено', empty: 'Пока пусто', mix: 'NFT-подарки и скины выводятся отдельно', busy: 'Сервер занят, попробуйте ещё раз',
     noacc: 'Профиль ещё загружается, попробуйте через секунду',
-    banned: 'Аккаунт заблокирован администрацией. Вопросы — @rustuper_bot'
+    banned: 'Аккаунт заблокирован администрацией. Вопросы — @' + (window.RUSTUP_SUPPORT || 'rustuperhelp_bot')
   };
   const gameErr = d => GAME_ERR[d && d.error] || 'Не удалось выполнить — попробуйте ещё раз';
   function applyState(st) {
@@ -612,6 +612,14 @@
   const TX_FILTERS = [['all', 'Все'], ['deposit', 'Пополнения'], ['withdraw', 'Выводы'], ['game', 'Игры'], ['bonus', 'Бонусы']];
   const WF = { tab: 'deposit', dep: 'rub', wd: 'rub', amount: 1500, out: 0, period: 30, filter: 'all', kinds: DEPOSIT_BONUSES.map(() => 'gift') };
   const NOT_YET = 'На данный момент такой возможности нет';
+
+  // t.me links marked data-tg-link open inside Telegram instead of the in-app browser
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-tg-link]');
+    if (!a || !TG || !tgVer('6.1')) return;
+    e.preventDefault(); e.stopPropagation();
+    TG.openTelegramLink(a.href);
+  }, true);
 
   // ---------- top players (server: /api/top — the value of everything won, from the live feed) ----------
   let TOPP = 'day';
@@ -1805,6 +1813,7 @@
         <a class="w-glass pf-link" href="#/wallet?tab=history"><span class="tx-ico">${TXICO.deposit}</span><b>Кошелёк и история</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/friends"><span class="tx-ico">${TXICO.friends}</span><b>Друзья и рефералы</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="https://t.me/${esc(window.RUSTUP_SUPPORT || 'rustuperhelp_bot')}" data-tg-link><span class="tx-ico">${ICON.tg}</span><b>Поддержка</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
       </div>
     </div>`;
