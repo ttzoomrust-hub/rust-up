@@ -2091,7 +2091,8 @@
   const timerLeft = () => Math.max(0, TIMER_MS - (Date.now() - (S.rewards.timerCase || 0)));
   const mmss = ms => { const s = Math.ceil(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
   const { CASE_RTP } = R;         // average win is 90% of a paid case's price
-  const caseById = id => CASES.find(c => c.id === id) || PAID_CASES.find(c => c.id === id) || (id === TIMER_CASE.id ? TIMER_CASE : null);
+  // the 15-minute case was removed (2026-11-05): its old link leads back to the cases page
+  const caseById = id => CASES.find(c => c.id === id) || PAID_CASES.find(c => c.id === id) || null;
   const casesLeft = () => CASES.filter(c => !S.rewards.cases[c.id]);
   const casePrice = c => {
     if (!c.paid) return 0;
@@ -2190,28 +2191,6 @@
       <i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i>`;
   }
   const caseState = c => (!S.user ? 'login' : c.paid ? 'buy' : c.timer ? (timerLeft() ? 'cooldown' : 'ready') : S.rewards.cases[c.id] ? 'opened' : subsOk() ? 'ready' : 'locked');
-  // wide banner of the 15-minute case (cases page and home)
-  function timerCaseCard() {
-    const c = TIMER_CASE, st = caseState(c), left = timerLeft();
-    const btn = st === 'cooldown' ? `${ICON.history}<span data-timer-left>${mmss(left)}</span>` : 'Бесплатно';
-    return `<a class="timer-case ${st}" href="#/case/${c.id}" style="--cc:${c.color}">
-      <span class="case-art">${caseArt(c)}</span>
-      <span class="tc-text"><span class="case-kicker">Каждые 15 минут</span><b>${c.name}</b><small>Rust · CS2 · NFT — до ${coinInt(500)}</small></span>
-      <span class="case-btn">${btn}</span>
-    </a>`;
-  }
-  // live countdown: the timer text ticks every second, and the case becomes available without a reload
-  let timerWasReady = timerLeft() === 0;
-  setInterval(() => {
-    const left = timerLeft();
-    document.querySelectorAll('[data-timer-left]').forEach(el => { el.textContent = mmss(left); });
-    const ready = left === 0;
-    if (ready === timerWasReady) return;
-    timerWasReady = ready;
-    if (!ready || caseSpinning) return;
-    document.querySelectorAll('.timer-case').forEach(el => { el.outerHTML = timerCaseCard(); });
-    if (curPath() === '/case/' + TIMER_CASE.id) $('#caseActions').innerHTML = caseActions(TIMER_CASE);
-  }, 1000);
   function caseCard(c) {
     const st = caseState(c);
     const btn = c.paid ? coinInt(casePrice(c)) : st === 'opened' ? 'Открыт' : `${st === 'locked' ? ICON.lock : ''}Бесплатно`;
@@ -2235,7 +2214,6 @@
       .sort((a, b) => (casePrice(a) - casePrice(b)) * (CF.sort === 'asc' ? 1 : -1));
     $('#page').innerHTML = `<div class="page cases-page">
       <h1 class="up-title">Кейсы</h1>
-      ${timerCaseCard()}
       ${S.user && left && !subsOk() ? subsBlock() : ''}
       <div class="game-switch cases-switch">${GAMES.map(g => `<button type="button" class="game-tab${g.id === CF.game ? ' active' : ''}" data-cgame="${g.id}">
         <span class="game-icon">${gameIcon(g.id)}</span><span class="game-text"><b>${g.name}</b><small>${g.sub}</small></span></button>`).join('')}</div>
@@ -2505,7 +2483,6 @@
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
       <a class="top-banner w-glass" href="#/top"><span class="top-banner-ico">🏆</span><span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
       <div class="row-head"><h2 class="home-title">Бесплатные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
-      ${timerCaseCard()}
       <div class="cases-grid">${CASES.map(caseCard).join('')}</div>
       <div class="row-head"><h2 class="home-title">Популярные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
       <div class="cases-grid">${['rust-metal', 'cs2-assault', 'nft-collector'].map(id => caseCard(caseById(id))).join('')}</div>
