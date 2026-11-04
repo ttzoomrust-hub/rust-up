@@ -31,7 +31,7 @@
   }
 
   // ---------- overview ----------
-  let tab = 'stats', days = 14, STATS = null, CUR = null;
+  let tab = location.hash === '#economy' ? 'economy' : 'stats', days = 14, STATS = null, CUR = null;
   function chart(series, key, color, label) {
     const W = 340, H = 150, L = 30, B = 20, T = 8, w = W - L - 4, h = H - B - T;
     const max = Math.max(4, ...series.map(s => s[key]));
@@ -246,15 +246,48 @@
     });
   }
 
+  // ---------- economy: bets and payouts per game (bot/admin.js economy) ----------
+  let ECON = null, edays = 7;
+  const GAME_NAMES = { upgrade: 'Апгрейд', case: 'Кейсы', crash: 'Ракетка', contract: 'Контракты', battle: 'Кейс-баттл', mines: 'Минёр', wheel: 'Колесо', plinko: 'Плинко',
+    bonus: 'Бонусы игрокам', admin: 'Выдано админами' };
+  function economyPage() {
+    if (!ECON) { $('#page').innerHTML = '<div class="loading"><i></i><i></i><i></i></div>'; return loadEconomy(); }
+    const t = ECON.total, pct = v => (v == null ? '—' : v.toString().replace('.', ',') + '%');
+    const tile = (k, v, sub = '', cls = '') => `<div class="tile glass ${cls}"><span>${k}</span><b>${v}</b>${sub ? `<i>${sub}</i>` : ''}</div>`;
+    $('#page').innerHTML = `
+      <div class="seg glass">${[[1, 'Сегодня'], [7, '7 дней'], [30, '30 дней']].map(([d, l]) => `<button class="${edays === d ? 'on' : ''}" data-edays="${d}">${l}</button>`).join('')}</div>
+      <section class="tiles">
+        ${tile('Прибыль с игр', rub(t.profit), `${int(t.bets)} ставок`, t.profit >= 0 ? 'live' : 'warn')}
+        ${tile('Отдача игрокам', pct(t.rtp), `поставили ${rub(t.wagered)} · выплачено ${rub(t.paid)}`)}
+        ${tile('Бонусы игрокам', rub(t.gifts), 'подарки, кейсы, промо, огонёк, друзья, выдачи')}
+        ${tile('Итого', rub(t.profit - t.gifts), 'прибыль с игр минус бонусы', t.profit - t.gifts >= 0 ? '' : 'warn')}
+      </section>
+      <section class="glass list econ"><h3>По играм</h3>
+        <div class="ec-row ec-head"><span>Игра</span><span>Ставок</span><span>Поставили</span><span>Выплачено</span><span>Прибыль</span><span>Отдача</span></div>
+        ${ECON.games.length ? ECON.games.map(g => `<div class="ec-row"><span>${GAME_NAMES[g.game] || esc(g.game)}</span><b>${int(g.bets)}</b><b>${rub(g.wagered)}</b><b>${rub(g.paid)}</b>
+          <b class="${g.profit >= 0 ? 'plus' : 'minus'}">${g.profit >= 0 ? '+' : '−'}${rub(Math.abs(g.profit))}</b><b class="${g.rtp > 100 ? 'minus' : ''}">${pct(g.rtp)}</b></div>`).join('') : '<p class="muted">Ставок ещё не было</p>'}
+        ${ECON.gifts.map(g => `<div class="ec-row gift"><span>${GAME_NAMES[g.game] || esc(g.game)}</span><b></b><b></b><b>${rub(g.paid)}</b><b class="minus">−${rub(g.paid)}</b><b></b></div>`).join('')}
+        <p class="muted">Отдача — сколько процентов от ставок вернулось игрокам. Заложено около 95–96%; выше 100% — игра в минусе. Считается с момента обновления.</p></section>
+      ${chart(ECON.series, 'profit', '#4fc27a', 'Прибыль с игр по дням')}
+      ${chart(ECON.series, 'gifts', '#ffd166', 'Бонусы игрокам по дням')}
+      <section class="glass list"><h3>Крупные выигрыши</h3>${ECON.wins.length ? ECON.wins.map(w => `<button class="row" data-user="${w.user_id}">
+        <span class="w">${esc(w.nick)}<small class="sub">${esc(w.name)} · ${{ upgrade: 'апгрейд', case: 'кейс', contract: 'контракт', battle: 'баттл' }[w.src] || esc(w.src || '')}${w.chance && w.chance < 100 ? ` · шанс ${w.chance.toFixed(1)}%` : ''} · ${ago(w.t)}</small></span>
+        <b>${rub(w.price)}</b></button>`).join('') : '<p class="muted">Пока нет</p>'}</section>`;
+  }
+  function loadEconomy() {
+    api('economy', { days: edays }).then(d => { if (!d.ok) return denied(d); ECON = d; if (tab === 'economy') economyPage(); });
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : statsPage();
+    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
     if (!t) return;
     if (t.dataset.tab) { tab = t.dataset.tab; window.scrollTo(0, 0); return render(); }
     if (t.dataset.days) { days = +t.dataset.days; STATS = null; statsPage(); return loadStats(); }
+    if (t.dataset.edays) { edays = +t.dataset.edays; ECON = null; return economyPage(); }
     if (t.dataset.user) return openUser(+t.dataset.user);
     if (t.dataset.ticket) return openTicket(+t.dataset.ticket);
     if (t.dataset.tst) { TST = t.dataset.tst; TICKETS = null; return supportPage(); }
@@ -273,6 +306,16 @@
   // ---------- demo data for previews ----------
   function demo(path, body) {
     const now = Date.now(), day = 864e5;
+    if (path === 'economy') {
+      const g = (game, bets, wagered, paid) => ({ game, bets, wagered, paid, profit: wagered - paid, rtp: Math.round(paid / wagered * 1000) / 10 });
+      const games = [g('upgrade', 4210, 812000, 771000), g('case', 1830, 395000, 352000), g('crash', 2650, 240000, 229500), g('plinko', 3100, 98000, 94400),
+        g('mines', 990, 76000, 74100), g('wheel', 1400, 64000, 60200), g('battle', 120, 41000, 37900), g('contract', 210, 33000, 31500)];
+      const wagered = games.reduce((a, x) => a + x.wagered, 0), paid = games.reduce((a, x) => a + x.paid, 0);
+      return { ok: true, rate: 1.63, days: 7, games, gifts: [{ game: 'bonus', paid: 21000 }, { game: 'admin', paid: 3000 }],
+        total: { bets: 14510, wagered, paid, profit: wagered - paid, rtp: Math.round(paid / wagered * 1000) / 10, gifts: 24000 },
+        series: Array.from({ length: 14 }, (_, i) => ({ day: now - (13 - i) * day, profit: Math.round(5000 + 3000 * Math.sin(i / 1.7) + i * 300), gifts: Math.round(1500 + 500 * Math.sin(i)) })),
+        wins: [{ user_id: 100, nick: 'Вася', name: '★ Karambit | Fade', price: 61000, chance: 4.2, src: 'upgrade', t: now - 3600e3 }, { user_id: 104, nick: 'Lena', name: 'Plush Pepe #1622', price: 38000, chance: null, src: 'case', t: now - 7200e3 }] };
+    }
     if (path === 'stats') return { ok: true, rate: 1.63, me: '@NezoxFit',
       totals: { users: 1284, players: 803, online: 17, new24: 46, banned: 2, balance: 2450000, refs: 412 }, today: { n: 214, v: 380000, p: 61 },
       series: Array.from({ length: days }, (_, i) => ({ day: now - (days - 1 - i) * day, users: Math.round(30 + 25 * Math.sin(i / 2) + i * 2), players: Math.round(40 + 15 * Math.sin(i / 3 + 1) + i), drops: Math.round(150 + 60 * Math.sin(i / 2.5) + i * 4),

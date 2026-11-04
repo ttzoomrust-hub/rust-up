@@ -173,7 +173,7 @@
     S.balance = st.balance; S.inventory = st.inventory.filter(i => byName[i.name]); S.withdrawals = st.withdrawals;
     S.history = st.history; S.stats = st.stats; S.seeds = st.seeds; S.rewards = st.rewards; S.tx = st.tx || []; S.free = st.free || {};
     const prevFire = S.fire;
-    S.fire = st.fire || null; S.crash = st.crash || null; S.crashLast = st.crashLast || [];
+    S.fire = st.fire || null; S.crash = st.crash || null; S.crashLast = st.crashLast || []; S.mines = st.mines || null; S.wheel = st.wheel || null;
     fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
@@ -221,7 +221,13 @@
   }
   function fireToast(prev, next) {
     if (!gameReady || !next || (prev && prev.d === next.d)) return;
-    setTimeout(() => { haptic('success'); toast(next.n > 1 ? `🔥 Серия ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд!` : '🔥 Огонёк зажжён! Играйте каждый день, чтобы не потерять серию', 'success'); }, 1200);
+    // a reward of the streak came with this day (bot/modes.js fireTick)
+    const g = next.gift && next.gift.n === next.n ? next.gift : null;
+    setTimeout(() => {
+      haptic('success');
+      if (g) { sfxWin(); bumpBalance(); return toast(`🔥 ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд — награда: ${g.rub ? '+' + g.rub + ' ₽' : g.item}!`, 'success'); }
+      toast(next.n > 1 ? `🔥 Серия ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд!` : '🔥 Огонёк зажжён! Играйте каждый день, чтобы не потерять серию', 'success');
+    }, 1200);
   }
   const plural = (n, one, few, many) => (n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many);
   function fireModal() {
@@ -231,7 +237,9 @@
       <p>${f.state === 'lit' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> — сегодня огонёк уже горит. Приходите завтра!`
         : f.state === 'wait' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> погаснет в полночь по МСК. Откройте любой кейс или сыграйте — и она продолжится.`
         : 'Откройте любой кейс или сыграйте в любую игру — огонёк загорится. Играйте каждый день, чтобы серия росла.'}</p>
-      <div class="fire-rules"><span>✅ Апгрейд, Ракетка, Контракт, Кейс-баттл, любой кейс</span><span>❌ Пропустили день — серия начнётся заново</span></div>
+      <div class="fire-ladder">${R.FIRE_REWARDS.map(([day, rw]) => `<div class="fl-step${f.n >= day ? ' done' : ''}"><b>${day}</b><span>${plural(day, 'день', 'дня', 'дней')}</span>
+        <em>${rw.rub ? '+' + rw.rub + ' ₽' : esc(rw.item)}</em>${f.n >= day ? '<i>✓</i>' : ''}</div>`).join('')}</div>
+      <div class="fire-rules"><span>✅ Любая игра или любой кейс за день</span><span>❌ Пропустили день — серия начнётся заново</span></div>
       ${best ? `<p class="muted">Рекорд: ${best} ${plural(best, 'день', 'дня', 'дней')}</p>` : ''}
       <button class="btn btn-accent" id="fireGo">${f.state === 'lit' ? 'Понятно' : 'Играть'}</button></div>`,
     m => { $('#fireGo', m).onclick = () => { closeModal(); if (f.state !== 'lit') location.hash = '#/'; }; });
@@ -668,7 +676,7 @@
   const DEP_METHODS = [
     ['rub', 'Рубли', 500, 0, ['sbp'], 'СБП и карты', ['SberPay', 'T-Pay', 'Банковская карта']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
-    ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Звёзды Telegram', ['Оплата только Telegram Stars']]];
+    ['gifts', 'Telegram и CS2', 10, 7, ['star', 'gift'], 'Звёзды, подарки, скины', ['Звёзды Telegram', 'Подарки и NFT', 'Скины CS2']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
   const WD_METHODS = [
     ['rub', 'Рубли', 2000, 5, 'card', 'Номер карты', '0000 0000 0000 0000'],
@@ -729,7 +737,6 @@
     const params = new URLSearchParams(q || '');
     if (['deposit', 'withdraw', 'history'].includes(params.get('tab'))) WF.tab = params.get('tab');
     if (+params.get('sum') > 0) WF.amount = Math.floor(+params.get('sum'));
-    if (params.get("method") === "stars") WF.dep = "gifts";
     const tabs = [['deposit', 'Пополнить'], ['withdraw', 'Вывести'], ['history', 'История']];
     $('#page').innerHTML = `<div class="page wallet-page">
       <span class="w-glow g1"></span><span class="w-glow g2"></span><span class="w-glow g3"></span>
@@ -744,13 +751,6 @@
     if (!box) return;
     document.querySelectorAll('.wtab').forEach(b => b.classList.toggle('on', b.dataset.wtab === WF.tab));
     box.innerHTML = WF.tab === 'withdraw' ? walletWithdraw() : WF.tab === 'history' ? walletHistory() : walletDeposit();
-    /* RUSTUP_STARS_WALLET_EMBED_V1 */
-    if (WF.tab === 'deposit' && WF.dep === 'gifts') {
-      box.innerHTML = '<div id="rustupStarsBody"></div>';
-      if (window.RUSTUP_STARS_PANEL) window.RUSTUP_STARS_PANEL.render(document.getElementById('rustupStarsBody'));
-    } else if (WF.tab === 'deposit' && WF.dep === 'crypto') {
-      box.innerHTML = '<div class="w-glass w-panel"><h3 class="w-h3">Криптовалюта</h3><p class="w-note">Цифровые покупки в Telegram доступны только за Stars. Криптоплатежи здесь отключены, внешний провайдер проверяется отдельно.</p></div>';
-    }
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
@@ -1130,7 +1130,7 @@
   }
   function totalOnline() {
     const fake = Object.keys(GAME_POS).reduce((a, k) => a + gameOnline(k), 0);
-    return Math.max(400, Math.min(3000, Math.round(fake * 1.6) + realOnline));
+    return Math.max(400, Math.min(3000, Math.round(fake * 1.25) + realOnline));
   }
   function paintOnline() {
     online = totalOnline();
@@ -2776,7 +2776,7 @@
     const game = new URLSearchParams(query || '').get('game');
     if (game && GAMES.some(g => g.id === game)) setGame(game);
     if (path === '/' && game) path = '/upgrade';
-    const navKey = ['/upgrade', '/crash', '/contract', '/battles'].includes(path) || path.startsWith('/battle/') ? '/' : path.startsWith('/case/') ? '/cases' : path.startsWith('/earn') ? '/earn' : path;
+    const navKey = ['/upgrade', '/crash', '/contract', '/battles', '/mines', '/wheel', '/plinko'].includes(path) || path.startsWith('/battle/') ? '/' : path.startsWith('/case/') ? '/cases' : path.startsWith('/earn') ? '/earn' : path;
     if (window.RUSTUP_MODES) window.RUSTUP_MODES.leave(path);
     document.querySelectorAll('.nav-item[data-route]').forEach(a => a.classList.toggle('active', a.dataset.route === navKey));
     if (path !== '/upgrade') U.result = null;
@@ -2796,7 +2796,7 @@
       case '/profile': profilePage(); break;
       case '/provably-fair': fairPage(); break;
       // game modes live in js/modes.js
-      case '/crash': case '/contract': case '/battles': window.RUSTUP_MODES[path](); break;
+      case '/crash': case '/contract': case '/battles': case '/mines': case '/wheel': case '/plinko': window.RUSTUP_MODES[path](); break;
       case '/tos': textPage('Условия использования', '<p>RUST UP — демонстрационный интерфейс. Баланс, скины и результаты виртуальные и не имеют денежной стоимости, их нельзя вывести или обменять.</p><p>Проект не связан с Valve, Steam и Facepunch Studios. Изображения предметов принадлежат их правообладателям.</p>'); break;
       case '/privacy': textPage('Политика конфиденциальности', '<p>Демо-версия не отправляет данные на сервер. Ник, баланс, инвентарь и история хранятся только в localStorage вашего браузера. Очистка данных сайта полностью удаляет их.</p>'); break;
       default: if (path.startsWith('/case/')) casePage(path.slice(6)); else if (path.startsWith('/battle/')) window.RUSTUP_MODES.battle(path.slice(8)); else homePage();

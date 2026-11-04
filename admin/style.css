@@ -138,4 +138,12 @@ textarea { font: inherit; color: inherit; }
 .days p { margin: 8px 4px 0; font-size: 11px; }
 .twin { display: flex; flex-direction: column; gap: 8px; padding: 14px; margin: 12px 0; border: 1px solid rgba(229,56,59,.45); }
 .twin.ok { border-color: rgba(79,194,122,.45); }
-.twin span { font-size: 13px; color: var(--muted, #9aa1ab); }
+.twin span { font-size: 13px; color: var(--muted, #9aa1ab); }/* «Деньги» (2026-11-05) */
+.econ .ec-row { display: grid; grid-template-columns: 1.3fr .7fr 1fr 1fr 1fr .8fr; gap: 6px; align-items: center; padding: 8px 4px; border-top: 1px solid rgba(255,255,255,.06); font-size: 12px; }
+.econ .ec-head { border-top: 0; color: var(--muted, #9aa1ab); font-size: 10px; }
+.econ .ec-row.gift { opacity: .85; }
+.econ .ec-row b { font-weight: 700; }
+.econ p { margin: 8px 4px 0; font-size: 11px; }
+#tabs { overflow-x: auto; scrollbar-width: none; }
+#tabs button { white-space: nowrap; }#tabs { display: flex !important; flex-wrap: nowrap !important; }
+#tabs button { flex: 1 0 auto; padding-left: 12px; padding-right: 12px; }

@@ -20,6 +20,19 @@ window.RUSTUP_RULES = {
   CRASH: { RTP: 0.96, K: 0.0001, MAX: 1000, MIN_BET: 1, MAX_BET: 50000, BET_MS: 10000, PAUSE_MS: 3000 },
   // contracts: MIN..MAX items of one game → one item worth (inputs value × multiplier); [multiplier, chance %], ~95% on average
   CONTRACT: { MIN: 3, MAX: 10, MULTS: [[0.3, 30], [0.6, 25], [1, 20], [1.5, 15], [2.5, 7.5], [4, 2.5]] },
+  // «огонёк» streak rewards, once per streak when it reaches the day: rubles to the balance or an item
+  FIRE_REWARDS: [[3, { rub: 10 }], [7, { rub: 30 }], [14, { rub: 75 }], [30, { item: 'Алмаз' }]],
+  // «Минёр»: 5×5, MIN..MAX mines; the n-th safe cell pays RTP × C(25, n) / C(25 − mines, n)
+  MINES: { CELLS: 25, MIN: 1, MAX: 24, RTP: 0.96, MIN_BET: 1, MAX_BET: 50000 },
+  // «Колесо»: shared spins — BET_MS of bets, SPIN_MS of the spin; LAYOUT is the 54 segments clockwise
+  // (y gold ×50, b blue ×5, r red ×3, g gray ×2: 1/10/17/26 segments, 92.6–96.3% back)
+  WHEEL: { BET_MS: 15000, SPIN_MS: 6000, MIN_BET: 1, MAX_BET: 50000,
+    COLORS: { g: { x: 2, name: 'Серый' }, r: { x: 3, name: 'Красный' }, b: { x: 5, name: 'Синий' }, y: { x: 50, name: 'Золото' } },
+    LAYOUT: 'ygrbgrgbgrgrgbgrgrgbgrgrgbgrgbgrgrgbgrgrgbgrgbrgrgbgrg' },
+  // «Плинко»: 12 rows, the ball goes left or right at each; buckets 0..12 pay these multipliers (~96% back)
+  PLINKO: { ROWS: 12, MIN_BET: 1, MAX_BET: 50000,
+    RISK: { low: [9, 2.9, 1.5, 1.3, 1.1, 0.97, 0.5, 0.97, 1.1, 1.3, 1.5, 2.9, 9], mid: [30, 10, 3.8, 1.9, 1.1, 0.6, 0.3, 0.6, 1.1, 1.9, 3.8, 10, 30],
+      high: [160, 23, 7.8, 1.9, 0.7, 0.2, 0.2, 0.2, 0.7, 1.9, 7.8, 23, 160] } },
   // case battles: 2–4 players open the same paid case for ROUNDS rounds, the biggest total takes every item; empty seats → bots
   BATTLE: { SIZES: [2, 3, 4], ROUNDS: 5, OPEN_MS: 15 * 60 * 1000 },
   CASHBACK: 0.02,         // share of a lost upgrade stake / of a paid case that paid out less than its price

@@ -24,8 +24,11 @@
     const skins = Object.values(A().byName).filter(s => s.game === 'cs2' && s.price > 300 && s.price < 3000).slice(0, 3);
     const cases = A().PAID_CASES.slice(0, 2);
     return [
-      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', on: 'crash', badge: 'NEW', cover: 'crash', art: ROCKET },
+      { href: '#/crash', cls: 'gc-crash', title: 'Ракетка', on: 'crash', badge: 'HOT', cover: 'crash', art: ROCKET },
       { href: '#/contract', cls: 'gc-contract', title: 'Контракты', on: 'contract', cover: 'contract', art: skins.map((s, i) => `<img class="gc-mini m${i}" src="${s.img}" alt="" draggable="false">`).join('') },
+      { href: '#/mines', cls: 'gc-mines', title: 'Минёр', on: 'mines', badge: 'NEW', cover: 'mines', art: '' },
+      { href: '#/wheel', cls: 'gc-wheel', title: 'Колесо', on: 'wheel', badge: 'NEW', cover: 'wheel', art: '' },
+      { href: '#/plinko', cls: 'gc-plinko', title: 'Плинко', on: 'plinko', badge: 'NEW', cover: 'plinko', art: '' },
       { href: '#/battles', cls: 'gc-battle', title: 'Кейс-баттл', on: 'battle', badge: 'PvP', cover: 'battle', art: `${cases.map((c, i) => { const s = A().caseItems(c)[0].skin; return `<img class="gc-bt b${i}${A().imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('')}<b class="gc-vs">VS</b>` }
     ];
   }
@@ -489,14 +492,302 @@
     showRoom(b);
   }
 
+  // =====================================================================================
+  // «Минёр»
+  // =====================================================================================
+  const MN = R.MINES;
+  const comb = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = (r * (n - k + i)) / i; return r; };
+  const minesMult = (m, k) => (k ? Math.floor(MN.RTP * (comb(MN.CELLS, k) / comb(MN.CELLS - m, k)) * 100) / 100 : 1);
+  const MI = { bet: 50, m: 3, busy: false, end: null };
+  const GEM = '<svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z" fill="#5ee3a0" stroke="#1d7a4c" stroke-width="1.5"/><path d="M2 9h20M8 3l4 6 4-6M12 9v12" stroke="#1d7a4c" stroke-width="1.2" fill="none"/></svg>';
+  const BOMB = '<svg viewBox="0 0 24 24"><circle cx="11" cy="13" r="8" fill="#2b2d36" stroke="#000" stroke-width="1.5"/><path d="M15 6l3-3M17 3l2 2" stroke="#ffb340" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="10" r="2" fill="#fff" opacity=".5"/></svg>';
+  function minesPage() {
+    const { coin } = A(), g = A().S.mines;
+    const open = g ? g.open : [], m = g ? g.m : MI.m, k = open.length;
+    const end = MI.end;   // the last finished round, to show where the mines were
+    page(`<div class="page mines-page">
+      ${back}
+      <div class="mode-head"><h1 class="up-title">Минёр</h1><button class="pp-help" data-mn-help aria-label="Правила">?</button></div>
+      <div class="mn-info w-glass">
+        <div><span>${g ? 'Сейчас' : 'Мин'}</span><b>${g ? x2(minesMult(m, k)) : m}</b></div>
+        <div><span>Следующая</span><b>${x2(minesMult(m, k + 1))}</b></div>
+        <div><span>${g ? 'Выигрыш' : 'Ставка'}</span><b>${coin(g ? g.bet * minesMult(m, k) : MI.bet)}</b></div>
+      </div>
+      <div class="mn-grid${g ? ' live' : ''}" id="mnGrid">${Array.from({ length: MN.CELLS }, (_, i) => {
+        const isOpen = open.includes(i), wasMine = end && end.mines.includes(i), wasOpen = end && end.open.includes(i);
+        const cls = isOpen || wasOpen ? 'gem' : wasMine ? (end.boom === i ? 'bomb hit' : 'bomb') : '';
+        return `<button class="mn-cell ${cls}" data-mn="${i}" ${g && !isOpen ? '' : 'disabled'}>${isOpen || wasOpen ? GEM : wasMine ? BOMB : ''}</button>`;
+      }).join('')}</div>
+      ${g ? `<button class="cr-btn cash" id="mnCash" ${k ? '' : 'disabled'}><b>${k ? `Забрать ${coin(g.bet * minesMult(m, k))}` : 'Откройте клетку'}</b><small>${k ? x2(minesMult(m, k)) : `ставка ${coin(g.bet)}`}</small></button>`
+        : `<button class="cr-btn" id="mnStart"><b>Играть</b><small>${coin(MI.bet)} · ${MI.m} ${A().plural(MI.m, 'мина', 'мины', 'мин')}</small></button>
+      <div class="cr-bet w-glass">
+        <div class="cr-row"><span>Ставка, ${A().curSym()}</span><span>Мин</span></div>
+        <div class="cr-row">
+          <div class="cr-amount"><button data-mbet="half">½</button><input id="mnBet" inputmode="decimal" value="${fmtIn(MI.bet)}"><button data-mbet="x2">×2</button></div>
+          <div class="cr-amount"><button data-mm="-1">−</button><input id="mnM" inputmode="numeric" value="${MI.m}"><button data-mm="1">+</button></div>
+        </div>
+        <div class="cr-quick">${[1, 3, 5, 10, 24].map(n => `<button data-mset="${n}" class="${n === MI.m ? 'on' : ''}">${n} ${A().plural(n, 'мина', 'мины', 'мин')}</button>`).join('')}</div>
+      </div>`}
+    </div>`);
+    A().$('[data-mn-help]').onclick = () => A().modal('Минёр', `<div class="free-help"><b>Открывайте клетки и не попадите на мину</b><ol>
+      <li>Выберите ставку и сколько мин спрятать на поле 5×5 — от ${MN.MIN} до ${MN.MAX}.</li>
+      <li>Каждая открытая безопасная клетка увеличивает множитель. Больше мин — быстрее растёт.</li>
+      <li>Нажмите «Забрать» в любой момент. Попали на мину — ставка сгорает.</li>
+      <li>Где мины, решает сервер в начале раунда — и не меняет.</li></ol><button class="btn btn-accent" id="mnOk">Понятно</button></div>`, mm => { A().$('#mnOk', mm).onclick = A().closeModal; });
+    if (g) {
+      A().$('#mnCash').onclick = minesCash;
+      document.querySelectorAll('[data-mn]').forEach(b => { b.onclick = () => minesOpen(+b.dataset.mn); });
+      return;
+    }
+    const bet = A().$('#mnBet'), mi = A().$('#mnM');
+    bet.addEventListener('change', () => { MI.bet = Math.max(MN.MIN_BET, toCoins(numIn(bet))); minesPage(); });
+    mi.addEventListener('change', () => { MI.m = Math.max(MN.MIN, Math.min(MN.MAX, Math.round(numIn(mi)) || 3)); minesPage(); });
+    document.querySelectorAll('[data-mbet]').forEach(b => { b.onclick = () => { MI.bet = b.dataset.mbet === 'half' ? Math.max(MN.MIN_BET, MI.bet / 2) : Math.min(MN.MAX_BET, MI.bet * 2); minesPage(); }; });
+    document.querySelectorAll('[data-mm]').forEach(b => { b.onclick = () => { MI.m = Math.max(MN.MIN, Math.min(MN.MAX, MI.m + +b.dataset.mm)); minesPage(); }; });
+    document.querySelectorAll('[data-mset]').forEach(b => { b.onclick = () => { MI.m = +b.dataset.mset; minesPage(); }; });
+    A().$('#mnStart').onclick = () => A().requireLogin(() => {
+      if (MI.busy) return;
+      const b = Math.round(MI.bet * 100) / 100;
+      if (b > A().S.balance) return A().toast('Недостаточно средств', 'error');
+      MI.busy = true;
+      A().api('mines_start', { bet: b, mines: MI.m }).then(d => {
+        MI.busy = false;
+        if (!d.ok) return A().netToast(d);
+        MI.end = null; A().haptic('medium'); minesPage();
+      });
+    });
+  }
+  function minesOpen(cell) {
+    if (MI.busy) return;
+    MI.busy = true;
+    const el = document.querySelector(`[data-mn="${cell}"]`); if (el) el.classList.add('wait');
+    A().api('mines_open', { cell }).then(d => {
+      MI.busy = false;
+      if (!d.ok) { if (el) el.classList.remove('wait'); return A().netToast(d); }
+      if (d.boom) {
+        MI.end = { mines: d.mines, open: d.open, boom: cell };
+        A().beep(110, 0.35, 'sawtooth', 0.05); A().haptic('error');
+        A().toast('Мина! Ставка сгорела', 'error');
+      } else if (d.all) {
+        MI.end = { mines: d.mines, open: d.open };
+        A().sfxWin(); A().toast(`Все клетки открыты: +${A().money(d.amount)}`, 'success');
+      } else { A().beep(900 + d.open.length * 40, 0.05, 'triangle', 0.04); A().haptic('light'); }
+      minesPage();
+    });
+  }
+  function minesCash() {
+    if (MI.busy) return;
+    MI.busy = true;
+    A().api('mines_cash').then(d => {
+      MI.busy = false;
+      if (!d.ok) return A().netToast(d);
+      MI.end = { mines: d.mines, open: d.open };
+      A().sfxWin(); A().haptic('success');
+      A().toast(`Забрали ${x2(d.mult)}: +${A().money(d.amount)}`, 'success');
+      minesPage();
+    });
+  }
+
+  // =====================================================================================
+  // «Колесо»: shared spins, bets on colours
+  // =====================================================================================
+  const WH = R.WHEEL, SEGS = WH.LAYOUT.length, SEG_DEG = 360 / SEGS;
+  const WCOL = { g: '#4a5161', r: '#e5383b', b: '#3b82f6', y: '#ffc23a' };
+  const W = { bet: 50, st: null, off: 0, round: 0, angle: 0, spun: 0, busy: false };
+  function wheelSvg() {
+    const seg = i => {
+      const a0 = (i * SEG_DEG - 90) * Math.PI / 180, a1 = ((i + 1) * SEG_DEG - 90) * Math.PI / 180;
+      const p = (a, r) => `${(100 + r * Math.cos(a)).toFixed(2)} ${(100 + r * Math.sin(a)).toFixed(2)}`;
+      return `<path d="M${p(a0, 96)} A96 96 0 0 1 ${p(a1, 96)} L${p(a1, 70)} A70 70 0 0 0 ${p(a0, 70)}Z" fill="${WCOL[WH.LAYOUT[i]]}" stroke="#0b0c10" stroke-width=".8"/>`;
+    };
+    return `<svg viewBox="0 0 200 200" class="wh-svg"><g id="whRot">${Array.from({ length: SEGS }, (_, i) => seg(i)).join('')}<circle cx="100" cy="100" r="70" fill="#14151c"/></g>
+      <circle cx="100" cy="100" r="97" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2"/></svg>`;
+  }
+  function wheelPage() {
+    const { coin } = A();
+    page(`<div class="page wheel-page">
+      ${back}
+      <div class="cr-top"><div class="cr-hist" id="whHist"></div><button class="cr-ico" data-wh-help aria-label="Правила">?</button></div>
+      <div class="wh-stage w-glass">
+        <div class="wh-pointer"></div>
+        <div class="wh-wrap">${wheelSvg()}<div class="wh-center"><b id="whBig">…</b><small id="whSub">Подключаемся…</small></div></div>
+      </div>
+      <div class="cr-bet w-glass">
+        <div class="cr-row"><span>Ставка, ${A().curSym()}</span><span></span></div>
+        <div class="cr-amount"><button data-wbet="half">½</button><input id="whBet" inputmode="decimal" value="${fmtIn(W.bet)}"><button data-wbet="x2">×2</button></div>
+      </div>
+      <div class="wh-colors">${Object.entries(WH.COLORS).map(([c, v]) => `<button class="wh-col c-${c}" data-wc="${c}"><b>${v.x}×</b><span>${v.name}</span><small id="whT-${c}">${coin(0)}</small><em id="whM-${c}"></em></button>`).join('')}</div>
+      <div class="cr-players"><div class="cr-ph">Игроков <b id="whPlayers">0</b></div><div id="whList"><div class="cr-empty">Ставок пока нет — будьте первым!</div></div></div>
+    </div>`);
+    const bet = A().$('#whBet');
+    bet.addEventListener('input', () => { W.bet = toCoins(numIn(bet)); });
+    document.querySelectorAll('[data-wbet]').forEach(b => { b.onclick = () => { W.bet = b.dataset.wbet === 'half' ? Math.max(WH.MIN_BET, W.bet / 2) : Math.min(WH.MAX_BET, W.bet * 2); bet.value = fmtIn(W.bet); }; });
+    document.querySelectorAll('[data-wc]').forEach(b => { b.onclick = () => wheelBet(b.dataset.wc); });
+    A().$('[data-wh-help]').onclick = () => A().modal('Колесо', `<div class="free-help"><b>Угадайте цвет</b><ol>
+      <li>Колесо крутится само каждые ${(WH.BET_MS + WH.SPIN_MS) / 1000} секунд — ${WH.BET_MS / 1000} секунд на ставки.</li>
+      <li>Ставьте на один или несколько цветов: серый ×2, красный ×3, синий ×5, золото ×50.</li>
+      <li>Чем выше множитель, тем меньше таких секторов на колесе.</li>
+      <li>Где остановится колесо, сервер решает до ставок и не меняет.</li></ol><button class="btn btn-accent" id="whOk">Понятно</button></div>`, mm => { A().$('#whOk', mm).onclick = A().closeModal; });
+    W.spun = 0;
+    wheelPoll();
+    every(() => { if (!document.hidden) wheelPoll(); }, 700);
+    cancelAnimationFrame(raf);
+    const frame = () => { if (A().curPath() !== '/wheel') return; wheelTick(); raf = requestAnimationFrame(frame); };
+    raf = requestAnimationFrame(frame);
+  }
+  const wNow = () => Date.now() + W.off;
+  function wheelPoll() {
+    const t0 = Date.now();
+    A().api('wheel_state').then(d => {
+      if (!d.ok || A().curPath() !== '/wheel') return;
+      W.off = d.now - (t0 + Date.now()) / 2;
+      W.st = d;
+      if (d.settled && d.settled.win) { A().sfxWin(); A().haptic('success'); A().toast(`Колесо: ${WH.COLORS[d.settled.color].name} — +${A().money(d.settled.amount)}`, 'success'); }
+      const { coin, esc, avatarHtml, avaUrl } = A();
+      const hist = A().$('#whHist'); if (hist) hist.innerHTML = d.history.map(c => `<span class="wh-dot c-${c}">${WH.COLORS[c].x}×</span>`).join('');
+      Object.keys(WH.COLORS).forEach(c => {
+        const t = A().$('#whT-' + c), m = A().$('#whM-' + c);
+        if (t) t.innerHTML = coin(d.totals[c] || 0);
+        if (m) m.innerHTML = d.me && d.me[c] ? `Ваша: ${coin(d.me[c])}` : '';
+      });
+      const pl = A().$('#whPlayers'), list = A().$('#whList');
+      if (pl) pl.textContent = d.players;
+      if (list) list.innerHTML = d.bets.length ? d.bets.map(b => `<div class="cr-pl${b.win ? ' win' : b.win === 0 ? ' lost' : ''}">
+        ${avatarHtml(b.nick, b.ucolor || '#e5383b', 'cr-ava', avaUrl(b.id))}<span class="cr-who"><b>${esc(b.nick)}</b>${coin(b.bet)}</span>
+        <span class="wh-dot c-${b.color}">${WH.COLORS[b.color].x}×</span><span class="cr-win">${b.win ? coin(b.win) : ''}</span></div>`).join('')
+        : '<div class="cr-empty">Ставок пока нет — будьте первым!</div>';
+    });
+  }
+  // the wheel turns to the drawn segment in the spin time; the pointer is at the top
+  function wheelTick() {
+    const d = W.st, rot = A().$('#whRot');
+    if (!d || !rot) return;
+    const r = d.round, t = wNow(), big = A().$('#whBig'), sub = A().$('#whSub');
+    if (r.id !== W.round) { W.round = r.id; W.spun = 0; }
+    if (t < r.spin_at) {
+      big.textContent = Math.ceil((r.spin_at - t) / 1000) + '';
+      sub.textContent = 'Приём ставок';
+      document.querySelectorAll('[data-wc]').forEach(b => { b.disabled = false; });
+      rot.style.transform = `rotate(${W.angle}deg)`;
+    } else if (r.seg != null) {
+      document.querySelectorAll('[data-wc]').forEach(b => { b.disabled = true; });
+      const target = Math.ceil(W.angle / 360) * 360 + 360 * 5 - (r.seg + 0.5) * SEG_DEG;
+      if (W.spun !== r.id) { W.spun = r.id; W.from = W.angle; W.to = target; }
+      const dur = WH.SPIN_MS - 1500, p = Math.min(1, (t - r.spin_at) / dur), e = 1 - Math.pow(1 - p, 4);
+      const a = W.from + (W.to - W.from) * e;
+      rot.style.transform = `rotate(${a}deg)`;
+      if (p >= 1) {
+        W.angle = W.to % 360;
+        const c = WH.LAYOUT[r.seg];
+        big.textContent = WH.COLORS[c].x + '×'; big.style.color = WCOL[c] === '#4a5161' ? '#c9ced8' : WCOL[c];
+        sub.textContent = WH.COLORS[c].name;
+      } else { big.textContent = '…'; big.style.color = ''; sub.textContent = 'Крутится'; }
+    }
+  }
+  function wheelBet(color) {
+    if (W.busy) return;
+    A().requireLogin(() => {
+      const bet = Math.round(W.bet * 100) / 100;
+      if (!(bet >= WH.MIN_BET)) return A().toast(`Минимальная ставка ${A().money(WH.MIN_BET)}`, 'error');
+      if (bet > A().S.balance) return A().toast('Недостаточно средств', 'error');
+      W.busy = true;
+      A().api('wheel_bet', { color, bet }).then(d => {
+        W.busy = false;
+        if (!d.ok) return A().toast(d.error === 'late' ? 'Ставки на этот спин закрыты — дождитесь следующего' : A().gameErr(d), 'error');
+        A().haptic('medium');
+        wheelPoll();
+      });
+    });
+  }
+
+  // =====================================================================================
+  // «Плинко»
+  // =====================================================================================
+  const PL = R.PLINKO;
+  const P = { bet: 50, risk: 'mid', balls: 0 };
+  const bucketColor = m => (m >= 10 ? '#e5383b' : m >= 3 ? '#ff7a3d' : m >= 1.5 ? '#ffb340' : m >= 1 ? '#ffd166' : '#5aa9ff');
+  function plinkoPage() {
+    const { coin } = A();
+    const rows = PL.ROWS, mults = PL.RISK[P.risk];
+    page(`<div class="page plinko-page">
+      ${back}
+      <div class="mode-head"><h1 class="up-title">Плинко</h1><button class="pp-help" data-pl-help aria-label="Правила">?</button></div>
+      <div class="pl-board w-glass" id="plBoard">
+        ${Array.from({ length: rows }, (_, r) => Array.from({ length: r + 3 }, (_, i) => `<i class="pl-peg" style="left:${50 + (i - (r + 2) / 2) * (100 / (rows + 2))}%;top:${6 + r * (80 / rows)}%"></i>`).join('')).join('')}
+        <div class="pl-buckets">${mults.map((m, i) => `<span class="pl-b" id="plb${i}" style="--bc:${bucketColor(m)}">${m}×</span>`).join('')}</div>
+      </div>
+      <button class="cr-btn" id="plGo"><b>Бросить шарик</b><small>${coin(P.bet)}</small></button>
+      <div class="cr-bet w-glass">
+        <div class="cr-row"><span>Ставка, ${A().curSym()}</span><span>Риск</span></div>
+        <div class="cr-row">
+          <div class="cr-amount"><button data-pbet="half">½</button><input id="plBet" inputmode="decimal" value="${fmtIn(P.bet)}"><button data-pbet="x2">×2</button></div>
+          <div class="dep-seg pl-risk">${[['low', 'Низкий'], ['mid', 'Средний'], ['high', 'Высокий']].map(([k, l]) => `<button class="${P.risk === k ? 'on' : ''}" data-risk="${k}">${l}</button>`).join('')}</div>
+        </div>
+      </div>
+    </div>`);
+    const bet = A().$('#plBet');
+    bet.addEventListener('input', () => { P.bet = toCoins(numIn(bet)); A().$('#plGo small').innerHTML = coin(P.bet); });
+    document.querySelectorAll('[data-pbet]').forEach(b => { b.onclick = () => { P.bet = b.dataset.pbet === 'half' ? Math.max(PL.MIN_BET, P.bet / 2) : Math.min(PL.MAX_BET, P.bet * 2); bet.value = fmtIn(P.bet); A().$('#plGo small').innerHTML = coin(P.bet); }; });
+    document.querySelectorAll('[data-risk]').forEach(b => { b.onclick = () => { if (P.balls) return A().toast('Дождитесь, пока шарики упадут', 'error'); P.risk = b.dataset.risk; plinkoPage(); }; });
+    A().$('#plGo').onclick = plinkoDrop;
+    A().$('[data-pl-help]').onclick = () => A().modal('Плинко', `<div class="free-help"><b>Шарик падает — множитель решает удача</b><ol>
+      <li>Шарик проходит ${rows} рядов штырьков, на каждом уходит влево или вправо.</li>
+      <li>Внизу ячейки с множителями: по краям — крупные, в центре — мелкие.</li>
+      <li>Риск меняет множители: на высоком края до ${PL.RISK.high[0]}×, но центр — ${PL.RISK.high[6]}×.</li>
+      <li>Можно бросать несколько шариков подряд.</li></ol><button class="btn btn-accent" id="plOk">Понятно</button></div>`, mm => { A().$('#plOk', mm).onclick = A().closeModal; });
+  }
+  function plinkoDrop() {
+    A().requireLogin(() => {
+      const bet = Math.round(P.bet * 100) / 100;
+      if (!(bet >= PL.MIN_BET)) return A().toast(`Минимальная ставка ${A().money(PL.MIN_BET)}`, 'error');
+      if (bet > A().S.balance) return A().toast('Недостаточно средств', 'error');
+      P.balls++;
+      A().api('plinko', { bet, risk: P.risk }, true).then(async d => {
+        if (!d.ok) { P.balls--; return A().netToast(d); }
+        // the bet leaves the header at once; the payout comes when the ball lands
+        const S = A().S; S.balance = Math.round((S.balance - bet) * 100) / 100; A().renderHeader();
+        await dropBall(d.path);
+        P.balls--;
+        A().applyState(d.state);
+        const b = A().$('#plb' + d.bucket);
+        if (b) { b.classList.remove('hit'); void b.offsetWidth; b.classList.add('hit'); }
+        if (d.mult >= 1) A().beep(700 + Math.min(d.mult, 30) * 30, 0.08, 'triangle', 0.04); else A().beep(260, 0.06, 'sine', 0.03);
+        if (d.mult >= 3) { A().sfxWin(); A().toast(`Плинко ${d.mult}×: +${A().money(d.amount)}`, 'success'); }
+      });
+    });
+  }
+  // the ball goes down the pegs: one row at a time, left or right by the server's path
+  async function dropBall(path) {
+    const board = A().$('#plBoard');
+    if (!board) return;
+    const ball = document.createElement('i');
+    ball.className = 'pl-ball';
+    board.appendChild(ball);
+    const rows = PL.ROWS, step = 100 / (rows + 2);
+    let x = 50;
+    ball.style.left = x + '%'; ball.style.top = '0%';
+    await wait(30);
+    for (let r = 0; r < rows; r++) {
+      x += (path[r] ? 0.5 : -0.5) * step;
+      ball.style.left = x + '%'; ball.style.top = (6 + r * (80 / rows) + 80 / rows / 2) + '%';
+      if (document.hidden || !ball.isConnected) break;
+      A().beep(1600 + r * 30, 0.008, 'square', 0.01);
+      await wait(110);
+    }
+    ball.style.top = '92%';
+    await wait(140);
+    ball.remove();
+  }
+
   window.RUSTUP_MODES = {
     tiles,
     // called by the router with the new path: polls always stop; the rocket keeps flying only while its page is open
     leave: path => {
       timers.forEach(clearInterval); timers.clear();
-      if (path !== '/crash') { cancelAnimationFrame(raf); raf = 0; if (C.phase !== 'idle') { C.phase = 'idle'; C.busy = false; } C.queued = false; C.st = null; }
+      if (path !== '/crash' && path !== '/wheel') { cancelAnimationFrame(raf); raf = 0; if (C.phase !== 'idle') { C.phase = 'idle'; C.busy = false; } C.queued = false; C.st = null; }
     },
-    '/crash': crashPage, '/contract': contractPage, '/battles': battlesPage, battle: battlePage
+    '/crash': crashPage, '/contract': contractPage, '/battles': battlesPage, battle: battlePage,
+    '/mines': minesPage, '/wheel': wheelPage, '/plinko': plinkoPage
   };
   // contract slots: add from the inventory, remove from a slot; game switch
   document.addEventListener('click', e => {
