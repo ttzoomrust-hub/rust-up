@@ -163,12 +163,18 @@
     expired: 'Срок промокода истёк — новый придёт в бота в 15:00 МСК', limit: 'Активации закончились — ждите новый промокод завтра в 15:00 МСК',
     done: 'Уже получено', empty: 'Пока пусто', mix: 'NFT-подарки и скины выводятся отдельно', busy: 'Сервер занят, попробуйте ещё раз',
     noacc: 'Профиль ещё загружается, попробуйте через секунду',
+    twin: 'Бонусы доступны только одному аккаунту на устройстве. Если это ошибка — напишите в поддержку',
+    active: 'Ракетка ещё летит', noround: 'Раунд уже закончился', bet: 'Неверная ставка', count: 'В контракт — от 3 до 10 предметов',
+    closed: 'Баттл уже закрыт', already: 'Вы уже в этом баттле', full: 'Все места заняты', owner: 'Это может только создатель баттла', case: 'Кейс не найден',
     banned: 'Аккаунт заблокирован администрацией. Вопросы — @' + (window.RUSTUP_SUPPORT || 'rustuperhelp_bot')
   };
   const gameErr = d => GAME_ERR[d && d.error] || 'Не удалось выполнить — попробуйте ещё раз';
   function applyState(st) {
     S.balance = st.balance; S.inventory = st.inventory.filter(i => byName[i.name]); S.withdrawals = st.withdrawals;
     S.history = st.history; S.stats = st.stats; S.seeds = st.seeds; S.rewards = st.rewards; S.tx = st.tx || []; S.free = st.free || {};
+    const prevFire = S.fire;
+    S.fire = st.fire || null; S.crash = st.crash || null; S.crashLast = st.crashLast || [];
+    fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
     if (!S.user.color) S.user.color = AVA_COLORS[(u.id || 0) % AVA_COLORS.length];
@@ -178,15 +184,58 @@
   // unless defer is set (the upgrade wheel and the case roulette show the result first, then apply it)
   function api(action, extra = {}, defer = false) {
     return fetch(window.RUSTUP_API.replace(/\/$/, '') + '/api/game', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ initData: TG.initData, action, ...extra })
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ initData: TG.initData, action, ...(action === 'load' ? deviceMarks() : {}), ...extra })
     }).then(r => r.json()).then(d => {
       if (d && d.free) FREEC = d.free;   // friends counted for the free-case prizes that wait
+      if (d && action === 'load' && d.ok) S.twin = !!d.twin;
       if (d && d.state && !(defer && d.ok)) { applyState(d.state); renderHeader(); }
       if (d && d.error === 'items') refreshUpgrade();
       return d || { ok: false };
     }).catch(() => ({ ok: false, error: 'net' }));
   }
   const netToast = d => toast(d.error === 'net' ? 'Нет связи с сервером, попробуйте ещё раз' : gameErr(d), 'error');
+
+  // twin protection (bot/worker.js recordDevice): an id kept on this device and a fingerprint of the phone,
+  // sent with «load». Several Telegram accounts in one app share the id: only the oldest of them gets the free bonuses.
+  function deviceMarks() {
+    let dev = '';
+    try {
+      dev = localStorage.getItem('rustup_dev') || '';
+      if (!dev) { dev = randHex(16); localStorage.setItem('rustup_dev', dev); }
+    } catch (e) { /* storage blocked */ }
+    const n = navigator, sc = window.screen || {};
+    const parts = [n.userAgent, n.language, (n.languages || []).join(','), sc.width + 'x' + sc.height + 'x' + sc.colorDepth, window.devicePixelRatio,
+      Intl.DateTimeFormat().resolvedOptions().timeZone, n.hardwareConcurrency, n.deviceMemory, n.platform, n.maxTouchPoints].join('|');
+    // two FNV-1a hashes with different seeds — a stable id of the phone model and its settings, not of the person
+    const fnv = seed => { let h = seed >>> 0; for (let i = 0; i < parts.length; i++) { h ^= parts.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16).padStart(8, '0'); };
+    return { dev, fp: fnv(2166136261) + fnv(84696351) };
+  }
+
+  // ---------- «огонёк»: a case opened or a game played every Moscow day keeps the streak (bot/modes.js fireTick) ----------
+  const mskDayNum = t => Math.floor((t + 3 * 3600e3) / 864e5);
+  // n shown in the header: lit — played today, waiting — played yesterday (play today to keep it), 0 — lost
+  function fireNow() {
+    const f = S.fire, d = mskDayNum(Date.now());
+    if (!f || !f.n) return { n: 0, state: 'off' };
+    return f.d === d ? { n: f.n, state: 'lit' } : f.d === d - 1 ? { n: f.n, state: 'wait' } : { n: 0, state: 'off' };
+  }
+  function fireToast(prev, next) {
+    if (!gameReady || !next || (prev && prev.d === next.d)) return;
+    setTimeout(() => { haptic('success'); toast(next.n > 1 ? `🔥 Серия ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд!` : '🔥 Огонёк зажжён! Играйте каждый день, чтобы не потерять серию', 'success'); }, 1200);
+  }
+  const plural = (n, one, few, many) => (n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many);
+  function fireModal() {
+    const f = fireNow(), best = (S.fire && S.fire.best) || 0;
+    modal('Огонёк', `<div class="fire-modal ${f.state}">
+      <span class="fire-big">🔥<b>${f.n}</b></span>
+      <p>${f.state === 'lit' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> — сегодня огонёк уже горит. Приходите завтра!`
+        : f.state === 'wait' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> погаснет в полночь по МСК. Откройте любой кейс или сыграйте — и она продолжится.`
+        : 'Откройте любой кейс или сыграйте в любую игру — огонёк загорится. Играйте каждый день, чтобы серия росла.'}</p>
+      <div class="fire-rules"><span>✅ Апгрейд, Ракетка, Контракт, Кейс-баттл, любой кейс</span><span>❌ Пропустили день — серия начнётся заново</span></div>
+      ${best ? `<p class="muted">Рекорд: ${best} ${plural(best, 'день', 'дня', 'дней')}</p>` : ''}
+      <button class="btn btn-accent" id="fireGo">${f.state === 'lit' ? 'Понятно' : 'Играть'}</button></div>`,
+    m => { $('#fireGo', m).onclick = () => { closeModal(); if (f.state !== 'lit') location.hash = '#/'; }; });
+  }
 
   // ---------- Telegram Mini App ----------
   // Only active when opened from a Telegram bot (initData present); otherwise TG is null and the site works as usual.
@@ -939,7 +988,9 @@
     if (!S.user) {
       us.innerHTML = `<button class="btn btn-steam" data-login>${ICON.steam}<span>Войти</span></button>`;
     } else {
+      const fire = fireNow();
       us.innerHTML = `
+        <button class="fire-chip ${fire.state}" type="button" data-fire aria-label="Огонёк: серия дней">🔥<b>${fire.n}</b></button>
         <button class="balance${$('#curMenu') ? ' open' : ''}" type="button" data-cur-menu aria-label="Баланс и валюта" aria-haspopup="menu">${coin(S.balance)}<svg class="balance-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="btn btn-accent btn-pill btn-deposit" type="button" data-deposit>Пополнить</button>
         <a href="#/profile" aria-label="Профиль">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}</a>`;
@@ -1465,6 +1516,7 @@
     const t = e.target;
     if (t.closest('[data-login]')) return requireLogin();
     if (t.closest('[data-tg-bonus]')) return openTgBonus();
+    if (t.closest('[data-fire]')) return fireModal();
     if (t.closest('[data-deposit]')) { closeCurMenu(); return openDeposit(); }
     if (t.closest('[data-bell]')) { location.hash = '#/rewards'; return; }
     const sub = t.closest('[data-sub]');
@@ -1804,6 +1856,7 @@
           ${since ? `<span class="pf-meta">Играет с ${new Date(since).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>` : ''}
         </div>
         <div class="pf-balance"><span>Баланс</span><b>${coin(S.balance)}</b></div>
+        <button class="pf-fire fire-chip ${fireNow().state}" type="button" data-fire>🔥<b>${fireNow().n}</b><span>${plural(fireNow().n, 'день', 'дня', 'дней')} подряд${S.fire && S.fire.best ? ` · рекорд ${S.fire.best}` : ''}</span></button>
         <div class="pf-actions">
           <a class="btn btn-accent" href="#/wallet?tab=deposit">Пополнить</a>
           <a class="btn btn-ghost" href="#/inventory">Инвентарь</a>
@@ -2658,6 +2711,8 @@
       { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', share: 0.18, art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
       { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', share: 0.12, art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
       { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', share: 0.21, badge: 'FREE', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
+      // game modes (js/modes.js)
+      ...window.RUSTUP_MODES.tiles(),
       // Бонусы and Друзья are not games: no «playing» counter on them
       { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', share: 0, art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
       { href: '#/friends', cls: 'gc-friends', title: 'Друзья', share: 0, badge: 'NFT', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
@@ -2706,7 +2761,8 @@
     const game = new URLSearchParams(query || '').get('game');
     if (game && GAMES.some(g => g.id === game)) setGame(game);
     if (path === '/' && game) path = '/upgrade';
-    const navKey = path === '/upgrade' ? '/' : path.startsWith('/case/') ? '/cases' : path.startsWith('/earn') ? '/earn' : path;
+    const navKey = ['/upgrade', '/crash', '/contract', '/battles'].includes(path) || path.startsWith('/battle/') ? '/' : path.startsWith('/case/') ? '/cases' : path.startsWith('/earn') ? '/earn' : path;
+    if (window.RUSTUP_MODES) window.RUSTUP_MODES.leave(path);
     document.querySelectorAll('.nav-item[data-route]').forEach(a => a.classList.toggle('active', a.dataset.route === navKey));
     if (path !== '/upgrade') U.result = null;
     if (path !== '/') clearInterval(heroTimer);
@@ -2724,9 +2780,11 @@
       case '/inventory': inventoryPage(); break;
       case '/profile': profilePage(); break;
       case '/provably-fair': fairPage(); break;
+      // game modes live in js/modes.js
+      case '/crash': case '/contract': case '/battles': window.RUSTUP_MODES[path](); break;
       case '/tos': textPage('Условия использования', '<p>RUST UP — демонстрационный интерфейс. Баланс, скины и результаты виртуальные и не имеют денежной стоимости, их нельзя вывести или обменять.</p><p>Проект не связан с Valve, Steam и Facepunch Studios. Изображения предметов принадлежат их правообладателям.</p>'); break;
       case '/privacy': textPage('Политика конфиденциальности', '<p>Демо-версия не отправляет данные на сервер. Ник, баланс, инвентарь и история хранятся только в localStorage вашего браузера. Очистка данных сайта полностью удаляет их.</p>'); break;
-      default: if (path.startsWith('/case/')) casePage(path.slice(6)); else homePage();
+      default: if (path.startsWith('/case/')) casePage(path.slice(6)); else if (path.startsWith('/battle/')) window.RUSTUP_MODES.battle(path.slice(8)); else homePage();
     }
     window.scrollTo({ top: 0 });
   }
@@ -2749,6 +2807,15 @@
     return;
   }
 
+  // what js/modes.js (Ракетка, Контракты, Кейс-баттлы) uses from here
+  window.RUSTUP_APP = {
+    get S() { return S; }, $, esc, coin, coinInt, money, fmtInt, card, byName, skinOf, imgCls, ICON, GAMES, CASES, PAID_CASES,
+    caseById, casePrice, caseArt, caseItems, rollCase, rollCell, invItem, avatarHtml, avaUrl, api, toast, netToast, gameErr, modal, closeModal,
+    sfxWin, beep, haptic, bumpBalance, renderHeader, requireLogin, setGame, rand, plural, curPath, tgUser,
+    perCoin: () => CURRENCIES[curId()].perCoin(), curSym: () => CURRENCIES[curId()].sym,
+    applyState: st => { applyState(st); renderHeader(); },
+    get online() { return online; }
+  };
   window.addEventListener('hashchange', route);
   renderHeader();
   initFeed();

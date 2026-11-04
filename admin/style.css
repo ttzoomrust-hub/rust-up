@@ -130,3 +130,12 @@ textarea { font: inherit; color: inherit; }
 .toast.error { border-color: rgba(255,79,74,.5); }
 .toast.out { opacity: 0; transform: translateY(-8px); }
 .adjust .dep-btn { width: 100%; margin-top: 8px; }
+/* by days table, twins (2026-11-05) */
+.days .dt-row { display: grid; grid-template-columns: 1.1fr 1fr .8fr .9fr .7fr 1.1fr; gap: 6px; align-items: center; padding: 8px 4px; border-top: 1px solid rgba(255,255,255,.06); font-size: 13px; }
+.days .dt-head { border-top: 0; color: var(--muted, #9aa1ab); font-size: 11px; }
+.days .dt-row b { font-weight: 700; }
+.days .dt-row b small { display: block; font-weight: 400; font-size: 10px; color: var(--muted, #9aa1ab); }
+.days p { margin: 8px 4px 0; font-size: 11px; }
+.twin { display: flex; flex-direction: column; gap: 8px; padding: 14px; margin: 12px 0; border: 1px solid rgba(229,56,59,.45); }
+.twin.ok { border-color: rgba(79,194,122,.45); }
+.twin span { font-size: 13px; color: var(--muted, #9aa1ab); }

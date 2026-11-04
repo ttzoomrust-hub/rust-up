@@ -14,6 +14,13 @@ window.RUSTUP_RULES = {
   DAILY_RUB: 15,
   DAILY_GROWTH: 0.02,
   DAILY_DAYS: 7,
+  // «Ракетка» (crash): the multiplier grows as e^(K·ms) from the start; the crash point is RTP / u (u uniform 0..1),
+  // so cashing out at any x pays RTP on average. Bets in coins.
+  CRASH: { RTP: 0.96, K: 0.0001, MAX: 1000, MIN_BET: 1, MAX_BET: 50000 },
+  // contracts: MIN..MAX items of one game → one item worth (inputs value × multiplier); [multiplier, chance %], ~95% on average
+  CONTRACT: { MIN: 3, MAX: 10, MULTS: [[0.3, 30], [0.6, 25], [1, 20], [1.5, 15], [2.5, 7.5], [4, 2.5]] },
+  // case battles: 2–4 players open the same paid case for ROUNDS rounds, the biggest total takes every item; empty seats → bots
+  BATTLE: { SIZES: [2, 3, 4], ROUNDS: 5, OPEN_MS: 15 * 60 * 1000 },
   CASHBACK: 0.02,         // share of a lost upgrade stake / of a paid case that paid out less than its price
   CASE_RTP: 0.9,          // average win is 90% of a paid case's price
   TIMER_MS: 15 * 60 * 1000,

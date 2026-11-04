@@ -15,7 +15,7 @@
     const m = Math.round((Date.now() - t) / 60000);
     return m < 2 ? 'сейчас в игре' : m < 60 ? `${m} мин назад` : m < 1440 ? `${Math.round(m / 60)} ч назад` : new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
-  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'] };
+  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'] };
 
   function toast(text, kind = '') {
     const li = document.createElement('li');
@@ -61,11 +61,27 @@
         ${tile('Заблокировано', int(t.banned), '', t.banned ? 'warn' : '')}
       </section>
       <div class="seg glass"><button class="${days === 14 ? 'on' : ''}" data-days="14">14 дней</button><button class="${days === 30 ? 'on' : ''}" data-days="30">30 дней</button></div>
+      ${dayTable(STATS.series)}
+      ${chart(STATS.series, 'peak', '#5aa9ff', 'Пик онлайна за день')}
+      ${chart(STATS.series, 'returned', '#b07cff', 'Вернулись (заходили и раньше)')}
       ${chart(STATS.series, 'users', '#e5383b', 'Новые пользователи')}
       ${chart(STATS.series, 'players', '#ffd166', 'Игроков с выигрышами')}
       ${chart(STATS.series, 'drops', '#4fc27a', 'Выигрышей (апгрейды и кейсы)')}
       <section class="glass list"><h3>Топ по балансу</h3>${STATS.topBalance.map((r, i) => `<button class="row" data-user="${r.id}"><span class="n">${i + 1}</span><span class="w">${who(r)}</span><b>${rub(r.balance)}</b></button>`).join('') || '<p class="muted">Пусто</p>'}</section>
-      <section class="glass list"><h3>Топ по приглашениям</h3>${STATS.topRefs.map((r, i) => `<button class="row" data-user="${r.id}"><span class="n">${i + 1}</span><span class="w">${who(r)}</span><b>${int(r.active)} / ${int(r.n)}</b></button>`).join('') || '<p class="muted">Пока никого</p>'}</section>`;
+      <section class="glass list"><h3>Топ по приглашениям</h3>${STATS.topRefs.map((r, i) => `<button class="row" data-user="${r.id}"><span class="n">${i + 1}</span><span class="w">${who(r)}</span><b>${int(r.active)} / ${int(r.n)}</b></button>`).join('') || '<p class="muted">Пока никого</p>'}</section>
+      <section class="glass list"><h3>Твинки <small class="muted">— без бонусов, не считаются друзьями</small></h3>${(STATS.twins || []).map(r => `<button class="row" data-user="${r.id}">
+        <span class="w">${who(r)}<small class="sub">твинк ${esc(r.main_name || r.twin_of)}${r.main_username ? ` @${esc(r.main_username)}` : ''} · ${esc(r.twin_why || '')}</small></span><em class="ban">ТВИНК</em></button>`).join('') || '<p class="muted">Пока не найдено</p>'}</section>`;
+  }
+  // last 7 days: online peak, players, returned, retention of the newcomers (next day / in a week)
+  function dayTable(series) {
+    const rows = series.slice(-7).reverse();
+    const p = v => (v == null ? '—' : v + '%');
+    return `<section class="glass list days"><h3>По дням</h3>
+      <div class="dt-row dt-head"><span>День</span><span>Пик онлайна</span><span>Играли</span><span>Вернулись</span><span>Новые</span><span>D1 / D7</span></div>
+      ${rows.map(s => `<div class="dt-row"><span>${new Date(s.day).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}</span>
+        <b title="${s.peakAt ? new Date(s.peakAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : ''}">${int(s.peak)}${s.peakAt ? `<small>${new Date(s.peakAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</small>` : ''}</b>
+        <b>${int(s.active)}</b><b>${int(s.returned)}</b><b>${int(s.users)}</b><b>${p(s.d1)} / ${p(s.d7)}</b></div>`).join('')}
+      <p class="muted">Вернулись — играли в этот день и заходили раньше. D1 / D7 — сколько новичков дня вернулось на следующий день / через неделю. Считается с момента обновления.</p></section>`;
   }
   function loadStats() {
     api('stats', { days }).then(d => {
@@ -128,6 +144,9 @@
         <button class="btn good dep-btn" data-adj="dep">💳 Пополнение (+10% пригласившему)</button>
         ${a ? '' : '<p class="muted">Игрок ещё не заходил в новую версию: выдача дойдёт, когда он откроет игру; списывать пока нечего.</p>'}
       </div>
+      ${u.twin_of ? `<div class="twin glass ${u.twin_ok ? 'ok' : ''}"><b>${u.twin_ok ? 'Был отмечен как твинк — снято' : 'Твинк'}</b>
+        <span>Второй аккаунт на одном ${esc(u.twin_why || 'устройстве')} с <button class="link" data-user="${u.twin_of}">ID ${u.twin_of}</button>. ${u.twin_ok ? '' : 'Не получает бонусы, не считается другом, вывод закрыт.'}</span>
+        <button class="btn ${u.twin_ok ? 'ghost' : 'good'}" data-twin="${u.twin_ok ? 0 : 1}">${u.twin_ok ? 'Снова считать твинком' : 'Это не твинк'}</button></div>` : ''}
       <button class="btn ${u.banned ? 'good' : 'danger'} wide" data-ban="${u.banned ? 0 : 1}">${u.banned ? 'Разблокировать' : 'Заблокировать'}</button>
       ${a && a.topItems.length ? `<h3>Дорогие предметы</h3><div class="items">${a.topItems.map(i => `<span>${esc(i.name)} <b>${rub(i.price)}</b></span>`).join('')}</div>` : ''}
       <h3>Операции</h3>
@@ -244,6 +263,11 @@
     if ('close' in t.dataset) return closeSheet();
     if (t.dataset.adj) return adjust(t.dataset.adj === 'dep' ? 'dep' : +t.dataset.adj);
     if (t.dataset.ban) return ban(t.dataset.ban === '1');
+    if (t.dataset.twin) return api('twin', { id: CUR.user.id, ok: t.dataset.twin === '1' }).then(d => {
+      if (!d.ok) return toast('Не удалось', 'error');
+      toast(t.dataset.twin === '1' ? 'Отмечен как не твинк' : 'Снова твинк', 'success');
+      openUser(CUR.user.id); STATS = null; loadStats();
+    });
   });
 
   // ---------- demo data for previews ----------
@@ -251,7 +275,9 @@
     const now = Date.now(), day = 864e5;
     if (path === 'stats') return { ok: true, rate: 1.63, me: '@NezoxFit',
       totals: { users: 1284, players: 803, online: 17, new24: 46, banned: 2, balance: 2450000, refs: 412 }, today: { n: 214, v: 380000, p: 61 },
-      series: Array.from({ length: days }, (_, i) => ({ day: now - (days - 1 - i) * day, users: Math.round(30 + 25 * Math.sin(i / 2) + i * 2), players: Math.round(40 + 15 * Math.sin(i / 3 + 1) + i), drops: Math.round(150 + 60 * Math.sin(i / 2.5) + i * 4) })),
+      series: Array.from({ length: days }, (_, i) => ({ day: now - (days - 1 - i) * day, users: Math.round(30 + 25 * Math.sin(i / 2) + i * 2), players: Math.round(40 + 15 * Math.sin(i / 3 + 1) + i), drops: Math.round(150 + 60 * Math.sin(i / 2.5) + i * 4),
+        peak: Math.round(18 + 8 * Math.sin(i / 1.7) + i), peakAt: now - (days - 1 - i) * day - 3 * 3600e3, active: Math.round(90 + 30 * Math.sin(i / 2) + i * 3), returned: Math.round(55 + 20 * Math.sin(i / 2.2) + i * 2), d1: i < days - 1 ? 30 + (i % 5) * 3 : null, d7: i < days - 7 ? 12 + (i % 4) : null })),
+      twins: [{ id: 106, name: 'Вася 2', username: 'vasya_alt', twin_of: 100, twin_why: 'устройство', main_name: 'Вася', main_username: 'vasya' }],
       topBalance: [['Олег', 'oleg_rust', 920000], ['Neon', null, 615000], ['kotik', 'kotik_rust', 402000]].map(([nick, username, balance], i) => ({ id: 100 + i, nick, username, balance })),
       topRefs: [['Masha', 'masha', 48, 61], ['Ivan', 'ivan_rust', 22, 30]].map(([nick, username, active, n], i) => ({ id: 200 + i, nick, username, active, n })),
       log: [{ admin: '@NezoxFit', action: 'give', user_id: 100, amount: 5000, note: 'за конкурс', t: now - 3600e3 }, { admin: '@NezoxFit', action: 'ban', user_id: 105, amount: null, note: 'накрутка', t: now - 86e5 }] };
