@@ -753,7 +753,7 @@
     box.innerHTML = WF.tab === 'withdraw' ? walletWithdraw() : WF.tab === 'history' ? walletHistory() : walletDeposit();
     // RUSTUP_STARS_READONLY_V2_MOUNT: read-only, no purchases or credits.
     if (WF.tab === 'deposit' && WF.dep === 'gifts')
-      window.RUSTUP_STARS_FIXED_MARKET_V3?.render(box);
+      window.RUSTUP_STARS_VARIABLE_V4?.render(box);
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
