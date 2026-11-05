@@ -4,6 +4,8 @@
   'use strict';
   const R = window.RUSTUP_RULES, CR = R.CRASH, CT = R.CONTRACT, BT = R.BATTLE;
   const A = () => window.RUSTUP_APP;
+  // «Похвастаться» after a good win (js/extras.js)
+  const brag = o => window.RUSTUP_EXTRAS && window.RUSTUP_EXTRAS.brag(o);
   const page = html => { A().$('#page').innerHTML = html; };
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const timers = new Set();
@@ -125,7 +127,7 @@
       }
       C.st = d; C.me = d.me || (C.me && C.me.round === r.id ? C.me : null);
       if (d.me) C.me = { ...d.me, round: r.id };
-      if (d.settled && d.settled.win) { A().sfxWin(); A().toast(`Автовывод на ${x2(d.settled.mult)}: +${A().money(d.settled.amount)}`, 'success'); }
+      if (d.settled && d.settled.win) { A().sfxWin(); A().toast(`Автовывод на ${x2(d.settled.mult)}: +${A().money(d.settled.amount)}`, 'success'); brag({ value: d.settled.amount, mult: d.settled.mult, game: 'Ракетка', title: 'РАКЕТКА' }); }
       // the bet the player asked for while the rocket was flying goes in as soon as bets open
       if (C.queued && !C.me && !C.busy && phaseOf(r) === 'bet') { C.queued = false; placeBet(); }
       if (r.crashed && C.boomed !== r.id) boom(r);
@@ -254,6 +256,7 @@
         C.cashed = d.mult; C.amount = d.amount;
         A().sfxWin(); A().haptic('success');
         A().toast(`Забрали на ${x2(d.mult)}: +${A().money(d.amount)}`, 'success');
+        brag({ value: d.amount, mult: d.mult, game: 'Ракетка', title: 'РАКЕТКА' });
         const st = A().$('#crashStage'); if (st) st.classList.add('won');
       }
       paintBtn();
@@ -326,6 +329,7 @@
       const s = A().byName[d.name];
       A().applyState(d.state);
       A().sfxWin(); A().haptic('success');
+      if (d.mult >= 1) brag({ value: s.price, name: d.name, mult: d.mult, title: 'КОНТРАКТ' });
       A().modal(d.mult >= 1 ? 'Контракт в плюс!' : 'Контракт выполнен', `
         <div class="case-win">${A().card(s, { static: true })}</div>
         <p class="note" style="text-align:center">Вклад ${A().coin(d.value)} → <b>${A().coin(s.price)}</b> (x${d.mult.toFixed(2)}). Предмет уже в инвентаре.</p>
@@ -484,7 +488,7 @@
     B.playing = false;
     const w = b.players[res.winner], sum = res.totals.reduce((a, t) => a + t, 0);
     A().api('load');
-    if (w.id === me) { A().sfxWin(); A().haptic('success'); }
+    if (w.id === me) { A().sfxWin(); A().haptic('success'); setTimeout(() => brag({ value: sum, game: 'Кейс-баттл', title: 'КЕЙС-БАТТЛ' }), 1500); }
     A().modal(w.id === me ? 'Вы победили!' : w.bot ? 'Победил бот' : `Победил ${esc(w.name)}`, `
       <div class="bt-result">${seatAva(w)}<b>${esc(w.name)}</b><span>${coin(res.totals[res.winner])}</span></div>
       <p class="note" style="text-align:center">${w.id === me ? `Все предметы на ${coin(sum)} — в вашем инвентаре.` : 'В этот раз не повезло — попробуйте ещё.'}</p>
@@ -571,6 +575,7 @@
       } else if (d.all) {
         MI.end = { mines: d.mines, open: d.open };
         A().sfxWin(); A().toast(`Все клетки открыты: +${A().money(d.amount)}`, 'success');
+        brag({ value: d.amount, mult: d.mult, game: 'Минёр', title: 'МИНЁР' });
       } else { A().beep(900 + d.open.length * 40, 0.05, 'triangle', 0.04); A().haptic('light'); }
       minesPage();
     });
@@ -584,6 +589,7 @@
       MI.end = { mines: d.mines, open: d.open };
       A().sfxWin(); A().haptic('success');
       A().toast(`Забрали ${x2(d.mult)}: +${A().money(d.amount)}`, 'success');
+      brag({ value: d.amount, mult: d.mult, game: 'Минёр', title: 'МИНЁР' });
       minesPage();
     });
   }
@@ -642,7 +648,7 @@
       if (!d.ok || A().curPath() !== '/wheel') return;
       W.off = d.now - (t0 + Date.now()) / 2;
       W.st = d;
-      if (d.settled && d.settled.win) { A().sfxWin(); A().haptic('success'); A().toast(`Колесо: ${WH.COLORS[d.settled.color].name} — +${A().money(d.settled.amount)}`, 'success'); }
+      if (d.settled && d.settled.win) { A().sfxWin(); A().haptic('success'); A().toast(`Колесо: ${WH.COLORS[d.settled.color].name} — +${A().money(d.settled.amount)}`, 'success'); brag({ value: d.settled.amount, mult: WH.COLORS[d.settled.color].x, game: 'Колесо', title: 'КОЛЕСО' }); }
       const { coin, esc, avatarHtml, avaUrl } = A();
       const hist = A().$('#whHist'); if (hist) hist.innerHTML = d.history.map(c => `<span class="wh-dot c-${c}">${WH.COLORS[c].x}×</span>`).join('');
       Object.keys(WH.COLORS).forEach(c => {
@@ -752,7 +758,7 @@
         const b = A().$('#plb' + d.bucket);
         if (b) { b.classList.remove('hit'); void b.offsetWidth; b.classList.add('hit'); }
         if (d.mult >= 1) A().beep(700 + Math.min(d.mult, 30) * 30, 0.08, 'triangle', 0.04); else A().beep(260, 0.06, 'sine', 0.03);
-        if (d.mult >= 3) { A().sfxWin(); A().toast(`Плинко ${d.mult}×: +${A().money(d.amount)}`, 'success'); }
+        if (d.mult >= 3) { A().sfxWin(); A().toast(`Плинко ${d.mult}×: +${A().money(d.amount)}`, 'success'); brag({ value: d.amount, bet: d.bet, mult: d.mult, game: 'Плинко', title: 'ПЛИНКО' }); }
       });
     });
   }

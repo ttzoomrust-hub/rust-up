@@ -72,6 +72,47 @@ window.RUSTUP_RULES = {
     { id: 'nft-collector', game: 'nft', name: 'Коллекционер', color: '#2ea6e0', tiers: [[300, 500, 6, 70], [500, 1500, 3, 22], [1500, 5000, 2, 7], [5000, 20000, 1, 1]] },
     { id: 'nft-fragment', game: 'nft', name: 'Fragment', color: '#ffd166', tiers: [[1000, 4000, 6, 70], [4000, 15000, 3, 22], [15000, 60000, 2, 7], [60000, 300000, 1, 1]] }
   ],
+  // ---------- progress (2026-11-06): levels, quests, the weekly tournament, the season (server: bot/progress.js) ----------
+  // Every bet of every game counts: XP = XP_PLAY + 1 per ruble of the bet (a free case of the day gives XP_PLAY).
+  // Level L → L+1 needs round(BASE × L^1.5) XP; reaching level L pays min(RUB_MAX, RUB_PER × L) ₽, plus ITEMS[L] if set.
+  LEVELS: { XP_PLAY: 2, BASE: 60, RUB_PER: 2, RUB_MAX: 100, ITEMS: { 10: 'Мишка', 20: 'Букет', 30: 'Кубок', 40: 'Кольцо', 50: 'Алмаз' },
+    // badge of the level: [from level, title, color]
+    TIERS: [[1, 'Новичок', '#9aa0aa'], [5, 'Бывалый', '#4fc27a'], [10, 'Охотник', '#4f86e8'], [20, 'Мастер', '#a46cf0'], [30, 'Легенда', '#ffd166'], [50, 'Бог апгрейда', '#ff4d4f']] },
+  // quests: N of each list are picked for the Moscow day / the week (Mon–Sun) the same for everybody.
+  // t: play — any bet · wager — rubles bet · win — upgrade won · upgrade|case|crash|mines|wheel|plinko|contract|battle — bets there ·
+  // dailycase — a case of the day. Reward: rub ₽ + XP + season snowflakes (SEASON_*); every daily quest done → +DAILY_ALL_RUB ₽.
+  QUESTS: { DAILY_N: 3, WEEKLY_N: 3, DAILY_ALL_RUB: 10, XP_D: 30, XP_W: 150, SEASON_D: 25, SEASON_W: 120,
+    DAILY: [
+      { id: 'd-play', t: 'play', n: 5, rub: 5, title: 'Сыграйте 5 раз в любые игры' },
+      { id: 'd-up', t: 'upgrade', n: 3, rub: 5, title: 'Сделайте 3 апгрейда' },
+      { id: 'd-win', t: 'win', n: 1, rub: 8, title: 'Выиграйте апгрейд' },
+      { id: 'd-case', t: 'case', n: 2, rub: 6, title: 'Откройте 2 платных кейса' },
+      { id: 'd-crash', t: 'crash', n: 3, rub: 5, title: 'Сделайте 3 ставки в Ракетке' },
+      { id: 'd-mines', t: 'mines', n: 2, rub: 5, title: 'Сыграйте 2 раунда в Минёре' },
+      { id: 'd-wheel', t: 'wheel', n: 3, rub: 5, title: 'Сделайте 3 ставки в Колесе' },
+      { id: 'd-plinko', t: 'plinko', n: 10, rub: 5, title: 'Бросьте 10 шаров в Плинко' },
+      { id: 'd-wager', t: 'wager', n: 100, rub: 7, title: 'Поставьте в сумме 100 ₽' },
+      { id: 'd-day', t: 'dailycase', n: 1, rub: 3, title: 'Откройте кейс дня' },
+      { id: 'd-contract', t: 'contract', n: 1, rub: 6, title: 'Заключите контракт' }
+    ],
+    WEEKLY: [
+      { id: 'w-play', t: 'play', n: 60, rub: 40, title: 'Сыграйте 60 раз в любые игры' },
+      { id: 'w-wager', t: 'wager', n: 2000, rub: 60, title: 'Поставьте в сумме 2 000 ₽' },
+      { id: 'w-win', t: 'win', n: 10, rub: 50, title: 'Выиграйте 10 апгрейдов' },
+      { id: 'w-case', t: 'case', n: 15, rub: 40, title: 'Откройте 15 платных кейсов' },
+      { id: 'w-battle', t: 'battle', n: 3, rub: 30, title: 'Сыграйте 3 кейс-баттла' },
+      { id: 'w-crash', t: 'crash', n: 25, rub: 35, title: 'Сделайте 25 ставок в Ракетке' },
+      { id: 'w-day', t: 'dailycase', n: 5, rub: 25, title: 'Откройте кейс дня 5 раз' }
+    ] },
+  // weekly tournament (Mon 00:00 – Sun 24:00 MSK): 1 point per ruble bet in any game; places 1..10 get PRIZES_RUB ₽ at the end
+  // of the week (MIN_PTS points at least), the results go to the bot and the @up_rust channel
+  TOUR: { PRIZES_RUB: [1000, 600, 400, 250, 200, 150, 120, 100, 80, 60], MIN_PTS: 100 },
+  // the season: snowflakes ❄ = 1 per ruble bet + quests; every STEP snowflakes is a level of the season pass, its reward is taken
+  // by hand (also CLAIM_MS after the end); the season top gets TOP_RUB ₽ at the end. Dates are ms (00:00 MSK).
+  SEASON: { id: 'winter26', name: 'Зимний сезон', start: 1793912400000, end: 1799960400000, STEP: 300, CLAIM_MS: 7 * 24 * 60 * 60 * 1000, MIN_PTS: 300,
+    TOP_RUB: [5000, 3000, 2000, 1000, 1000, 500, 500, 500, 500, 500],
+    PASS: [{ rub: 5 }, { rub: 10 }, { item: 'Сердце' }, { rub: 15 }, { item: 'Роза' }, { rub: 20 }, { item: 'Подарок' }, { rub: 25 }, { item: 'Торт' }, { rub: 40 },
+      { item: 'Шампанское' }, { rub: 50 }, { item: 'Ракета' }, { rub: 60 }, { item: 'Мишка' }, { rub: 75 }, { item: 'Букет' }, { rub: 100 }, { item: 'Кубок' }, { item: 'Алмаз' }] },
   // free every 15 minutes, no conditions: cheap loot from all three games, nothing above 500 coins; per-game item count in a 'mix' tier
   TIMER_CASE: { id: 'quarter', game: 'mix', name: 'Кейс 15 минут', color: '#4fc27a', timer: true, tiers: [[1, 15, 3, 72], [15, 60, 2, 22], [60, 300, 1, 5.5], [300, 500.01, 1, 0.5]] }
 };

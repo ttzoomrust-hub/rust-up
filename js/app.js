@@ -177,6 +177,8 @@
     twin: 'Бонусы доступны только одному аккаунту на устройстве. Если это ошибка — напишите в поддержку',
     active: 'Ракетка ещё летит', noround: 'Раунд уже закончился', bet: 'Неверная ставка', count: 'В контракт — от 3 до 10 предметов',
     closed: 'Баттл уже закрыт', already: 'Вы уже в этом баттле', full: 'Все места заняты', owner: 'Это может только создатель баттла', case: 'Кейс не найден',
+    notyet: 'Задание ещё не выполнено', quest: 'Задания уже сменились — откройте страницу заново', season: 'Сезон закончился',
+    nowin: 'Этот выигрыш уже нельзя показать', share: 'Не удалось отправить карточку — попробуйте ещё раз', own: 'Это ваш выигрыш', gone: 'Выигрыш уже ушёл из ленты',
     banned: 'Аккаунт заблокирован администрацией. Вопросы — @' + (window.RUSTUP_SUPPORT || 'rustuperhelp_bot')
   };
   const gameErr = d => GAME_ERR[d && d.error] || 'Не удалось выполнить — попробуйте ещё раз';
@@ -185,11 +187,14 @@
     S.history = st.history; S.stats = st.stats; S.seeds = st.seeds; S.rewards = st.rewards; S.tx = st.tx || []; S.free = st.free || {};
     const prevFire = S.fire;
     S.fire = st.fire || null; S.crash = st.crash || null; S.crashLast = st.crashLast || []; S.mines = st.mines || null; S.wheel = st.wheel || null;
+    // levels, quests, tournament, season (bot/progress.js, pages in js/extras.js)
+    S.lvl = st.lvl || { xp: 0 }; S.q = st.q || null; S.tour = st.tour || null; S.season = st.season || null; S.prizes = st.prizes || [];
     fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
     if (!S.user.color) S.user.color = AVA_COLORS[(u.id || 0) % AVA_COLORS.length];
     save();
+    if (window.RUSTUP_EXTRAS) window.RUSTUP_EXTRAS.onState(gameReady);
   }
   // one action on the server; the new state is applied before the promise resolves,
   // unless defer is set (the upgrade wheel and the case roulette show the result first, then apply it)
@@ -724,7 +729,7 @@
       const me = S.user && S.user.id;
       const row = (p, i) => `<div class="top-row${p.uid === me ? ' me' : ''}">
           <span class="top-place">${i + 1}</span>
-          ${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}
+          <span class="x-ava">${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}${window.RUSTUP_EXTRAS.lvlBadge(p.lvl, 'on-ava')}</span>
           <span class="top-who"><b>${esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b><small>${fmtInt(p.n)} ${p.n % 10 === 1 && p.n % 100 !== 11 ? 'выигрыш' : p.n % 10 >= 2 && p.n % 10 <= 4 && (p.n % 100 < 12 || p.n % 100 > 14) ? 'выигрыша' : 'выигрышей'}${p.bestName ? ` · лучший ${esc(p.bestName)}` : ''}</small></span>
           <span class="top-won">${coin(p.won)}</span></div>`;
       const podium = d.top.slice(0, 3);
@@ -989,11 +994,11 @@
         <button class="fire-chip ${fire.state}" type="button" data-fire aria-label="Огонёк: серия дней">🔥<b>${fire.n}</b></button>
         <button class="balance${$('#curMenu') ? ' open' : ''}" type="button" data-cur-menu aria-label="Баланс и валюта" aria-haspopup="menu">${coin(S.balance)}<svg class="balance-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="btn btn-accent btn-pill btn-deposit" type="button" data-deposit>Пополнить</button>
-        <a href="#/profile" aria-label="Профиль">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}</a>`;
+        <a class="hdr-ava" href="#/profile" aria-label="Профиль">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}${gameReady ? window.RUSTUP_EXTRAS.lvlBadge(window.RUSTUP_EXTRAS.myLevel().l, 'on-ava') : ''}</a>`;
     }
     document.querySelectorAll('.nav-item[data-route="/rewards"]').forEach(a => {
       a.querySelector('.nav-dot')?.remove();
-      if (S.user && (dailyReady() || (S.rewards.cashback || 0) >= 1)) a.insertAdjacentHTML('beforeend', '<span class="nav-dot"></span>');
+      if (S.user && (dailyReady() || (S.rewards.cashback || 0) >= 1 || (gameReady && window.RUSTUP_EXTRAS.claimable()))) a.insertAdjacentHTML('beforeend', '<span class="nav-dot"></span>');
     });
   }
 
@@ -1082,12 +1087,12 @@
   let best = null;
 
   function feedItem(d, cls = 'drop') {
-    return `<a class="${cls} rarity-${d.skin.rarity} game-${d.skin.game}${d.enter ? ' enter' : ''}" href="#/upgrade?game=${d.skin.game}" title="${esc(d.skin.name)} · ${esc(d.user)} · ${d.chance.toFixed(2)} %">
+    return `<a class="${cls} rarity-${d.skin.rarity} game-${d.skin.game}${d.enter ? ' enter' : ''}" href="#/upgrade?game=${d.skin.game}"${d.id ? ` data-id="${d.id}" data-uid="${d.uid}"` : ''} title="${esc(d.skin.name)} · ${esc(d.user)} · ${d.chance.toFixed(2)} %">
       <span class="drop-img"><img src="${d.skin.img}" alt="${esc(d.skin.name)}" draggable="false"></span>
       <span class="drop-info">
-        <span class="drop-user">${avatarHtml(d.user, d.color, 'mini-ava', avaUrl(d.uid))}<span>${esc(d.user)}</span></span>
+        <span class="drop-user">${avatarHtml(d.user, d.color, 'mini-ava', avaUrl(d.uid))}<span>${esc(d.user)}</span>${window.RUSTUP_EXTRAS.lvlBadge(d.lvl, 'mini')}</span>
         <span class="drop-price">${moneyInt(d.skin.price)}</span>
-      </span>
+      </span>${d.id ? window.RUSTUP_EXTRAS.reactHtml(d.id) : ''}
     </a>`;
   }
   function renderBest(enter) {
@@ -1107,7 +1112,7 @@
     if (!best || d.skin.price > best.skin.price) { best = d; renderBest(true); }
   }
   // a server row → a strip item; skins missing from this build's catalog are skipped
-  const fromServer = r => { const skin = byName[r.name]; return skin && { id: r.id, uid: r.uid, user: r.nick, color: r.color || AVA_COLORS[r.id % AVA_COLORS.length], skin, chance: r.chance || 100, t: r.t }; };
+  const fromServer = r => { const skin = byName[r.name]; return skin && { id: r.id, uid: r.uid, user: r.nick, color: r.color || AVA_COLORS[r.id % AVA_COLORS.length], skin, chance: r.chance || 100, t: r.t, lvl: r.lvl }; };
   // the server writes our win to the feed itself; pull the strip sooner than the regular poll
   // (the feed answer is cached for a few seconds, so ask twice)
   function reportDrops() {
@@ -1158,6 +1163,7 @@
     fetch(window.RUSTUP_API.replace(/\/$/, '') + '/api/feed').then(r => r.json()).then(d => {
       if (!d || !d.ok) return;
       realOnline = d.online || 0; realGames = d.games || {};
+      window.RUSTUP_EXTRAS.setReacts(d.reacts);
       paintOnline();
       const fresh = d.drops.filter(r => !seenDrops.has(r.id)).reverse();   // oldest first, so the newest ends up on the left
       fresh.forEach(r => seenDrops.add(r.id));
@@ -1708,6 +1714,8 @@
         sfxWin();
         toast(`Победа! Вы получили ${targets.map(n => `<b>${esc(n)}</b>`).join(', ')}`, 'success');
         reportDrops();
+        const tv = sum(targets.map(n => byName[n].price));
+        window.RUSTUP_EXTRAS.brag({ value: tv, name: targets.length === 1 ? targets[0] : '', mult: tv / inValue, title: 'АПГРЕЙД' });
       } else {
         sfxLose();
         const cb = d.cashback;
@@ -1794,6 +1802,7 @@
         <span class="strip-nav"><button type="button" class="chip chip-icon" data-strip="-1" aria-label="Назад">${ICON.right}</button><button type="button" class="chip chip-icon" data-strip="1" aria-label="Вперёд">${ICON.right}</button></span></div>
       <div class="dep-bonuses page-bonuses" id="pageBonuses">${DEPOSIT_BONUSES.map((b, i) => depCard(b, i, 0, 'gift')).join('')}</div>
 
+      ${window.RUSTUP_EXTRAS.homeBanners()}
       <div class="row-head"><h2 class="home-title">Ежедневные</h2></div>
       <div class="bonus-grid">
         ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, 'Подарок дня', coin(dailyBonus()),
@@ -1892,6 +1901,7 @@
           <button class="btn btn-ghost" id="rename" type="button">Сменить ник</button>
         </div>
       </div>
+      ${window.RUSTUP_EXTRAS.levelCard()}
       <div class="pf-stats">
         ${stat(TXICO.upgrade, 'Апгрейдов', fmtInt(st.upgrades))}
         ${stat(TXICO.gift, 'Побед', fmtInt(st.wins), `${winRate}% удачных`)}
@@ -2673,8 +2683,10 @@
         <button class="btn btn-accent" id="cwUp" style="flex:1">В апгрейд</button>
       </div>
       ${next ? `<a class="btn btn-ghost" href="#/case/${next.id}" id="cwNext">Открыть ${next.name}</a>` : ''}
+      <button class="btn btn-ghost brag-btn" id="cwBrag">📸 Похвастаться</button>
       ${again ? `<button class="btn btn-ghost" id="cwAgain">Открыть ещё${n > 1 ? ` ${n} шт.` : ''} за ${coinInt(casePrice(c) * n)}</button>` : ''}`,
     m => {
+      $('#cwBrag', m).onclick = () => window.RUSTUP_EXTRAS.brag({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' }, true);
       const ag = $('#cwAgain', m);
       if (ag) ag.onclick = () => {
         closeModal();
@@ -2731,7 +2743,7 @@
     ];
   }
   function homePage() {
-    const slides = heroSlides();
+    const slides = [...heroSlides(), ...window.RUSTUP_EXTRAS.heroSlides()];
     const games = [
       // upgrade tiles: item on a pedestal with golden chevrons (assets/games, made by tools/build-game-art.ps1)
       { href: '#/upgrade?game=rust', cls: 'gc-rust', title: 'Апгрейд Rust', on: 'rust', cover: 'upgrade-rust', art: `<img class="gc-art" src="assets/games/upgrade-rust.png" alt="" draggable="false">` },
@@ -2755,6 +2767,7 @@
         ${g.on ? `<span class="gc-online" title="Сейчас играют" data-on="${g.on}"${gameOnline(g.on) ? '' : ' hidden'}><i class="dot-online"></i>${fmtInt(gameOnline(g.on))}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
+      ${window.RUSTUP_EXTRAS.homeBanners()}
       <a class="top-banner w-glass" href="#/top"><span class="top-banner-ico">🏆</span><span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
       <div class="row-head"><h2 class="home-title">Бесплатные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
       <div class="cases-grid">${CASES.map(caseCard).join('')}</div>
@@ -2804,6 +2817,8 @@
       case '/earn': earnPage(); break;
       case '/earn/tiktok': tiktokPage(); break;
       case '/rewards': rewardsPage(); break;
+      // levels, quests, tournament, season (js/extras.js)
+      case '/quests': case '/tour': case '/season': window.RUSTUP_EXTRAS[path](); break;
       case '/inventory': inventoryPage(); break;
       case '/profile': profilePage(); break;
       case '/provably-fair': fairPage(); break;
@@ -2839,11 +2854,12 @@
     get S() { return S; }, $, esc, coin, coinInt, money, fmtInt, card, byName, skinOf, imgCls, ICON, GAMES, CASES, PAID_CASES,
     caseById, casePrice, caseArt, caseItems, rollCase, rollCell, invItem, avatarHtml, avaUrl, api, toast, netToast, gameErr, modal, closeModal,
     sfxWin, beep, haptic, bumpBalance, renderHeader, requireLogin, setGame, rand, plural, curPath, tgUser,
-    perCoin: () => CURRENCIES[curId()].perCoin(), curSym: () => CURRENCIES[curId()].sym,
+    perCoin: () => CURRENCIES[curId()].perCoin(), curSym: () => CURRENCIES[curId()].sym, rubPer: () => CURRENCIES.rub.perCoin(), moneyInt, closeModal, gameErr, fmtInt,
     applyState: st => { applyState(st); renderHeader(); },
     get online() { return online; }
   };
   window.addEventListener('hashchange', route);
+  window.RUSTUP_EXTRAS.snow();
   renderHeader();
   initFeed();
   route();
