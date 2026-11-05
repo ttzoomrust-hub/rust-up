@@ -1992,3 +1992,22 @@ h1, h2, h3, .up-title, .home-title, .section-title, .gc-title, .hero-title { let
 .hero-slide .hero-title, .hero-slide .hero-sub { text-shadow: 0 2px 0 rgba(0,0,0,.25), 0 3px 14px rgba(0,0,0,.35); }
 .hero-slide .hero-sub { color: rgba(255,255,255,.92); }
 .hero-slide .hero-art img { filter: drop-shadow(0 14px 18px rgba(80,10,0,.45)); }
+/* performance (2026-11-06): html.lite is set by js/app.js for everyone (localStorage rustup_lite=0 turns it off).
+   The look stays the same: the in-page glass sits over an already blurred, smooth background, so blurring it again
+   (backdrop-filter, recomputed every frame while the background flows) only costs GPU time. Overlays that float above
+   content (header, bottom nav, popups, toasts) keep their blur. The background blobs get the blur baked into softer
+   gradient stops instead of a live 70px filter on a screen-sized layer. */
+/* the glass keeps its colour boost (saturate is a cheap colour matrix), only the blur kernel goes */
+html.lite { --lg-blur: saturate(170%); }
+html.lite .balance, html.lite .online-pill, html.lite .btn-ghost, html.lite .btn-icon, html.lite button.chip, html.lite .mult, html.lite .dep-sum,
+html.lite .dep-way, html.lite .cc-btn, html.lite .case-btn.locked, html.lite .road-btn, html.lite .wm-min, html.lite .pf-balance, html.lite .strip-nav .chip-icon {
+  backdrop-filter: saturate(160%); -webkit-backdrop-filter: saturate(160%);
+}
+html.lite .wtab:not(.on) { backdrop-filter: none; -webkit-backdrop-filter: none; }
+html.lite .header-wrap, html.lite .toast, html.lite .tg-promo, html.lite .cur-menu { backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); }
+html.lite body::before { filter: none;
+  background: radial-gradient(circle at 50% 50%, rgba(190,24,32,.27) 0%, rgba(150,14,24,.2) 18%, rgba(110,8,16,.13) 34%, rgba(70,5,11,.06) 50%, rgba(40,4,8,0) 66%); }
+html.lite body::after { filter: none;
+  background: radial-gradient(circle at 50% 50%, rgba(240,60,45,.2) 0%, rgba(190,30,32,.15) 16%, rgba(140,12,22,.11) 32%, rgba(80,6,14,.05) 48%, rgba(30,2,6,0) 66%); }
+/* nobody sees animations while the Mini App is in the background */
+html.idle *, html.idle *::before, html.idle *::after { animation-play-state: paused !important; }
