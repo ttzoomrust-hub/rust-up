@@ -19,15 +19,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20261105v">
   <link rel="stylesheet" href="css/stars-readonly-v2.css?v=20261105s2">
-  <link rel="stylesheet" href="css/stars-variable-wallet-v4.css?v=20261105supporter1">
-  <script>
-    // Telegram Mini App: Telegram passes tgWebAppData in the URL; only then load its SDK (keeps offline/browser use fast)
-    (function () {
-      var tg = /tgWebApp/.test(location.hash + location.search);
-      try { if (tg) sessionStorage.setItem('rustup_tg', '1'); else tg = sessionStorage.getItem('rustup_tg') === '1'; } catch (e) {}
-      if (tg) document.write('<script src="https://telegram.org/js/telegram-web-app.js"><\/script>');
-    })();
-  </script>
+  <link rel="stylesheet" href="css/stars-deposit-v5.css?v=20261105deposit1">
+  <script src="https://telegram.org/js/telegram-web-app.js?64"></script>
 </head>
 <body>
   <div class="app">
@@ -110,7 +103,7 @@
   <script src="js/sha256.js?v=20261105v"></script>
   <script src="js/rules.js?v=20261105v"></script>
   <script src="js/modes.js?v=20261105v"></script>
-  <script src="js/stars-variable-wallet-v4.js?v=20261105supporter1"></script>
+  <script src="js/stars-deposit-v5.js?v=20261105deposit1"></script>
   <script src="js/app.js?v=20261105v-tgonly1-starsv2-market3-variable4"></script>
 </body>
 </html>
