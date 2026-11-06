@@ -16,6 +16,12 @@
   if(e?.name==='AbortError'||e?.name==='TimeoutError')
    return 'Превышено время ожидания сервера. Повторите попытку.';
   if(e?.status===401){
+   if(e?.authReason==='expired')
+    return 'AUTH_EXPIRED: Сессия Telegram устарела. Полностью закройте мини-приложение и откройте его заново из /start.';
+   if(e?.authReason==='signature_or_format')
+    return 'AUTH_SIGNATURE: Telegram-подпись не прошла проверку. Проверьте, что RUST UP запущен из @rustuper_bot и токен Worker соответствует этому боту.';
+   if(e?.authReason==='user')
+    return 'AUTH_USER: Telegram не передал корректный идентификатор пользователя.';
    const initData=window.Telegram?.WebApp?.initData;
    if(typeof initData!=='string'||initData.length<20)
     return 'Telegram не передал данные авторизации. Напишите /start боту @rustuper_bot и откройте приложение кнопкой 🎮 Играть.';
@@ -63,7 +69,7 @@
   });
   let data;
   try{data=await resp.json();}catch{throw {status:resp.status};}
-  if(!resp.ok||data?.ok!==true)throw {status:resp.status,code:data?.error};
+  if(!resp.ok||data?.ok!==true)throw {status:resp.status,code:data?.error,authReason:data?.authReason};
   return data;
  }
  function render(wallet){
