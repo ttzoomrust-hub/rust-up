@@ -2320,3 +2320,17 @@ html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) +
 .rv-form .btn { height: 48px; }
 .rv-note { margin: 0; font-size: 12px; line-height: 1.35; }
 .mascot-ico { object-fit: cover; padding: 0; background: #2a1414; }
+/* the home-screen suggestion (js/social.js homePrompt) */
+.home-prompt { position: fixed; z-index: 57; left: 12px; right: 12px; bottom: calc(var(--nav-space, 90px) + 10px); max-width: 460px; margin: 0 auto; display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px 12px 10px; border-radius: 24px; border: 1px solid rgba(255,255,255,.14); background: linear-gradient(160deg, rgba(58,30,32,.97), rgba(24,24,28,.97));
+  box-shadow: 0 16px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12); animation: hpIn .35s cubic-bezier(.2,.9,.3,1.2); }
+.home-prompt.out { animation: hpOut .25s forwards; }
+@keyframes hpIn { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes hpOut { to { transform: translateY(30px); opacity: 0; } }
+.hp-ava { width: 78px; height: 78px; flex: none; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,.4)); }
+.hp-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.hp-body b { font-size: 15px; font-weight: 900; padding-right: 18px; }
+.hp-body small { font-size: 12px; line-height: 1.3; color: var(--text-subtitle); }
+.hp-btns { display: flex; gap: 8px; margin-top: 6px; }
+.hp-btns .btn { height: 38px; padding: 0 16px; font-size: 13px; }
+.hp-x { position: absolute; top: 6px; right: 8px; width: 28px; height: 28px; border: 0; background: none; color: var(--text-subtitle); font-size: 22px; line-height: 1; cursor: pointer; }

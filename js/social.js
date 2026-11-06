@@ -444,6 +444,40 @@
     TGW().onEvent('emojiStatusFailed', e => A().toast(e && e.error === 'USER_DECLINED' ? 'Статус не изменён' : 'Не получилось поставить статус', 'error'));
     TGW().onEvent('fullscreenChanged', () => { document.documentElement.classList.toggle('tg-fs', !!TGW().isFullscreen); paintFs(); });
   }
+  // the in-game suggestion to put RUST UP on the home screen: a card at the bottom with Руся, HP_DELAY after the game loaded,
+  // only where Telegram can do it and the icon isn't there yet; «Позже» brings it back in HP_AGAIN, at most HP_MAX times
+  const HP_DELAY = 20e3, HP_AGAIN = 3 * DAY, HP_MAX = 3, HP_KEY = 'rustup_home_prompt';
+  const hpGet = () => { try { return JSON.parse(localStorage.getItem(HP_KEY) || '{}'); } catch (e) { return {}; } };
+  const hpSet = v => { try { localStorage.setItem(HP_KEY, JSON.stringify(v)); } catch (e) { /* storage off */ } };
+  let hpTimer = 0;
+  function homePrompt(now = false) {
+    if (!(tgv('8.0') && TGW().addToHomeScreen && TGW().checkHomeScreenStatus)) return;
+    const st = hpGet();
+    if (st.done || (st.n || 0) >= HP_MAX || Date.now() - (st.t || 0) < HP_AGAIN) return;
+    clearTimeout(hpTimer);
+    hpTimer = setTimeout(() => TGW().checkHomeScreenStatus(status => {
+      homeState = status;
+      if (status === 'added') return hpSet({ ...hpGet(), done: true });
+      if (status === 'unsupported') return;
+      // not over a window or the win animation: try again a bit later
+      if (document.querySelector('.modal-backdrop, .home-prompt')) { hpTimer = setTimeout(() => homePrompt(true), 15e3); return; }
+      const s = hpGet();
+      hpSet({ ...s, n: (s.n || 0) + 1, t: Date.now() });
+      document.body.insertAdjacentHTML('beforeend', `<div class="home-prompt" role="dialog" aria-label="RUST UP на главный экран">
+        <img class="hp-ava" src="assets/stickers/m00.png" alt="">
+        <div class="hp-body"><b>RUST UP на главный экран</b><small>Иконка на телефоне — заходи в игру в один тап, без поиска бота в чатах</small>
+          <div class="hp-btns"><button class="btn btn-accent" type="button" data-hp-add>Добавить</button><button class="btn btn-ghost" type="button" data-hp-later>Позже</button></div></div>
+        <button class="hp-x" type="button" data-hp-later aria-label="Закрыть">×</button></div>`);
+      A().haptic('light');
+    }), now ? 0 : HP_DELAY);
+  }
+  const hpClose = () => { const el = document.querySelector('.home-prompt'); if (el) { el.classList.add('out'); setTimeout(() => el.remove(), 250); } };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-hp-add]')) { hpClose(); TGW().addToHomeScreen(); return; }
+    if (e.target.closest('[data-hp-later]')) hpClose();
+  });
+  if (TGW() && TGW().onEvent) TGW().onEvent('homeScreenAdded', () => { hpSet({ ...hpGet(), done: true }); hpClose(); });
+
   // full screen in the games (Telegram 8.0+): a button on the game pages; leaving the game leaves full screen
   const FS_ROUTES = ['/crash', '/wheel', '/plinko', '/mines', '/battles', '/contract'];
   function paintFs() {
@@ -597,7 +631,7 @@
 
   window.RUSTUP_SOCIAL = {
     '/stats': statsPage, '/refcontest': contestPage, '/provably-fair': fairPage, '/month': monthPage,
-    setEvents, eventsBar, evMult, onState: ready => { onState(ready); if (ready) monthNudge(); }, showcaseCard, openProfile, contestBanner, contestCard,
+    setEvents, eventsBar, evMult, onState: ready => { onState(ready); if (ready) { monthNudge(); if (!hpTimer) homePrompt(); } }, homePrompt, showcaseCard, openProfile, contestBanner, contestCard,
     tgLinks, cashbackRate, nextCashback, pct, reviewTile, setMonthPrev: v => { MPREV = !!v; }
   };
 })();
