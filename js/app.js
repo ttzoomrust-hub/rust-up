@@ -2053,7 +2053,6 @@
           <button class="btn btn-ghost" data-iact="clear">Сбросить</button>
           <button class="btn sell-btn" data-iact="sell">Продать</button>
           <button class="btn btn-accent" data-iact="upgrade">В апгрейд</button>
-          <button class="btn btn-steam" data-iact="withdraw">${ICON.steam}<span>Вывести</span></button>
         </div>
       </div>`;
 
