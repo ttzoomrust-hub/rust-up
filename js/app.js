@@ -191,6 +191,7 @@
     S.lvl = st.lvl || { xp: 0 }; S.q = st.q || null; S.tour = st.tour || null; S.season = st.season || null; S.prizes = st.prizes || [];
     // stats per game, the fair log, the showcase, the comeback gift (bot/social.js, pages in js/social.js)
     S.gs = st.gs || {}; S.fair = st.fair || []; S.showcase = st.showcase || []; S.comeback = st.comeback || null;
+    S.gm = st.gm || null; S.gmPrev = st.gmPrev || null; S.review = st.review || null;
     fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
@@ -1791,7 +1792,8 @@
     const left = DAILY_MS - (Date.now() - (S.rewards.lastDaily || 0));
     const hh = Math.max(0, Math.floor(left / 3600e3)), mm = Math.max(0, Math.floor((left % 3600e3) / 60e3));
     const cb = S.rewards.cashback || 0;
-    const dailyEv = window.RUSTUP_SOCIAL.evMult('daily');   // an event from the admin panel multiplies the gift
+    const SO = window.RUSTUP_SOCIAL;
+    const dailyEv = SO.evMult('daily'), cbEv = SO.evMult('cashback');   // events from the admin panel multiply the gift and the cashback
 
     // RubUP-like layout: hero banner, deposit bonuses strip, daily tiles, friends
     const roadNfts = ROAD_ITEMS.filter(r => r.skin.img.includes('assets/nft/')).slice(-3).reverse().map(r => r.skin);
@@ -1815,10 +1817,11 @@
           `День ${dailyStep() + 1} из ${DAILY_DAYS} · +${Math.round(DAILY_GROWTH * 100)}% каждый день подряд
           <span class="daily-week">${Array.from({ length: DAILY_DAYS }, (_, i) => `<i class="${i < dailyStep() ? 'done' : i === dailyStep() ? 'now' : ''}"></i>`).join('')}</span>`,
           `<button class="btn ${dailyReady() ? 'btn-accent' : 'btn-ghost'} bt-btn" id="claimDaily" ${dailyReady() ? '' : 'disabled'}>${dailyReady() ? 'Забрать' : `${hh} ч ${mm} мин`}</button>`)}
-        ${tile('bt-cash', `<span class="bt-coin">${ICON.coin}</span>`, `Кешбэк ${CASHBACK * 100}%`, coin(cb), 'С проигрышей в апгрейде и кейсах',
+        ${tile('bt-cash', `<span class="bt-coin">${ICON.coin}</span>`, `Кешбэк ${SO.pct(SO.cashbackRate() * cbEv)}`, coin(cb), `С проигрышей в апгрейде и кейсах. ${SO.nextCashback() ? `С ${SO.nextCashback()[0]} уровня — ${SO.pct(SO.nextCashback()[1])}` : 'Максимальный процент'}`,
           `<button class="btn ${cb >= 0.01 ? 'btn-accent' : 'btn-ghost'} bt-btn" id="claimCashback" ${cb >= 0.01 ? '' : 'disabled'}>${cb >= 0.01 ? 'Забрать' : 'Пока пусто'}</button>`)}
         ${tile('bt-tg wide', `<span class="bt-tg-ico">${ICON.tg}</span>`, 'Подписка на Telegram', `+${coinInt(tgBonus())}`, `Каналы ${SUB_CHANNELS.map(c => `<b>@${c.id}</b>`).join(', ')} — новости, отзывы и заработок. Один раз на аккаунт`,
           `<button class="btn ${tgBonusDone() ? 'btn-ghost' : 'btn-tg'} bt-btn" data-tg-bonus>${tgBonusDone() ? 'Получено' : 'Получить'}</button>`)}
+        ${SO.reviewTile()}
         <div class="bonus-tile bt-promo wide"><span class="bt-art"><span class="bt-promo-ico">%</span></span>
           <span class="bt-body"><b class="bt-title">Промокод</b><span class="bt-text">Новый промокод дня — в боте в 15:00 МСК. Для демо: <b>RUSTUP</b>, <b>WIPE</b>, <b>DEMO</b></span>
             <span class="row bt-promo-row"><input class="text-input" id="promo" placeholder="Промокод" maxlength="20"><button class="btn btn-accent" id="applyPromo">OK</button></span></span></div>
@@ -1924,6 +1927,7 @@
       ${recent ? `<div class="tx-list w-glass">${recent}</div>` : '<div class="w-glass pf-empty"><span class="muted">Апгрейдов пока не было</span></div>'}
       <div class="pf-links">
         <a class="w-glass pf-link" href="#/stats"><span class="tx-ico">${TXICO.upgrade}</span><b>Моя статистика</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/month"><span class="tx-ico">${TXICO.gift}</span><b>Мой месяц в RUST UP</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/wallet?tab=history"><span class="tx-ico">${TXICO.deposit}</span><b>Кошелёк и история</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/friends"><span class="tx-ico">${TXICO.friends}</span><b>Друзья и рефералы</b>${ICON.right}</a>
@@ -1931,6 +1935,7 @@
         <a class="w-glass pf-link" href="https://t.me/${esc(window.RUSTUP_SUPPORT || 'rustuperhelp_bot')}" data-tg-link><span class="tx-ico">${ICON.tg}</span><b>Поддержка</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
       </div>
+      ${window.RUSTUP_SOCIAL.tgLinks()}
     </div>`;
     $('#rename').onclick = () => {
       const n = prompt('Новый ник', S.user.name);
@@ -2646,10 +2651,11 @@
         <button class="btn btn-accent" id="cwUp" style="flex:1">В апгрейд</button>
       </div>
       ${next ? `<a class="btn btn-ghost" href="#/case/${next.id}" id="cwNext">Открыть ${next.name}</a>` : ''}
-      <button class="btn btn-ghost brag-btn" id="cwBrag">${window.RUSTUP_ICONS.glyph('camera')} Похвастаться</button>
+      <button class="btn btn-ghost brag-btn" id="cwBrag">${window.RUSTUP_ICONS.glyph('camera')} Похвастаться</button>${window.RUSTUP_EXTRAS.canStory() ? `<button class="btn btn-ghost brag-btn" id="cwStory">${window.RUSTUP_ICONS.glyph('star')} В сторис</button>` : ''}
       ${again ? `<button class="btn btn-ghost" id="cwAgain">Открыть ещё${n > 1 ? ` ${n} шт.` : ''} за ${coinInt(casePrice(c) * n)}</button>` : ''}`,
     m => {
       $('#cwBrag', m).onclick = () => window.RUSTUP_EXTRAS.brag({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' }, true);
+      if ($('#cwStory', m)) $('#cwStory', m).onclick = () => window.RUSTUP_EXTRAS.storyWin({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' });
       const ag = $('#cwAgain', m);
       if (ag) ag.onclick = () => {
         closeModal();
@@ -2786,6 +2792,7 @@
       case '/profile': profilePage(); break;
       // stats, referral contest, fair checks (js/social.js)
       case '/stats': case '/refcontest': case '/provably-fair': window.RUSTUP_SOCIAL[path](); break;
+      case '/month': if (/prev=1/.test(query || '')) window.RUSTUP_SOCIAL.setMonthPrev(true); window.RUSTUP_SOCIAL['/month'](); break;
       // game modes live in js/modes.js
       case '/crash': case '/contract': case '/battles': case '/mines': case '/wheel': case '/plinko': window.RUSTUP_MODES[path](); break;
       case '/tos': textPage('Условия использования', '<p>RUST UP — демонстрационный интерфейс. Баланс, скины и результаты виртуальные и не имеют денежной стоимости, их нельзя вывести или обменять.</p><p>Проект не связан с Valve, Steam и Facepunch Studios. Изображения предметов принадлежат их правообладателям.</p>'); break;

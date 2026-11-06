@@ -401,8 +401,201 @@
     A().haptic(v.ok ? 'success' : 'error');
   });
 
+  // =====================================================================================
+  // Telegram: the home-screen icon, full screen in games, the emoji status, the sticker and emoji packs
+  // =====================================================================================
+  const TGW = () => (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null);
+  const tgv = v => !!(TGW() && TGW().isVersionAtLeast && TGW().isVersionAtLeast(v));
+  let BRAND = null, homeState = null;
+  // set names of the packs (made by the bot, bot/brand.js); asked again when the profile opens while they are unknown
+  let brandAt = 0;
+  const fetchBrand = () => {
+    if (Date.now() - brandAt < 15e3) return;
+    brandAt = Date.now();
+    fetch(`${API()}/api/brand`).then(r => r.json()).then(d => { if (d.ok) { BRAND = d; paintTgLinks(); } }).catch(() => {});
+  };
+  fetchBrand();
+  if (tgv('8.0') && TGW().checkHomeScreenStatus) TGW().checkHomeScreenStatus(st => { homeState = st; paintTgLinks(); });
+  const isPremium = () => !!(TGW() && TGW().initDataUnsafe && TGW().initDataUnsafe.user && TGW().initDataUnsafe.user.is_premium);
+  function tgLinksHtml() {
+    const out = [];
+    if (tgv('8.0') && TGW().addToHomeScreen && homeState !== 'added' && homeState !== 'unsupported')
+      out.push(`<button class="w-glass pf-link" type="button" data-tg-home>${I.badge('star', 'xi-link')}<span class="refm-link-t"><b>На главный экран</b><small>Иконка RUST UP на телефоне — вход в один тап</small></span>${arrow}</button>`);
+    if (BRAND && BRAND.status && tgv('8.0') && TGW().setEmojiStatus && isPremium())
+      out.push(`<button class="w-glass pf-link" type="button" data-tg-status>${I.badge('crown', 'xi-link')}<span class="refm-link-t"><b>Значок RUST UP в статусе</b><small>Рядом с вашим именем во всём Telegram</small></span>${arrow}</button>`);
+    if (BRAND && BRAND.stickers)
+      out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.stickers)}" data-tg-link>${I.badge('gift', 'xi-link')}<span class="refm-link-t"><b>Стикеры RUST UP</b><small>«Окуп», «Минус скин», «GG» и другие</small></span>${arrow}</a>`);
+    if (BRAND && BRAND.emoji)
+      out.push(`<a class="w-glass pf-link" href="https://t.me/addemoji/${esc(BRAND.emoji)}" data-tg-link>${I.badge('fire', 'xi-link')}<span class="refm-link-t"><b>Эмодзи RUST UP</b><small>Фирменные эмодзи для сообщений${isPremium() ? '' : ' (с Telegram Premium)'}</small></span>${arrow}</a>`);
+    return out.join('');
+  }
+  const tgLinks = () => { if (!BRAND || !BRAND.stickers) setTimeout(fetchBrand, 0); return `<div class="pf-links tg-links" id="tgLinks">${tgLinksHtml()}</div>`; };
+  function paintTgLinks() { const el = document.getElementById('tgLinks'); if (el) el.innerHTML = tgLinksHtml(); }
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-tg-home]')) { TGW().addToHomeScreen(); return; }
+    if (e.target.closest('[data-tg-status]')) {
+      TGW().setEmojiStatus(BRAND.status, {}, ok => ok ? A().toast('Значок RUST UP теперь в вашем статусе', 'success') : null);
+    }
+  });
+  if (TGW() && TGW().onEvent) {
+    TGW().onEvent('homeScreenAdded', () => { homeState = 'added'; paintTgLinks(); A().toast('RUST UP на главном экране — заходите в один тап', 'success'); });
+    TGW().onEvent('emojiStatusFailed', e => A().toast(e && e.error === 'USER_DECLINED' ? 'Статус не изменён' : 'Не получилось поставить статус', 'error'));
+    TGW().onEvent('fullscreenChanged', () => { document.documentElement.classList.toggle('tg-fs', !!TGW().isFullscreen); paintFs(); });
+  }
+  // full screen in the games (Telegram 8.0+): a button on the game pages; leaving the game leaves full screen
+  const FS_ROUTES = ['/crash', '/wheel', '/plinko', '/mines', '/battles', '/contract'];
+  function paintFs() {
+    let b = document.getElementById('fsBtn');
+    const path = (location.hash.replace(/^#/, '') || '/').split('?')[0];
+    const on = tgv('8.0') && TGW().requestFullscreen && (FS_ROUTES.includes(path) || path.startsWith('/battle/'));
+    if (!on) { if (b) b.remove(); return; }
+    if (!b) { document.body.insertAdjacentHTML('beforeend', '<button class="fs-btn" id="fsBtn" type="button"></button>'); b = document.getElementById('fsBtn'); b.onclick = () => (TGW().isFullscreen ? TGW().exitFullscreen() : TGW().requestFullscreen()); }
+    b.innerHTML = TGW().isFullscreen ? '<svg viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+    b.setAttribute('aria-label', TGW().isFullscreen ? 'Выйти из полноэкранного режима' : 'На весь экран');
+  }
+  window.addEventListener('hashchange', () => {
+    const path = (location.hash.replace(/^#/, '') || '/').split('?')[0];
+    if (TGW() && TGW().isFullscreen && !(FS_ROUTES.includes(path) || path.startsWith('/battle/'))) TGW().exitFullscreen();
+    setTimeout(paintFs, 0);
+  });
+  setTimeout(paintFs, 0);
+
+  // =====================================================================================
+  // «Мой месяц в RUST UP» (#/month): a card of this month (or the last one) to share in a chat or a story
+  // =====================================================================================
+  const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+  const MONTHS_PREP = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+  const mIdx = m => Number(String(m).slice(5, 7)) - 1;
+  let MPREV = false;
+  const monthData = () => (MPREV ? S().gmPrev : S().gm);
+  const favOf = m => Object.entries(m.g || {}).sort((a, b) => b[1] - a[1])[0];
+  async function drawMonth(m) {
+    const W = 720, H = 1280, cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const c = cv.getContext('2d'), X2 = window.RUSTUP_EXTRAS;
+    try { await document.fonts.load('900 40px Montserrat'); } catch (e) { /* system font */ }
+    const F = (w, s) => `${w} ${s}px Montserrat, Arial, sans-serif`;
+    c.fillStyle = '#0b0b0e'; c.fillRect(0, 0, W, H);
+    let g = c.createRadialGradient(W / 2, 360, 40, W / 2, 360, 640);
+    g.addColorStop(0, 'rgba(229,56,59,.55)'); g.addColorStop(.55, 'rgba(120,10,18,.22)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    c.textAlign = 'left'; c.font = F(900, 54);
+    const lw = c.measureText('RUST').width, uw = c.measureText('UP').width, lx = (W - lw - uw - 12) / 2;
+    c.fillStyle = '#fff'; c.fillText('RUST', lx, 110); c.fillStyle = '#e5383b'; c.fillText('UP', lx + lw + 12, 110);
+    c.textAlign = 'center';
+    c.font = F(700, 26); c.fillStyle = 'rgba(255,255,255,.65)'; c.fillText('МОЙ МЕСЯЦ', W / 2, 190);
+    c.font = F(900, 92); c.fillStyle = '#fff'; c.fillText(MONTHS[mIdx(m.m)].toUpperCase(), W / 2, 290);
+    // tiles
+    const fav = favOf(m), lvTo = m.l1 || X2.myLevel().l;
+    const tiles = [['Ставок', A().fmtInt(m.n)], ['Лучший выигрыш', A().moneyInt(m.best)], ['Лучший икс', m.bx ? multTxt(m.bx) : '—'],
+      ['Любимая игра', fav && GAMES[fav[0]] ? GAMES[fav[0]][0] : '—'], ['Уровень', m.l0 && lvTo > m.l0 ? `${m.l0} → ${lvTo}` : String(lvTo)], ['Выиграно', A().moneyInt(m.won)]];
+    tiles.forEach(([k, v], i) => {
+      const x = 50 + (i % 2) * 320, y = 360 + Math.floor(i / 2) * 200;
+      c.fillStyle = 'rgba(255,255,255,.06)'; X2.rrect(c, x, y, 300, 170, 30); c.fill();
+      c.strokeStyle = 'rgba(255,255,255,.12)'; c.lineWidth = 2; X2.rrect(c, x, y, 300, 170, 30); c.stroke();
+      c.font = F(700, 24); c.fillStyle = 'rgba(255,255,255,.6)'; c.fillText(k, x + 150, y + 62);
+      c.font = F(900, v.length > 10 ? 36 : 46); c.fillStyle = i === 1 ? '#ffd166' : '#fff';
+      let t = v; while (c.measureText(t).width > 270 && t.length > 3) t = t.slice(0, -1);
+      c.fillText(t, x + 150, y + 125);
+    });
+    const nick = (S().user && S().user.name) || 'Игрок';
+    g = c.createLinearGradient(0, 1000, 0, 1100); g.addColorStop(0, '#ff6b5d'); g.addColorStop(1, '#c42a2d');
+    c.font = F(900, 40); const nw = Math.min(600, c.measureText(nick).width + 90);
+    c.fillStyle = g; X2.rrect(c, (W - nw) / 2, 1000, nw, 90, 45); c.fill();
+    c.fillStyle = '#fff'; c.fillText(nick, W / 2, 1060);
+    c.font = F(600, 26); c.fillStyle = 'rgba(255,255,255,.55)'; c.fillText(`Играй со мной: @${window.RUSTUP_BOT || 'rustuper_bot'}`, W / 2, 1180);
+    return cv.toDataURL('image/jpeg', 0.86);
+  }
+  async function monthPage() {
+    if (!S().user) return page('<div class="page"><div class="w-glass pf-empty"><span class="muted">Откройте игру в Telegram</span></div></div>');
+    if (MPREV && !(S().gmPrev && S().gmPrev.n)) MPREV = false;
+    const m = monthData(), has = m && m.n;
+    page(`<div class="page wallet-page month-page">
+      <h1 class="up-title">Мой месяц</h1>
+      ${S().gmPrev && S().gmPrev.n ? `<div class="wallet-tabs mo-tabs"><button type="button" class="wtab${MPREV ? '' : ' on'}" data-mprev="0">${MONTHS[mIdx((S().gm || {}).m || '')] ? MONTHS[mIdx(S().gm.m)].replace(/^./, x => x.toUpperCase()) : 'Этот месяц'}</button><button type="button" class="wtab${MPREV ? ' on' : ''}" data-mprev="1">${MONTHS[mIdx(S().gmPrev.m)].replace(/^./, x => x.toUpperCase())}</button></div>` : ''}
+      ${has ? `<div class="mo-card w-glass"><img id="moImg" alt="Мой месяц в RUST UP"></div>
+        <div class="mo-btns"><button class="btn btn-accent" type="button" id="moShare">${I.glyph('camera')} Отправить друзьям</button>
+        ${window.RUSTUP_EXTRAS.canStory() ? `<button class="btn btn-ghost" type="button" id="moStory">${I.glyph('star')} В сторис</button>` : ''}</div>`
+        : `<div class="w-glass pf-empty"><b>Пока пусто</b><span class="muted">Сыграйте в ${MONTHS_PREP[new Date().getMonth()]} — здесь появится ваша карточка месяца</span><a class="btn btn-accent w-go" href="#/">Играть</a></div>`}
+      <p class="w-note">Карточка собирается из ваших ставок за месяц по МСК. В начале нового месяца прошлый остаётся здесь, чтобы им можно было поделиться.</p>
+    </div>`);
+    if (!has) return;
+    const img = await drawMonth(m);
+    const el = A().$('#moImg'); if (el) el.src = img;
+    A().$('#moShare').onclick = async e => {
+      e.currentTarget.disabled = true;
+      const d = await A().api('month_card', { img, prev: MPREV ? 1 : 0 });
+      e.currentTarget.disabled = false;
+      if (!d.ok) return A().netToast(d);
+      if (d.id && tgv('8.0') && TGW().shareMessage) TGW().shareMessage(d.id, ok => ok && A().toast('Карточка отправлена', 'success'));
+      else A().toast('Карточка уже в чате с ботом — перешлите её друзьям', 'success');
+    };
+    if (A().$('#moStory')) A().$('#moStory').onclick = () => window.RUSTUP_EXTRAS.toStory(img, 'month');
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-mprev]');
+    if (!t) return;
+    MPREV = t.dataset.mprev === '1'; A().haptic('light'); monthPage();
+  });
+  // the first visit in a new month offers the finished month once
+  function monthNudge() {
+    const p = S().gmPrev;
+    if (!p || !p.n) return;
+    let seen = null;
+    try { seen = localStorage.getItem('rustup_month_seen'); } catch (e) { /* storage off */ }
+    if (seen === p.m) return;
+    try { localStorage.setItem('rustup_month_seen', p.m); } catch (e) { /* storage off */ }
+    setTimeout(() => A().toast(`${I.glyph('calendar')} Ваш ${MONTHS[mIdx(p.m)]} в RUST UP готов — <a href="#/month?prev=1" class="toast-link" data-month-prev>посмотреть карточку</a>`, 'success'), 2500);
+  }
+  document.addEventListener('click', e => { if (e.target.closest('[data-month-prev]')) MPREV = true; });
+
+  // =====================================================================================
+  // rakeback by level and the review for the channel (bonus page tiles)
+  // =====================================================================================
+  const cashbackRate = () => { const l = X().myLevel().l; return [...R.CASHBACK_LVL].reverse().find(([from]) => l >= from)[1]; };
+  const nextCashback = () => { const l = X().myLevel().l; return R.CASHBACK_LVL.find(([from]) => from > l) || null; };
+  const pct = v => (+(v * 100).toFixed(1)).toString().replace('.', ',') + '%';
+  function reviewTile() {
+    const rv = S().review, RV = R.REVIEW;
+    const st = rv && rv.st;
+    const btn = st === 'ok' ? '<button class="btn btn-ghost bt-btn" disabled>Получено</button>'
+      : st === 'wait' ? '<button class="btn btn-ghost bt-btn" disabled>На проверке</button>'
+      : '<button class="btn btn-accent bt-btn" type="button" data-review>Написать</button>';
+    return `<div class="bonus-tile bt-review wide"><span class="bt-art">${I.badge('star', 'xi-banner')}</span>
+      <span class="bt-body"><b class="bt-title">Отзыв в @${RV.CHANNEL}</b><span class="bt-value">+${rewardTxt(RV.RUB)}</span>
+      <span class="bt-text">${st === 'no' ? 'Прошлый отзыв не прошёл модерацию — можно написать новый. ' : ''}Честный отзыв любого тона — хороший или плохой. Один раз на аккаунт, после проверки админом.</span></span>${btn}</div>`;
+  }
+  function reviewForm() {
+    const RV = R.REVIEW;
+    let stars = 5;
+    A().modal('Отзыв о RUST UP', `<div class="rv-form">
+      <div class="rv-stars">${[1, 2, 3, 4, 5].map(i => `<button type="button" data-star="${i}" class="on">${I.svg('star')}</button>`).join('')}</div>
+      <textarea id="rvText" class="text-input rv-text" maxlength="${RV.MAX}" placeholder="Что понравилось, что нет, что добавить?"></textarea>
+      <small class="muted" id="rvCount">0 / ${RV.MAX} · минимум ${RV.MIN}</small>
+      <button class="btn btn-accent" type="button" id="rvSend">Отправить на проверку</button>
+      <p class="muted rv-note">Отзыв опубликуют в @${RV.CHANNEL} с вашим ником. Награда ${rewardTxt(RV.RUB)} — за честный отзыв, оценка на неё не влияет.</p></div>`, m => {
+      const paint = () => m.querySelectorAll('[data-star]').forEach(b => b.classList.toggle('on', +b.dataset.star <= stars));
+      m.querySelectorAll('[data-star]').forEach(b => b.onclick = () => { stars = +b.dataset.star; A().haptic('light'); paint(); });
+      const ta = A().$('#rvText', m);
+      ta.oninput = () => { A().$('#rvCount', m).textContent = `${ta.value.trim().length} / ${RV.MAX} · минимум ${RV.MIN}`; };
+      A().$('#rvSend', m).onclick = e => {
+        const text = ta.value.trim();
+        if (text.length < RV.MIN) return A().toast(`Напишите хотя бы ${RV.MIN} символов`, 'error');
+        e.currentTarget.disabled = true;
+        A().api('review', { text, stars }).then(d => {
+          if (!d.ok) { e.currentTarget.disabled = false; return A().netToast(d); }
+          A().closeModal(); A().haptic('success');
+          A().toast('Отзыв отправлен на проверку — награда придёт после публикации', 'success');
+          if (A().curPath() === '/rewards') window.dispatchEvent(new HashChangeEvent('hashchange'));
+        });
+      };
+    });
+  }
+  document.addEventListener('click', e => { if (e.target.closest('[data-review]')) reviewForm(); });
+
   window.RUSTUP_SOCIAL = {
-    '/stats': statsPage, '/refcontest': contestPage, '/provably-fair': fairPage,
-    setEvents, eventsBar, evMult, onState, showcaseCard, openProfile, contestBanner, contestCard
+    '/stats': statsPage, '/refcontest': contestPage, '/provably-fair': fairPage, '/month': monthPage,
+    setEvents, eventsBar, evMult, onState: ready => { onState(ready); if (ready) monthNudge(); }, showcaseCard, openProfile, contestBanner, contestCard,
+    tgLinks, cashbackRate, nextCashback, pct, reviewTile, setMonthPrev: v => { MPREV = !!v; }
   };
 })();

@@ -122,6 +122,11 @@ window.RUSTUP_RULES = {
   // events an admin starts from the panel (bot/social.js): what a multiplier applies to
   EVENT_KINDS: { xp: 'XP за ставки', tour: 'Очки турнира', season: 'Снежинки сезона', daily: 'Подарок дня', cashback: 'Кешбэк', quest: 'Награды заданий' },
   SHOWCASE_MAX: 3,
+  // rakeback: the cashback share grows with the player's level — [from level, share]; CASHBACK stays the base
+  CASHBACK_LVL: [[1, 0.02], [5, 0.025], [10, 0.03], [20, 0.035], [30, 0.04], [50, 0.05]],
+  // a review for the @rustuper channel: once per account, RUB ₽ after an admin approves it (for an honest review of any tone,
+  // not only a good one), MIN..MAX characters
+  REVIEW: { RUB: 20, MIN: 30, MAX: 700, CHANNEL: 'rustuper' },
   // free every 15 minutes, no conditions: cheap loot from all three games, nothing above 500 coins; per-game item count in a 'mix' tier
   TIMER_CASE: { id: 'quarter', game: 'mix', name: 'Кейс 15 минут', color: '#4fc27a', timer: true, tiers: [[1, 15, 3, 72], [15, 60, 2, 22], [60, 300, 1, 5.5], [300, 500.01, 1, 0.5]] }
 };

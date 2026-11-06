@@ -63,16 +63,12 @@
     return [...r.daily, ...r.weekly].filter(x => x.state === 'claim').length + pass;
   };
 
-  // ---------- the state changed (js/app.js applyState): a new level, a quest that became done ----------
-  // the first state after loading is only remembered: nothing is announced for what happened before
-  let lastLvl = null, lastClaim = null;
+  // ---------- the state changed (js/app.js applyState): a quest that became done ----------
+  // the first state after loading is only remembered: nothing is announced for what happened before.
+  // A new level is not announced (owner's decision 2026-11-06: the window got in the way) — its reward is credited silently,
+  // the level card and the header badge show it.
+  let lastClaim = null;
   function onState(ready) {
-    const lv = myLevel().l;
-    if (ready && lastLvl && lv > lastLvl) {
-      const from = lastLvl;
-      setTimeout(() => levelUpModal(from, lv), 1400);
-    }
-    if (ready) lastLvl = lv;
     if (!ready) return;
     const r = questRows(), now = Date.now();
     const claim = new Set([...r.daily, ...r.weekly].filter(x => x.state === 'claim').map(x => `${x.daily ? mskDay(now) : weekOf(now)}:${x.id}`));
@@ -81,19 +77,6 @@
         setTimeout(() => A().toast(` Задание выполнено: <b>${A().esc(x.title)}</b> — заберите награду в «Заданиях»`, 'success'), 1800);
     });
     lastClaim = claim;
-  }
-  function levelUpModal(from, to) {
-    const items = [], rubs = [];
-    for (let l = from + 1; l <= to; l++) { const rw = levelReward(l); rubs.push(rw.rub); if (rw.item) items.push(rw.item); }
-    const rub = rubs.reduce((a, b) => a + b, 0), [, title, color] = tierOf(to);
-    A().sfxWin(); A().haptic('success'); A().bumpBalance();
-    A().modal('Новый уровень!', `<div class="lvl-up">
-      <span class="lvl-up-badge" style="--lc:${color}"><b>${to}</b></span>
-      <h3>Уровень ${to} · <span style="color:${color}">${title}</span></h3>
-      <p class="muted">Награда уже на балансе${S().twin ? '' : ':'}</p>
-      ${S().twin ? '<p class="note">Награды за уровни доступны одному аккаунту на устройстве.</p>' : `<div class="lvl-up-rw"><span class="lur">${rewardTxt(rub)}</span>${items.map(n => `<span class="lur item"><img src="${itemImg(n)}" alt="">${A().esc(n)}</span>`).join('')}</div>`}
-      <button class="btn btn-accent" id="luOk">Отлично</button></div>`,
-    m => { A().$('#luOk', m).onclick = A().closeModal; });
   }
 
   // ---------- level card (profile, quests page) ----------
@@ -273,9 +256,11 @@
     bragData = o;
     clearTimeout(bragTimer);
     document.querySelector('.brag-chip')?.remove();
-    document.body.insertAdjacentHTML('beforeend', `<div class="brag-chip"><button type="button" class="brag-go">${I.glyph('camera')} Похвастаться выигрышем</button><button type="button" class="brag-x" aria-label="Закрыть">×</button></div>`);
+    document.body.insertAdjacentHTML('beforeend', `<div class="brag-chip"><button type="button" class="brag-go">${I.glyph('camera')} ${canStory() ? 'Похвастаться' : 'Похвастаться выигрышем'}</button>`
+      + (canStory() ? `<button type="button" class="brag-go brag-story">${I.glyph('star')} В сторис</button>` : '') + `<button type="button" class="brag-x" aria-label="Закрыть">×</button></div>`);
     const el = document.querySelector('.brag-chip');
     el.querySelector('.brag-go').onclick = () => { el.remove(); shareWin(bragData); };
+    if (el.querySelector('.brag-story')) el.querySelector('.brag-story').onclick = () => { el.remove(); storyWin(bragData); };
     el.querySelector('.brag-x').onclick = () => el.remove();
     bragTimer = setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 12000);
   }
@@ -334,6 +319,23 @@
     c.textAlign = 'left'; c.fillStyle = '#fff'; c.font = F(800, 28); c.fillText(nick, bx + 56, 850);
     c.textAlign = 'center'; c.font = F(600, 20); c.fillStyle = 'rgba(255,255,255,.55)'; c.fillText(`${tier} · @${window.RUSTUP_BOT || 'rustuper_bot'}`, W / 2, 884);
     return cv.toDataURL('image/jpeg', 0.86);
+  }
+  // ---------- Telegram stories: the same card as a story, with the referral link (a widget for Premium users) ----------
+  const TGW = () => window.Telegram && window.Telegram.WebApp;
+  const canStory = () => !!(TGW() && TGW().initData && TGW().shareToStory && TGW().isVersionAtLeast && TGW().isVersionAtLeast('7.8'));
+  // img — a jpeg data URL; extra goes to the server check (kind 'win' needs { value, bet } of a real win, 'month' a played month)
+  async function toStory(img, kind, extra = {}) {
+    const d = await A().api('story', { img, kind, ...extra });
+    if (!d.ok) return A().netToast(d);
+    const premium = !!(TGW().initDataUnsafe && TGW().initDataUnsafe.user && TGW().initDataUnsafe.user.is_premium);
+    TGW().shareToStory(d.url, { text: `Играю в RUST UP — апгрейды, кейсы и бесплатные бонусы. Заходи: @${window.RUSTUP_BOT || 'rustuper_bot'}`.slice(0, 200),
+      ...(premium ? { widget_link: { url: d.link, name: 'Играть в RUST UP' } } : {}) });
+  }
+  async function storyWin(o) {
+    if (sharing || !canStory()) return;
+    sharing = true;
+    A().toast('Готовим сторис…');
+    try { await toStory(await drawCard(o), 'win', { value: o.value, bet: o.bet || 0 }); } finally { sharing = false; }
   }
   let sharing = false;
   async function shareWin(o) {
@@ -417,6 +419,6 @@
 
   window.RUSTUP_EXTRAS = {
     '/quests': questsPage, '/tour': tourPage, '/season': seasonPage,
-    levelOf, myLevel, lvlBadge, levelCard, claimable, onState, heroSlides, homeBanners, brag, reactHtml, setReacts, snow, seasonClaimable
+    levelOf, myLevel, lvlBadge, levelCard, claimable, onState, heroSlides, homeBanners, brag, reactHtml, setReacts, snow, seasonClaimable, canStory, toStory, storyWin, rrect, loadImg
   };
 })();

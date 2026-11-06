@@ -2293,3 +2293,29 @@ html.idle *, html.idle *::before, html.idle *::after { animation-play-state: pau
 .bt-ava.bot .xg { width: 60%; height: 60%; color: #9fd0ff; }
 .top-banner .xi { margin-right: 2px; }
 .q-row .q-ico.xi { background: linear-gradient(150deg, var(--c1), var(--c2)) !important; color: #fff !important; border: 0 !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -3px 6px rgba(0,0,0,.22), 0 6px 16px rgba(0,0,0,.35) !important; font-size: 0 !important; }
+
+/* ================= Telegram pack (2026-11-06): full screen, story buttons, «Мой месяц», reviews, packs ================= */
+html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px)); }
+.fs-btn { position: fixed; z-index: 54; right: 14px; bottom: calc(var(--nav-space, 90px) + 12px); width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; cursor: pointer;
+  color: #fff; border: 1px solid rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(60,62,70,.92), rgba(30,31,36,.92)); box-shadow: 0 8px 22px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.18); }
+.fs-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.brag-chip .brag-story { border-left: 1px solid rgba(255,255,255,.18) !important; border-radius: 0; }
+.brag-go .xg, .brag-btn .xg, .mo-btns .xg { margin-right: 4px; }
+.tg-links { margin-top: 10px; }
+.tg-links .pf-link { width: 100%; text-align: left; font: inherit; cursor: pointer; }
+.toast-link { color: #ffd166; font-weight: 800; text-decoration: underline; }
+.mo-tabs { margin-bottom: 12px; }
+.mo-card { padding: 10px !important; border-radius: 26px !important; display: grid !important; place-items: center; }
+.mo-card img { width: 100%; max-width: 360px; aspect-ratio: 9 / 16; border-radius: 18px; background: #0b0b0e; display: block; }
+.mo-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.mo-btns .btn { height: 50px; }
+.bt-review .bt-art { display: grid; place-items: center; }
+.rv-form { display: flex; flex-direction: column; gap: 10px; }
+.rv-stars { display: flex; justify-content: center; gap: 6px; }
+.rv-stars button { width: 46px; height: 46px; border: 0; background: none; padding: 0; cursor: pointer; color: rgba(255,255,255,.18); }
+.rv-stars button.on { color: #ffd166; filter: drop-shadow(0 0 8px rgba(255,190,60,.55)); }
+.rv-stars svg { width: 100%; height: 100%; fill: currentColor; stroke: none; }
+.rv-text { height: 130px !important; padding: 12px 14px !important; border-radius: 18px !important; resize: none; font: inherit; line-height: 1.4; }
+.rv-form > small { text-align: right; }
+.rv-form .btn { height: 48px; }
+.rv-note { margin: 0; font-size: 12px; line-height: 1.35; }
