@@ -700,7 +700,7 @@
   const DEP_METHODS = [
     ['rub', 'Рубли', 500, 0, ['sbp'], 'СБП и карты', ['SberPay', 'T-Pay', 'Банковская карта']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
-    ['gifts', 'Telegram и CS2', 10, 7, ['star', 'gift'], 'Звёзды, подарки, скины', ['Звёзды Telegram', 'Подарки и NFT', 'Скины CS2']]];
+    ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Пополнение через Telegram Stars', ['Статус оплаты и зачисления', 'Пока недоступно для реальных денег']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
   const WD_METHODS = [
     ['rub', 'Рубли', 2000, 5, 'card', 'Номер карты', '0000 0000 0000 0000'],
@@ -775,6 +775,22 @@
     if (!box) return;
     document.querySelectorAll('.wtab').forEach(b => b.classList.toggle('on', b.dataset.wtab === WF.tab));
     box.innerHTML = WF.tab === 'withdraw' ? walletWithdraw() : WF.tab === 'history' ? walletHistory() : walletDeposit();
+    // Isolated Stars receipt/credit status; demo deposit and withdrawal
+    // buttons elsewhere stay unchanged. No optimistic game credits.
+    if (WF.tab === 'deposit' && WF.dep === 'gifts' &&
+        window.RUSTUP_STARS_VARIABLE_V4) {
+      const demoForm = box.querySelector('.w-glass');
+      if (demoForm) demoForm.remove();
+      const bonusCards = box.querySelector('#wBonuses');
+      if (bonusCards) bonusCards.remove();
+      const bonusHeading = box.querySelector('.row-head');
+      if (bonusHeading) bonusHeading.remove();
+      const panel = document.createElement('section');
+      panel.className = 'w-glass w-panel';
+      panel.setAttribute('role','status');
+      box.append(panel);
+      window.RUSTUP_STARS_VARIABLE_V4.render(box);
+    }
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
