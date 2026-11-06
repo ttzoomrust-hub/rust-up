@@ -15,7 +15,7 @@
     const m = Math.round((Date.now() - t) / 60000);
     return m < 2 ? 'сейчас в игре' : m < 60 ? `${m} мин назад` : m < 1440 ? `${Math.round(m / 60)} ч назад` : new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
-  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'] };
+  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'], event: ['Событие', 'ok'], event_stop: ['Стоп события', 'bad'] };
 
   function toast(text, kind = '') {
     const li = document.createElement('li');
@@ -278,9 +278,42 @@
     api('economy', { days: edays }).then(d => { if (!d.ok) return denied(d); ECON = d; if (tab === 'economy') economyPage(); });
   }
 
+  // ---------- events: a multiplier for a time, optionally announced in the channel (bot/social.js) ----------
+  let EVENTS = null;
+  const EV_STATE = { on: ['Идёт', 'ok'], soon: ['Запланировано', ''], done: ['Закончилось', ''], off: ['Остановлено', 'bad'] };
+  const evWhen = t => new Date(t).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  function eventsPage() {
+    if (!EVENTS) { $('#page').innerHTML = '<div class="loading"><i></i><i></i><i></i></div>'; return api('events').then(d => { if (!d.ok) return denied(d); EVENTS = d; if (tab === 'events') eventsPage(); }); }
+    const K = EVENTS.kinds;
+    $('#page').innerHTML = `
+      <section class="adjust glass ev-form">
+        <h3>Новое событие</h3>
+        <label>Что усилить<select id="evKind">${Object.entries(K).map(([k, t]) => `<option value="${k}">${esc(t)}</option>`).join('')}</select></label>
+        <div class="row2"><label>Множитель<select id="evMult">${[1.5, 2, 3, 5].map(m => `<option value="${m}"${m === 2 ? ' selected' : ''}>×${String(m).replace('.', ',')}</option>`).join('')}</select></label>
+          <label>Длительность<select id="evHours">${[[1, '1 час'], [3, '3 часа'], [6, '6 часов'], [12, '12 часов'], [24, 'Сутки'], [48, '2 дня'], [72, '3 дня'], [168, 'Неделя']].map(([h, t]) => `<option value="${h}"${h === 3 ? ' selected' : ''}>${t}</option>`).join('')}</select></label></div>
+        <div class="row2"><label>Начало<select id="evStart">${[[0, 'Сейчас'], [30, 'Через 30 мин'], [60, 'Через 1 час'], [180, 'Через 3 часа'], [720, 'Через 12 часов'], [1440, 'Завтра в это время']].map(([m, t]) => `<option value="${m}">${t}</option>`).join('')}</select></label>
+          <label>Название (необязательно)<input id="evTitle" maxlength="60" placeholder="Например: Выходные"></label></div>
+        <label class="ev-check"><input type="checkbox" id="evAnn" checked> Объявить в канале @up_rust, когда начнётся</label>
+        <button class="btn good wide" data-ev-add>⚡ Запустить событие</button>
+        <p class="muted">Игроки видят событие на главной и в «Бонусах» (за сутки до начала — как «скоро»). Множитель действует только на сервере и только в эти часы.</p>
+      </section>
+      <section class="glass list"><h3>События</h3>${EVENTS.events.length ? EVENTS.events.map(e => { const [st, c] = EV_STATE[e.state] || [e.state, '']; return `<div class="row tx">
+        <span class="w"><span class="lg-head"><em class="tag ${c}">${st}</em><b>×${String(e.mult).replace('.', ',')} ${esc(K[e.kind] || e.kind)}</b></span>
+          <small class="sub">${evWhen(e.start)} — ${evWhen(e.end)}${e.title ? ` · ${esc(e.title)}` : ''}${e.announce ? ' · 📣 в канале' : ''} · ${esc(e.by_admin || '')}</small></span>
+        ${e.state === 'on' || e.state === 'soon' ? `<button class="btn ghost ev-stop" data-ev-stop="${e.id}">Стоп</button>` : ''}</div>`; }).join('') : '<p class="muted">Событий ещё не было</p>'}</section>`;
+  }
+  function addEvent() {
+    const body = { kind: $('#evKind').value, mult: +$('#evMult').value, hours: +$('#evHours').value, startIn: +$('#evStart').value, title: $('#evTitle').value.trim(), announce: $('#evAnn').checked ? 1 : 0 };
+    if (!confirm(`Запустить ×${body.mult} «${EVENTS.kinds[body.kind]}» на ${body.hours} ч${body.startIn ? ' (позже)' : ' прямо сейчас'}?`)) return;
+    api('event_add', body).then(d => {
+      if (!d.ok) return toast('Не удалось: ' + (d.error || ''), 'error');
+      toast('Событие запущено', 'success'); EVENTS = null; eventsPage();
+    });
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : statsPage();
+    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -294,6 +327,8 @@
     if ('tsend' in t.dataset) return sendReply();
     if ('tclose' in t.dataset) return closeT();
     if ('close' in t.dataset) return closeSheet();
+    if ('evAdd' in t.dataset) return addEvent();
+    if (t.dataset.evStop) return confirm('Остановить событие?') && api('event_stop', { id: +t.dataset.evStop }).then(d => { if (!d.ok) return toast('Не удалось', 'error'); toast('Событие остановлено', 'success'); EVENTS = null; eventsPage(); });
     if (t.dataset.adj) return adjust(t.dataset.adj === 'dep' ? 'dep' : +t.dataset.adj);
     if (t.dataset.ban) return ban(t.dataset.ban === '1');
     if (t.dataset.twin) return api('twin', { id: CUR.user.id, ok: t.dataset.twin === '1' }).then(d => {
@@ -316,6 +351,10 @@
         series: Array.from({ length: 14 }, (_, i) => ({ day: now - (13 - i) * day, profit: Math.round(5000 + 3000 * Math.sin(i / 1.7) + i * 300), gifts: Math.round(1500 + 500 * Math.sin(i)) })),
         wins: [{ user_id: 100, nick: 'Вася', name: '★ Karambit | Fade', price: 61000, chance: 4.2, src: 'upgrade', t: now - 3600e3 }, { user_id: 104, nick: 'Lena', name: 'Plush Pepe #1622', price: 38000, chance: null, src: 'case', t: now - 7200e3 }] };
     }
+    if (path === 'events') return { ok: true, now, kinds: { xp: 'XP за ставки', tour: 'Очки турнира', season: 'Снежинки сезона', daily: 'Подарок дня', cashback: 'Кешбэк', quest: 'Награды заданий' }, events: [
+      { id: 3, kind: 'tour', mult: 1.5, start: now + 3 * 3600e3, end: now + 9 * 3600e3, title: null, announce: 1, by_admin: '@NezoxFit', state: 'soon' },
+      { id: 2, kind: 'xp', mult: 2, start: now - 3600e3, end: now + 2 * 3600e3, title: 'Выходные', announce: 1, by_admin: '@NezoxFit', state: 'on' },
+      { id: 1, kind: 'daily', mult: 3, start: now - 3 * day, end: now - 2 * day, title: null, announce: 0, by_admin: '@NezoxFit', state: 'done' }] };
     if (path === 'stats') return { ok: true, rate: 1.63, me: '@NezoxFit',
       totals: { users: 1284, players: 803, online: 17, new24: 46, banned: 2, balance: 2450000, refs: 412 }, today: { n: 214, v: 380000, p: 61 },
       series: Array.from({ length: days }, (_, i) => ({ day: now - (days - 1 - i) * day, users: Math.round(30 + 25 * Math.sin(i / 2) + i * 2), players: Math.round(40 + 15 * Math.sin(i / 3 + 1) + i), drops: Math.round(150 + 60 * Math.sin(i / 2.5) + i * 4),
@@ -344,7 +383,7 @@
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'support', 'log'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log', 'events', 'economy'].includes(start)) tab = start;
   render();
   loadStats();
   // the waiting-tickets badge on the tab, refreshed every half a minute

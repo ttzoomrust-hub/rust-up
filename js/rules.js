@@ -113,6 +113,15 @@ window.RUSTUP_RULES = {
     TOP_RUB: [5000, 3000, 2000, 1000, 1000, 500, 500, 500, 500, 500],
     PASS: [{ rub: 5 }, { rub: 10 }, { item: 'Сердце' }, { rub: 15 }, { item: 'Роза' }, { rub: 20 }, { item: 'Подарок' }, { rub: 25 }, { item: 'Торт' }, { rub: 40 },
       { item: 'Шампанское' }, { rub: 50 }, { item: 'Ракета' }, { rub: 60 }, { item: 'Мишка' }, { rub: 75 }, { item: 'Букет' }, { rub: 100 }, { item: 'Кубок' }, { item: 'Алмаз' }] },
+  // a player back after DAYS days or more without the app gets RUB ₽ once (claimed in the app), at most once in EVERY_DAYS;
+  // the bot reminds about it. Not for twins, and only for accounts that have played before.
+  COMEBACK: { DAYS: 5, RUB: 25, EVERY_DAYS: 30 },
+  // referral contest of the month (MSK): a friend who came by the player's link counts once, in the month they reach LEVEL;
+  // the top gets PRIZES_RUB ₽ on the 1st of the next month (MIN friends at least)
+  REF_MONTH: { LEVEL: 5, PRIZES_RUB: [2000, 1000, 500, 300, 200], MIN: 3 },
+  // events an admin starts from the panel (bot/social.js): what a multiplier applies to
+  EVENT_KINDS: { xp: 'XP за ставки', tour: 'Очки турнира', season: 'Снежинки сезона', daily: 'Подарок дня', cashback: 'Кешбэк', quest: 'Награды заданий' },
+  SHOWCASE_MAX: 3,
   // free every 15 minutes, no conditions: cheap loot from all three games, nothing above 500 coins; per-game item count in a 'mix' tier
   TIMER_CASE: { id: 'quarter', game: 'mix', name: 'Кейс 15 минут', color: '#4fc27a', timer: true, tiers: [[1, 15, 3, 72], [15, 60, 2, 22], [60, 300, 1, 5.5], [300, 500.01, 1, 0.5]] }
 };

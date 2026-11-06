@@ -189,12 +189,15 @@
     S.fire = st.fire || null; S.crash = st.crash || null; S.crashLast = st.crashLast || []; S.mines = st.mines || null; S.wheel = st.wheel || null;
     // levels, quests, tournament, season (bot/progress.js, pages in js/extras.js)
     S.lvl = st.lvl || { xp: 0 }; S.q = st.q || null; S.tour = st.tour || null; S.season = st.season || null; S.prizes = st.prizes || [];
+    // stats per game, the fair log, the showcase, the comeback gift (bot/social.js, pages in js/social.js)
+    S.gs = st.gs || {}; S.fair = st.fair || []; S.showcase = st.showcase || []; S.comeback = st.comeback || null;
     fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
     if (!S.user.color) S.user.color = AVA_COLORS[(u.id || 0) % AVA_COLORS.length];
     save();
     if (window.RUSTUP_EXTRAS) window.RUSTUP_EXTRAS.onState(gameReady);
+    if (window.RUSTUP_SOCIAL) window.RUSTUP_SOCIAL.onState(gameReady);
   }
   // one action on the server; the new state is applied before the promise resolves,
   // unless defer is set (the upgrade wheel and the case roulette show the result first, then apply it)
@@ -241,21 +244,21 @@
     const g = next.gift && next.gift.n === next.n ? next.gift : null;
     setTimeout(() => {
       haptic('success');
-      if (g) { sfxWin(); bumpBalance(); return toast(`🔥 ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд — награда: ${g.rub ? '+' + g.rub + ' ₽' : g.item}!`, 'success'); }
-      toast(next.n > 1 ? `🔥 Серия ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд!` : '🔥 Огонёк зажжён! Играйте каждый день, чтобы не потерять серию', 'success');
+      if (g) { sfxWin(); bumpBalance(); return toast(`${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')} ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд — награда: ${g.rub ? '+' + g.rub + ' ₽' : g.item}!`, 'success'); }
+      toast(next.n > 1 ? `${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')} Серия ${next.n} ${plural(next.n, 'день', 'дня', 'дней')} подряд!` : `${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')} Огонёк зажжён! Играйте каждый день, чтобы не потерять серию`, 'success');
     }, 1200);
   }
   const plural = (n, one, few, many) => (n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many);
   function fireModal() {
     const f = fireNow(), best = (S.fire && S.fire.best) || 0;
     modal('Огонёк', `<div class="fire-modal ${f.state}">
-      <span class="fire-big">🔥<b>${f.n}</b></span>
+      <span class="fire-big">${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')}<b>${f.n}</b></span>
       <p>${f.state === 'lit' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> — сегодня огонёк уже горит. Приходите завтра!`
         : f.state === 'wait' ? `Серия <b>${f.n} ${plural(f.n, 'день', 'дня', 'дней')}</b> погаснет в полночь по МСК. Откройте любой кейс или сыграйте — и она продолжится.`
         : 'Откройте любой кейс или сыграйте в любую игру — огонёк загорится. Играйте каждый день, чтобы серия росла.'}</p>
       <div class="fire-ladder">${R.FIRE_REWARDS.map(([day, rw]) => `<div class="fl-step${f.n >= day ? ' done' : ''}"><b>${day}</b><span>${plural(day, 'день', 'дня', 'дней')}</span>
-        <em>${rw.rub ? '+' + rw.rub + ' ₽' : esc(rw.item)}</em>${f.n >= day ? '<i>✓</i>' : ''}</div>`).join('')}</div>
-      <div class="fire-rules"><span>✅ Любая игра или любой кейс за день</span><span>❌ Пропустили день — серия начнётся заново</span></div>
+        <em>${rw.rub ? '+' + rw.rub + ' ₽' : esc(rw.item)}</em>${f.n >= day ? `<i>${window.RUSTUP_ICONS.glyph('check')}</i>` : ''}</div>`).join('')}</div>
+      <div class="fire-rules"><span>${window.RUSTUP_ICONS.glyph('check')} Любая игра или любой кейс за день</span><span>${window.RUSTUP_ICONS.glyph('cross')} Пропустили день — серия начнётся заново</span></div>
       ${best ? `<p class="muted">Рекорд: ${best} ${plural(best, 'день', 'дня', 'дней')}</p>` : ''}
       <button class="btn btn-accent" id="fireGo">${f.state === 'lit' ? 'Понятно' : 'Играть'}</button></div>`,
     m => { $('#fireGo', m).onclick = () => { closeModal(); if (f.state !== 'lit') location.hash = '#/'; }; });
@@ -473,6 +476,7 @@
       </button>
       <div class="row-head"><h2 class="home-title">Как это работает</h2></div>
       <div class="friend-steps">${steps.map(([ico, t, d], i) => `<div class="friend-step"><span class="fs-num">${i + 1}</span><span class="fs-ico">${ico}</span><b>${t}</b><span>${d}</span></div>`).join('')}</div>
+      ${window.RUSTUP_SOCIAL.contestCard()}
       <div class="row-head"><h2 class="home-title">Твоя ссылка</h2></div>
       <div class="panel ref-panel" id="refPanel"></div>
       <div class="row-head"><h2 class="home-title">Дорога друзей</h2></div>
@@ -727,14 +731,14 @@
       if (!box || !d.ok) return;
       if (!d.top.length) { box.innerHTML = '<div class="w-glass pf-empty"><b>Пока пусто</b><span class="muted">Выигрывайте в апгрейде и кейсах — лучшие игроки появятся здесь</span><a class="btn btn-accent w-go" href="#/upgrade">Играть</a></div>'; return; }
       const me = S.user && S.user.id;
-      const row = (p, i) => `<div class="top-row${p.uid === me ? ' me' : ''}">
+      const row = (p, i) => `<div class="top-row${p.uid === me ? ' me' : ''}" data-profile="${p.uid}">
           <span class="top-place">${i + 1}</span>
           <span class="x-ava">${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}${window.RUSTUP_EXTRAS.lvlBadge(p.lvl, 'on-ava')}</span>
           <span class="top-who"><b>${esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b><small>${fmtInt(p.n)} ${p.n % 10 === 1 && p.n % 100 !== 11 ? 'выигрыш' : p.n % 10 >= 2 && p.n % 10 <= 4 && (p.n % 100 < 12 || p.n % 100 > 14) ? 'выигрыша' : 'выигрышей'}${p.bestName ? ` · лучший ${esc(p.bestName)}` : ''}</small></span>
           <span class="top-won">${coin(p.won)}</span></div>`;
       const podium = d.top.slice(0, 3);
       box.innerHTML = `
-        <div class="top-podium">${[1, 0, 2].map(i => { const p = podium[i]; if (!p) return '<div class="pod pod-empty"></div>'; return `<div class="pod pod-${i + 1}" style="--mc:${MEDAL[i]}">
+        <div class="top-podium">${[1, 0, 2].map(i => { const p = podium[i]; if (!p) return '<div class="pod pod-empty"></div>'; return `<div class="pod pod-${i + 1}" style="--mc:${MEDAL[i]}" data-profile="${p.uid}">
           <div class="pod-ava">${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}<span class="pod-n">${i + 1}</span></div>
           <b>${esc(p.nick)}</b><span class="pod-won">${coin(p.won)}</span><span class="pod-base w-glass"></span></div>`; }).join('')}</div>
         <div class="tx-list w-glass top-list">${d.top.map(row).join('')}</div>
@@ -991,7 +995,7 @@
     } else {
       const fire = fireNow();
       us.innerHTML = `
-        <button class="fire-chip ${fire.state}" type="button" data-fire aria-label="Огонёк: серия дней">🔥<b>${fire.n}</b></button>
+        <button class="fire-chip ${fire.state}" type="button" data-fire aria-label="Огонёк: серия дней">${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')}<b>${fire.n}</b></button>
         <button class="balance${$('#curMenu') ? ' open' : ''}" type="button" data-cur-menu aria-label="Баланс и валюта" aria-haspopup="menu">${coin(S.balance)}<svg class="balance-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="btn btn-accent btn-pill btn-deposit" type="button" data-deposit>Пополнить</button>
         <a class="hdr-ava" href="#/profile" aria-label="Профиль">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}${gameReady ? window.RUSTUP_EXTRAS.lvlBadge(window.RUSTUP_EXTRAS.myLevel().l, 'on-ava') : ''}</a>`;
@@ -1164,6 +1168,7 @@
       if (!d || !d.ok) return;
       realOnline = d.online || 0; realGames = d.games || {};
       window.RUSTUP_EXTRAS.setReacts(d.reacts);
+      window.RUSTUP_SOCIAL.setEvents(d.events);
       paintOnline();
       const fresh = d.drops.filter(r => !seenDrops.has(r.id)).reverse();   // oldest first, so the newest ends up on the left
       fresh.forEach(r => seenDrops.add(r.id));
@@ -1786,6 +1791,7 @@
     const left = DAILY_MS - (Date.now() - (S.rewards.lastDaily || 0));
     const hh = Math.max(0, Math.floor(left / 3600e3)), mm = Math.max(0, Math.floor((left % 3600e3) / 60e3));
     const cb = S.rewards.cashback || 0;
+    const dailyEv = window.RUSTUP_SOCIAL.evMult('daily');   // an event from the admin panel multiplies the gift
 
     // RubUP-like layout: hero banner, deposit bonuses strip, daily tiles, friends
     const roadNfts = ROAD_ITEMS.filter(r => r.skin.img.includes('assets/nft/')).slice(-3).reverse().map(r => r.skin);
@@ -1805,7 +1811,7 @@
       ${window.RUSTUP_EXTRAS.homeBanners()}
       <div class="row-head"><h2 class="home-title">Ежедневные</h2></div>
       <div class="bonus-grid">
-        ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, 'Подарок дня', coin(dailyBonus()),
+        ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, `Подарок дня${dailyEv > 1 ? ` <i class="ev-x">${window.RUSTUP_ICONS.glyph('bolt')}×${dailyEv}</i>` : ''}`, coin(dailyBonus() * dailyEv),
           `День ${dailyStep() + 1} из ${DAILY_DAYS} · +${Math.round(DAILY_GROWTH * 100)}% каждый день подряд
           <span class="daily-week">${Array.from({ length: DAILY_DAYS }, (_, i) => `<i class="${i < dailyStep() ? 'done' : i === dailyStep() ? 'now' : ''}"></i>`).join('')}</span>`,
           `<button class="btn ${dailyReady() ? 'btn-accent' : 'btn-ghost'} bt-btn" id="claimDaily" ${dailyReady() ? '' : 'disabled'}>${dailyReady() ? 'Забрать' : `${hh} ч ${mm} мин`}</button>`)}
@@ -1894,7 +1900,7 @@
           ${since ? `<span class="pf-meta">Играет с ${new Date(since).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>` : ''}
         </div>
         <div class="pf-balance"><span>Баланс</span><b>${coin(S.balance)}</b></div>
-        <button class="pf-fire fire-chip ${fireNow().state}" type="button" data-fire>🔥<b>${fireNow().n}</b><span>${plural(fireNow().n, 'день', 'дня', 'дней')} подряд${S.fire && S.fire.best ? ` · рекорд ${S.fire.best}` : ''}</span></button>
+        <button class="pf-fire fire-chip ${fireNow().state}" type="button" data-fire>${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')}<b>${fireNow().n}</b><span>${plural(fireNow().n, 'день', 'дня', 'дней')} подряд${S.fire && S.fire.best ? ` · рекорд ${S.fire.best}` : ''}</span></button>
         <div class="pf-actions">
           <a class="btn btn-accent" href="#/wallet?tab=deposit">Пополнить</a>
           <a class="btn btn-ghost" href="#/inventory">Инвентарь</a>
@@ -1902,6 +1908,7 @@
         </div>
       </div>
       ${window.RUSTUP_EXTRAS.levelCard()}
+      ${window.RUSTUP_SOCIAL.showcaseCard()}
       <div class="pf-stats">
         ${stat(TXICO.upgrade, 'Апгрейдов', fmtInt(st.upgrades))}
         ${stat(TXICO.gift, 'Побед', fmtInt(st.wins), `${winRate}% удачных`)}
@@ -1916,9 +1923,11 @@
       <div class="row-head"><h2 class="home-title">Последние апгрейды</h2><a href="#/wallet?tab=history">Вся история ${ICON.right}</a></div>
       ${recent ? `<div class="tx-list w-glass">${recent}</div>` : '<div class="w-glass pf-empty"><span class="muted">Апгрейдов пока не было</span></div>'}
       <div class="pf-links">
+        <a class="w-glass pf-link" href="#/stats"><span class="tx-ico">${TXICO.upgrade}</span><b>Моя статистика</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/wallet?tab=history"><span class="tx-ico">${TXICO.deposit}</span><b>Кошелёк и история</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/friends"><span class="tx-ico">${TXICO.friends}</span><b>Друзья и рефералы</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/refcontest"><span class="tx-ico">${TXICO.friends}</span><b>Конкурс рефералов</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="https://t.me/${esc(window.RUSTUP_SUPPORT || 'rustuperhelp_bot')}" data-tg-link><span class="tx-ico">${ICON.tg}</span><b>Поддержка</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
       </div>
@@ -1926,52 +1935,6 @@
     $('#rename').onclick = () => {
       const n = prompt('Новый ник', S.user.name);
       if (n && n.trim()) api('nick', { name: n.trim().slice(0, 20) }).then(d => { if (!d.ok) return netToast(d); renderHeader(); profilePage(); });
-    };
-  }
-
-  // ---------- provably fair ----------
-  function fairPage() {
-    const sd = S.seeds;
-    $('#page').innerHTML = `<div class="page">
-      <h2 class="section-title">Provably Fair</h2>
-      <div class="prose">
-        <p>Результат каждого апгрейда определяется заранее и может быть проверен. Сервер выбирает секретный <b>server seed</b> и показывает вам только его SHA-256 хэш. Вы задаёте свой <b>client seed</b>. Каждый апгрейд увеличивает <b>nonce</b> на 1.</p>
-        <p>Ролл: <code>HMAC_SHA256(server_seed, client_seed:nonce)</code> → первые 8 hex-символов → число / 2<sup>32</sup> × 100. Если ролл меньше шанса — апгрейд успешен. Стрелка колеса останавливается ровно на ролле, а зелёный/жёлтый/красный сектор начинается сверху и занимает «шанс» процентов круга.</p>
-        <p>Шанс считается так: <code>стоимость ставки / стоимость цели × ${RTP} × 100</code>, максимум ${MAX_CHANCE}%.</p>
-      </div>
-      <div class="cards-3" style="margin-top:24px">
-        <div class="panel">
-          <div class="field"><label>Хэш текущего server seed</label><div class="mono">${sd.serverHash}</div></div>
-          <div class="field"><label for="cseed">Client seed</label><div class="row"><input id="cseed" class="text-input mono" value="${esc(sd.client)}" maxlength="64"><button class="btn btn-accent" id="saveSeed">OK</button></div></div>
-          <div class="field"><label>Nonce</label><div class="mono">${sd.nonce}</div></div>
-          <button class="btn btn-ghost" id="rotate" style="width:100%">Сменить server seed (раскрыть текущий)</button>
-        </div>
-        <div class="panel">
-          <div class="field"><label>Предыдущий server seed (раскрыт)</label><div class="mono">${sd.prev ? sd.prev.server : '—'}</div></div>
-          <div class="field"><label>Его хэш</label><div class="mono">${sd.prev ? sd.prev.serverHash : '—'}</div></div>
-          <div class="field"><label>Client seed / последний nonce</label><div class="mono">${sd.prev ? `${esc(sd.prev.client)} / ${sd.prev.nonce - 1}` : '—'}</div></div>
-        </div>
-        <div class="panel">
-          <div class="field"><label for="vS">Server seed</label><input id="vS" class="text-input mono" value="${sd.prev ? sd.prev.server : ''}"></div>
-          <div class="field"><label for="vC">Client seed</label><input id="vC" class="text-input mono" value="${sd.prev ? esc(sd.prev.client) : ''}"></div>
-          <div class="field"><label for="vN">Nonce</label><input id="vN" class="text-input mono" type="number" min="0" value="0"></div>
-          <button class="btn btn-accent" id="verify" style="width:100%">Проверить</button>
-          <div class="field" style="margin-top:12px"><label>Ролл</label><div class="pf-result" id="vR">—</div><div class="mono muted" id="vH"></div></div>
-        </div>
-      </div>
-    </div>`;
-    $('#saveSeed').onclick = () => {
-      const v = $('#cseed').value.trim();
-      if (!v) return toast('Client seed не может быть пустым', 'error');
-      api('seed', { client: v }).then(d => { if (!d.ok) return netToast(d); toast('Client seed сохранён, nonce сброшен', 'success'); fairPage(); });
-    };
-    // the server keeps the seed secret until it is rotated, then reveals it here
-    $('#rotate').onclick = () => api('rotate').then(d => { if (!d.ok) return netToast(d); toast('Server seed сменён, предыдущий раскрыт', 'success'); fairPage(); });
-    $('#verify').onclick = () => {
-      const s = { server: $('#vS').value.trim(), client: $('#vC').value.trim(), nonce: +$('#vN').value || 0 };
-      if (!s.server) return toast('Укажите server seed', 'error');
-      $('#vR').textContent = rollFor(s).toFixed(4);
-      $('#vH').textContent = 'SHA-256(server seed) = ' + sha256(s.server);
     };
   }
 
@@ -2683,7 +2646,7 @@
         <button class="btn btn-accent" id="cwUp" style="flex:1">В апгрейд</button>
       </div>
       ${next ? `<a class="btn btn-ghost" href="#/case/${next.id}" id="cwNext">Открыть ${next.name}</a>` : ''}
-      <button class="btn btn-ghost brag-btn" id="cwBrag">📸 Похвастаться</button>
+      <button class="btn btn-ghost brag-btn" id="cwBrag">${window.RUSTUP_ICONS.glyph('camera')} Похвастаться</button>
       ${again ? `<button class="btn btn-ghost" id="cwAgain">Открыть ещё${n > 1 ? ` ${n} шт.` : ''} за ${coinInt(casePrice(c) * n)}</button>` : ''}`,
     m => {
       $('#cwBrag', m).onclick = () => window.RUSTUP_EXTRAS.brag({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' }, true);
@@ -2768,7 +2731,7 @@
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
       ${window.RUSTUP_EXTRAS.homeBanners()}
-      <a class="top-banner w-glass" href="#/top"><span class="top-banner-ico">🏆</span><span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
+      <a class="top-banner w-glass" href="#/top">${window.RUSTUP_ICONS.badge('trophy', 'xi-link')}<span class="top-banner-txt"><b>Топ игроков</b><small>Кто выиграл больше всех за сутки и неделю</small></span>${ICON.right}</a>
       <div class="row-head"><h2 class="home-title">Бесплатные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
       <div class="cases-grid">${CASES.map(caseCard).join('')}</div>
       <div class="row-head"><h2 class="home-title">Популярные кейсы</h2><a href="#/cases">Все ${ICON.right}</a></div>
@@ -2821,7 +2784,8 @@
       case '/quests': case '/tour': case '/season': window.RUSTUP_EXTRAS[path](); break;
       case '/inventory': inventoryPage(); break;
       case '/profile': profilePage(); break;
-      case '/provably-fair': fairPage(); break;
+      // stats, referral contest, fair checks (js/social.js)
+      case '/stats': case '/refcontest': case '/provably-fair': window.RUSTUP_SOCIAL[path](); break;
       // game modes live in js/modes.js
       case '/crash': case '/contract': case '/battles': case '/mines': case '/wheel': case '/plinko': window.RUSTUP_MODES[path](); break;
       case '/tos': textPage('Условия использования', '<p>RUST UP — демонстрационный интерфейс. Баланс, скины и результаты виртуальные и не имеют денежной стоимости, их нельзя вывести или обменять.</p><p>Проект не связан с Valve, Steam и Facepunch Studios. Изображения предметов принадлежат их правообладателям.</p>'); break;
@@ -2854,7 +2818,7 @@
     get S() { return S; }, $, esc, coin, coinInt, money, fmtInt, card, byName, skinOf, imgCls, ICON, GAMES, CASES, PAID_CASES,
     caseById, casePrice, caseArt, caseItems, rollCase, rollCell, invItem, avatarHtml, avaUrl, api, toast, netToast, gameErr, modal, closeModal,
     sfxWin, beep, haptic, bumpBalance, renderHeader, requireLogin, setGame, rand, plural, curPath, tgUser,
-    perCoin: () => CURRENCIES[curId()].perCoin(), curSym: () => CURRENCIES[curId()].sym, rubPer: () => CURRENCIES.rub.perCoin(), moneyInt, closeModal, gameErr, fmtInt,
+    perCoin: () => CURRENCIES[curId()].perCoin(), curSym: () => CURRENCIES[curId()].sym, rubPer: () => CURRENCIES.rub.perCoin(), moneyInt, closeModal, gameErr, fmtInt, shareRef,
     applyState: st => { applyState(st); renderHeader(); },
     get online() { return online; }
   };
@@ -2873,6 +2837,7 @@
       }
       gameReady = true;
       if (d.banned) toast(GAME_ERR.banned, 'error');
+      window.RUSTUP_SOCIAL.onState(true);   // the comeback gift waiting after a long break
       U.inputs.clear(); U.inv.sel.clear();
       renderHeader(); route();
       tgLogin();

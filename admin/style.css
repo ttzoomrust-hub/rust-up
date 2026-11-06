@@ -147,3 +147,18 @@ textarea { font: inherit; color: inherit; }
 #tabs { overflow-x: auto; scrollbar-width: none; }
 #tabs button { white-space: nowrap; }#tabs { display: flex !important; flex-wrap: nowrap !important; }
 #tabs button { flex: 1 0 auto; padding-left: 12px; padding-right: 12px; }
+
+/* events (2026-11-06) */
+.ev-form label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: rgba(255,255,255,.6); min-width: 0; }
+.ev-form .row2, .ev-form .row2:last-of-type { grid-template-columns: 1fr 1fr; }
+.ev-form select { height: 46px; padding: 0 12px; border-radius: 14px; background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 14px; outline: 0; min-width: 0; }
+.ev-form select option { background: #1b1c20; }
+.ev-form .ev-check { flex-direction: row; align-items: center; gap: 8px; font-size: 13px; color: #fff; }
+.ev-form .ev-check input { width: 20px; height: 20px; box-shadow: none; accent-color: #e5383b; }
+.ev-form .wide { width: 100%; margin-top: 4px; }
+.ev-form .muted { margin: 2px 0 0; font-size: 12px; }
+.ev-stop { flex: none; height: 34px; padding: 0 14px; font-size: 13px; }
+.tabs { display: flex; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { flex: 1 0 auto; padding: 0 14px; }
+.ev-form select, .ev-form input:not([type=checkbox]) { width: 100%; box-sizing: border-box; }

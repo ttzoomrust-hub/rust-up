@@ -6,6 +6,7 @@
   'use strict';
   const R = window.RUSTUP_RULES, LV = R.LEVELS, QS = R.QUESTS, TR = R.TOUR, SN = R.SEASON;
   const A = () => window.RUSTUP_APP;
+  const I = window.RUSTUP_ICONS, SNOW = I.glyph('snow');   // js/icons.js
   const page = html => { A().$('#page').innerHTML = html; };
   const API = () => window.RUSTUP_API.replace(/\/$/, '');
   const DAY = 864e5, MSK = 3 * 3600e3;
@@ -77,7 +78,7 @@
     const claim = new Set([...r.daily, ...r.weekly].filter(x => x.state === 'claim').map(x => `${x.daily ? mskDay(now) : weekOf(now)}:${x.id}`));
     if (lastClaim) [...r.daily, ...r.weekly].forEach(x => {
       if (x.state === 'claim' && !lastClaim.has(`${x.daily ? mskDay(now) : weekOf(now)}:${x.id}`))
-        setTimeout(() => A().toast(`✅ Задание выполнено: <b>${A().esc(x.title)}</b> — заберите награду в «Заданиях»`, 'success'), 1800);
+        setTimeout(() => A().toast(` Задание выполнено: <b>${A().esc(x.title)}</b> — заберите награду в «Заданиях»`, 'success'), 1800);
     });
     lastClaim = claim;
   }
@@ -114,10 +115,10 @@
   function questsPage() {
     const r = questRows(), now = Date.now();
     const row = x => `<div class="q-row ${x.state}">
-        <span class="q-ico">${x.state === 'done' ? '✓' : x.daily ? '☀️' : '📅'}</span>
+        ${I.badge(x.state === 'done' ? 'check' : x.daily ? 'sun' : 'calendar', 'xi-row q-ico')}
         <span class="q-body"><b>${A().esc(x.title)}</b>
           <span class="q-bar"><i style="width:${((x.p / x.n) * 100).toFixed(1)}%"></i></span>
-          <small>${x.t === 'wager' ? `${A().fmtInt(x.p)} / ${A().fmtInt(x.n)} ₽` : `${A().fmtInt(x.p)} / ${x.n}`} · ${rewardTxt(x.rub)} · +${x.daily ? QS.XP_D : QS.XP_W} XP${seasonOn() ? ` · ❄${x.daily ? QS.SEASON_D : QS.SEASON_W}` : ''}</small></span>
+          <small>${x.t === 'wager' ? `${A().fmtInt(x.p)} / ${A().fmtInt(x.n)} ₽` : `${A().fmtInt(x.p)} / ${x.n}`} · ${rewardTxt(x.rub)} · +${x.daily ? QS.XP_D : QS.XP_W} XP${seasonOn() ? ` · ${SNOW}${x.daily ? QS.SEASON_D : QS.SEASON_W}` : ''}</small></span>
         ${x.state === 'claim' ? `<button class="btn btn-accent q-btn" data-quest="${x.id}">Забрать</button>` : x.state === 'done' ? '<span class="q-got">Получено</span>' : '<span class="q-wait">В процессе</span>'}
       </div>`;
     const allDone = r.daily.every(x => x.state === 'done');
@@ -126,12 +127,12 @@
       ${levelCard()}
       <div class="row-head"><h2 class="home-title">Задания дня</h2><span class="q-timer">⏱ ${leftTxt(dayEndMs(now) - now)}</span></div>
       <div class="w-glass q-list">${r.daily.map(row).join('')}
-        <div class="q-all${r.all ? ' done' : allDone ? ' done' : ''}"><span>🎁 Выполните все задания дня</span><b>${r.all ? 'Получено' : '+' + rewardTxt(QS.DAILY_ALL_RUB)}</b></div></div>
+        <div class="q-all${r.all ? ' done' : allDone ? ' done' : ''}"><span>${I.glyph('gift')} Выполните все задания дня</span><b>${r.all ? 'Получено' : '+' + rewardTxt(QS.DAILY_ALL_RUB)}</b></div></div>
       <div class="row-head"><h2 class="home-title">Задания недели</h2><span class="q-timer">⏱ ${leftTxt(weekEndMs(weekOf(now)) - now)}</span></div>
       <div class="w-glass q-list">${r.weekly.map(row).join('')}</div>
       <div class="x-links">
-        <a class="w-glass pf-link" href="#/tour"><span class="tx-ico x-emoji">🏆</span><b>Турнир недели</b><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        ${seasonClaimable() ? `<a class="w-glass pf-link" href="#/season"><span class="tx-ico x-emoji">❄️</span><b>${SN.name}</b><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : ''}
+        <a class="w-glass pf-link" href="#/tour">${I.badge('trophy', 'xi-link')}<b>Турнир недели</b><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        ${seasonClaimable() ? `<a class="w-glass pf-link" href="#/season">${I.badge('snow', 'xi-link')}<b>${SN.name}</b><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : ''}
       </div>
       <p class="w-note">Задания дня меняются в 00:00 МСК, задания недели — в понедельник. Прогресс считается в любых играх на сервере.</p>
     </div>`);
@@ -153,7 +154,7 @@
   // weekly tournament
   // =====================================================================================
   const MEDAL = ['#ffd166', '#c9d1dc', '#e0965a'];
-  const boardRow = (p, i, me, prize) => `<div class="top-row${p.uid === me ? ' me' : ''}">
+  const boardRow = (p, i, me, prize) => `<div class="top-row${p.uid === me ? ' me' : ''}" data-profile="${p.uid}">
       <span class="top-place">${i + 1}</span>
       <span class="x-ava">${A().avatarHtml(p.nick, p.color || '#e5383b', 'avatar', A().avaUrl(p.uid))}${lvlBadge(p.lvl, 'on-ava')}</span>
       <span class="top-who"><b>${A().esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b><small>${A().fmtInt(p.pts)} ${plural(Math.round(p.pts), 'очко', 'очка', 'очков')}</small></span>
@@ -162,7 +163,7 @@
     const now = Date.now();
     page(`<div class="page wallet-page tour-page">
       <div class="x-hero w-glass hs-tour">
-        <span class="x-hero-ico">🏆</span>
+        ${I.badge('trophy', 'xi-hero')}
         <div><span class="hero-kicker"><i class="dot-online"></i>Идёт сейчас</span><h1>Турнир недели</h1>
         <p>Очки за каждую ставку в любой игре: <b>1 ₽ = 1 очко</b>. Топ-10 делят <b>${rewardTxt(TR.PRIZES_RUB.reduce((a, b) => a + b, 0))}</b></p>
         <span class="x-timer">⏱ До конца: <b id="tourLeft">${leftTxt(weekEndMs(weekOf(now)) - now)}</b></span></div>
@@ -200,19 +201,19 @@
     const over = now >= SN.end, date = t => new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', timeZone: 'Europe/Moscow' });
     page(`<div class="page wallet-page season-page">
       <div class="x-hero w-glass hs-season">
-        <span class="x-hero-ico">❄️</span>
+        ${I.badge('snow', 'xi-hero')}
         <div><span class="hero-kicker">${date(SN.start)} — ${date(SN.end - 1)}</span><h1>${SN.name}</h1>
-        <p>Снежинки ❄ за каждую ставку (1 ₽ = 1 ❄) и за задания. Каждые ${SN.STEP} ❄ — новый уровень пропуска с наградой.</p>
+        <p>Снежинки ${SNOW} за каждую ставку (1 ₽ = 1 ${SNOW}) и за задания. Каждые ${SN.STEP} ${SNOW} — новый уровень пропуска с наградой.</p>
         <span class="x-timer">${over ? 'Сезон завершён' : `⏱ До конца: <b>${leftTxt(SN.end - now)}</b>`}</span></div>
       </div>
-      <div class="w-glass x-me sp-me"><span>Снежинки</span><b>❄ ${A().fmtInt(se.pts)}</b><span>Уровень пропуска</span><b>${reached} / ${SN.PASS.length}</b>
+      <div class="w-glass x-me sp-me"><span>Снежинки</span><b>${SNOW} ${A().fmtInt(se.pts)}</b><span>Уровень пропуска</span><b>${reached} / ${SN.PASS.length}</b>
         <span class="lvl-bar sp-bar"><i style="width:${reached >= SN.PASS.length ? 100 : ((inLvl / SN.STEP) * 100).toFixed(1)}%"></i></span></div>
       <div class="row-head"><h2 class="home-title">Зимний пропуск</h2><span class="q-timer">бесплатно для всех</span></div>
       <div class="sp-grid">${SN.PASS.map((rw, i) => {
         const l = i + 1, got = se.got.includes(l), ok = se.pts >= l * SN.STEP;
         const st = got ? 'got' : ok && seasonClaimable() ? 'claim' : 'lock';
         return `<div class="sp-cell ${st}"><span class="sp-l">${l}</span><span class="sp-art">${passArt(rw)}</span><b>${passName(rw)}</b>
-          ${st === 'claim' ? `<button class="btn btn-accent sp-btn" data-season="${l}">Забрать</button>` : st === 'got' ? '<span class="sp-st">✓ Получено</span>' : `<span class="sp-st">❄ ${A().fmtInt(l * SN.STEP)}</span>`}</div>`;
+          ${st === 'claim' ? `<button class="btn btn-accent sp-btn" data-season="${l}">Забрать</button>` : st === 'got' ? `<span class="sp-st">${I.glyph('check')} Получено</span>` : `<span class="sp-st">${SNOW} ${A().fmtInt(l * SN.STEP)}</span>`}</div>`;
       }).join('')}</div>
       <div class="row-head"><h2 class="home-title">Топ сезона</h2></div>
       <div class="x-prizes">${SN.TOP_RUB.map((p, i) => `<span class="x-prize${i < 3 ? ' p' + (i + 1) : ''}" ${i < 3 ? `style="--mc:${MEDAL[i]}"` : ''}><b>${i + 1}</b>${rewardTxt(p)}</span>`).join('')}</div>
@@ -223,7 +224,7 @@
     fetch(`${API()}/api/season${me ? '?uid=' + me : ''}`).then(r => r.json()).then(d => {
       if (!d.ok || A().curPath() !== '/season') return;
       A().$('#seasonBody').innerHTML = d.top.length
-        ? `<div class="tx-list w-glass top-list">${d.top.map((p, i) => boardRow(p, i, me, SN.TOP_RUB[i]).replace(/очк(ов|о|а)/, '❄')).join('')}</div>${d.me && d.me.place > d.top.length ? `<p class="w-note">Ваше место: <b>${d.me.place}</b></p>` : ''}`
+        ? `<div class="tx-list w-glass top-list">${d.top.map((p, i) => boardRow(p, i, me, SN.TOP_RUB[i]).replace(/очк(ов|о|а)/, SNOW)).join('')}</div>${d.me && d.me.place > d.top.length ? `<p class="w-note">Ваше место: <b>${d.me.place}</b></p>` : ''}`
         : '<div class="w-glass pf-empty"><b>Пока никого</b><span class="muted">Играйте — снежинки копятся с каждой ставки</span></div>';
     }).catch(() => {});
   }
@@ -244,18 +245,19 @@
   function heroSlides() {
     const out = [`<a class="hero-slide hs-tourney" href="#/tour">
         <span class="hero-text"><span class="hero-kicker"><i class="dot-online"></i>Каждую неделю</span><b class="hero-title">Турнир<br>недели</b><span class="hero-sub">Топ-10 делят ${rewardTxt(TR.PRIZES_RUB.reduce((a, b) => a + b, 0))}</span><span class="hero-btn">Участвовать ›</span></span>
-        <span class="hero-art"><span class="ha-emoji">🏆</span></span></a>`];
+        <span class="hero-art">${I.badge('trophy', 'xi-art')}</span></a>`];
     if (seasonClaimable()) out.unshift(`<a class="hero-slide hs-season" href="#/season">
-        <span class="hero-text"><span class="hero-kicker">❄ Новый сезон</span><b class="hero-title">${SN.name.replace(' ', '<br>')}</b><span class="hero-sub">${SN.PASS.length} наград пропуска · топ сезона ${rewardTxt(SN.TOP_RUB[0])}</span><span class="hero-btn">Открыть ›</span></span>
+        <span class="hero-text"><span class="hero-kicker">${SNOW} Новый сезон</span><b class="hero-title">${SN.name.replace(' ', '<br>')}</b><span class="hero-sub">${SN.PASS.length} наград пропуска · топ сезона ${rewardTxt(SN.TOP_RUB[0])}</span><span class="hero-btn">Открыть ›</span></span>
         <span class="hero-art"><img class="hs-gift g0" src="${itemImg('Шампанское')}" alt=""><img class="hs-gift g1" src="${itemImg('Торт')}" alt=""><img class="hs-gift g2" src="${itemImg('Мишка')}" alt=""></span></a>`);
     return out;
   }
   function homeBanners() {
-    const n = claimable();
-    return `<div class="x-banners">
-      <a class="w-glass x-banner" href="#/quests"><span class="x-b-ico">🎯</span><span><b>Задания</b><small>${n ? `Можно забрать: ${n}` : 'Награды каждый день'}</small></span>${n ? `<i class="x-dot">${n}</i>` : ''}</a>
-      <a class="w-glass x-banner" href="#/tour"><span class="x-b-ico">🏆</span><span><b>Турнир</b><small>Призы каждую неделю</small></span></a>
-      ${seasonClaimable() ? `<a class="w-glass x-banner" href="#/season"><span class="x-b-ico">❄️</span><span><b>Сезон</b><small>Зимний пропуск</small></span></a>` : ''}
+    const n = claimable(), SO = window.RUSTUP_SOCIAL;
+    return `${SO ? SO.eventsBar() : ''}<div class="x-banners">
+      <a class="w-glass x-banner" href="#/quests">${I.badge('target', 'xi-banner')}<span><b>Задания</b><small>${n ? `Можно забрать: ${n}` : 'Награды каждый день'}</small></span>${n ? `<i class="x-dot">${n}</i>` : ''}</a>
+      <a class="w-glass x-banner" href="#/tour">${I.badge('trophy', 'xi-banner')}<span><b>Турнир</b><small>Призы каждую неделю</small></span></a>
+      ${seasonClaimable() ? `<a class="w-glass x-banner" href="#/season">${I.badge('snow', 'xi-banner')}<span><b>Сезон</b><small>Зимний пропуск</small></span></a>` : ''}
+      ${SO ? SO.contestBanner() : ''}
     </div>`;
   }
 
@@ -271,7 +273,7 @@
     bragData = o;
     clearTimeout(bragTimer);
     document.querySelector('.brag-chip')?.remove();
-    document.body.insertAdjacentHTML('beforeend', `<div class="brag-chip"><button type="button" class="brag-go">📸 Похвастаться выигрышем</button><button type="button" class="brag-x" aria-label="Закрыть">×</button></div>`);
+    document.body.insertAdjacentHTML('beforeend', `<div class="brag-chip"><button type="button" class="brag-go">${I.glyph('camera')} Похвастаться выигрышем</button><button type="button" class="brag-x" aria-label="Закрыть">×</button></div>`);
     const el = document.querySelector('.brag-chip');
     el.querySelector('.brag-go').onclick = () => { el.remove(); shareWin(bragData); };
     el.querySelector('.brag-x').onclick = () => el.remove();
@@ -372,7 +374,7 @@
     const r = reacts[id] || {}, total = Object.values(r).reduce((a, b) => a + b, 0);
     document.body.insertAdjacentHTML('beforeend', `<div class="react-menu" role="menu">
       ${own ? `<span class="rm-own">Ваш выигрыш${total ? ` · реакций: ${total}` : ''}</span>` : REACTS.map(e => `<button type="button" class="rm-e${mine[id] === e ? ' on' : ''}" data-react="${e}">${e}<small>${r[e] || ''}</small></button>`).join('')}
-      <a class="rm-go" href="${el.getAttribute('href')}">Играть ›</a></div>`);
+      <span class="rm-links"><button type="button" class="rm-go" data-profile="${el.dataset.uid}">Профиль</button><a class="rm-go" href="${el.getAttribute('href')}">Играть ›</a></span></div>`);
     const m = document.querySelector('.react-menu'), b = el.getBoundingClientRect();
     const w = m.offsetWidth;
     m.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, b.left + b.width / 2 - w / 2)) + 'px';

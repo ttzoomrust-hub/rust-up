@@ -154,7 +154,7 @@
     list.innerHTML = d.bets.length ? d.bets.map(b => `<div class="cr-pl${b.mult ? ' win' : crashed ? ' lost' : ''}">
       ${avatarHtml(b.nick, b.color || '#e5383b', 'cr-ava', avaUrl(b.id))}
       <span class="cr-who"><b>${esc(b.nick)}</b>${coin(b.bet)}</span>
-      <span class="cr-x">${b.mult ? x2(b.mult) : crashed ? '💥' : '—'}</span>
+      <span class="cr-x">${b.mult ? x2(b.mult) : crashed ? window.RUSTUP_ICONS.glyph('boom') : '—'}</span>
       <span class="cr-win">${b.mult ? coin(b.amount) : ''}</span></div>`).join('')
       : '<div class="cr-empty">Ставок пока нет — будьте первым!</div>';
   }
@@ -196,11 +196,11 @@
     let cls = '', html, dis = C.busy;
     if (!d) { html = '<b>Подключаемся…</b>'; dis = true; }
     else if (ph === 'fly' && mine && !C.cashed) { cls = 'cash'; html = `<b>Забрать ${coin(C.me.bet * (C.mult || 1))}</b><small>${x2(C.mult || 1)}</small>`; }
-    else if (mine && (C.cashed || ph === 'crashed') && C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ✓</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
+    else if (mine && (C.cashed || ph === 'crashed') && C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ${window.RUSTUP_ICONS.glyph('check')}</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
     else if (mine && (C.cashed || ph === 'crashed')) html = `<b>Сделать ставку</b><small>на следующий раунд · ${coin(C.bet)}</small>`;
     else if (mine) { html = `<b>Ставка принята</b><small>${coin(C.me.bet)}${C.me.auto ? ` · автовывод ${x2(C.me.auto)}` : ''}</small>`; dis = true; }
     else if (ph === 'bet') html = `<b>Сделать ставку</b><small>${coin(C.bet)}${auto}</small>`;
-    else if (C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ✓</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
+    else if (C.queued) { cls = 'queued'; html = `<b>Ставка на следующий раунд ${window.RUSTUP_ICONS.glyph('check')}</b><small>${coin(C.bet)} · нажмите, чтобы отменить</small>`; }
     else html = `<b>Сделать ставку</b><small>на следующий раунд · ${coin(C.bet)}</small>`;
     b.className = 'cr-btn' + (cls ? ' ' + cls : '');
     if (b.dataset.h !== html) { b.innerHTML = html; b.dataset.h = html; }
@@ -343,7 +343,7 @@
   // Кейс-баттлы
   // =====================================================================================
   const B = { size: 2, rounds: 1, caseId: null, list: null, shown: {} };
-  const seatAva = p => (p.bot ? '<span class="bt-ava bot">🤖</span>' : A().avatarHtml(p.name, p.color || '#e5383b', 'bt-ava', A().avaUrl(p.id)));
+  const seatAva = p => (p.bot ? `<span class="bt-ava bot">${window.RUSTUP_ICONS.glyph('bot')}</span>` : A().avatarHtml(p.name, p.color || '#e5383b', 'bt-ava', A().avaUrl(p.id)));
   function battlesPage() {
     page(`<div class="page battles-page">
       ${back}
@@ -440,10 +440,10 @@
         const tot = res ? res.totals[i] : null, won = res && res.winner === i;
         return `<div class="bt-col w-glass${won ? ' winner' : ''}${res && !won ? ' lost' : ''}">${seatAva(p)}<b>${esc(p.name)}</b>
           ${res ? `<span class="bt-total">${coin(tot)}</span><div class="bt-drops">${res.rolls[i].map(n => A().card(A().byName[n], { static: true })).join('')}</div>` : '<span class="muted">Готов</span>'}
-          ${won ? '<span class="bt-crown">👑 Победитель</span>' : ''}</div>`;
+          ${won ? `<span class="bt-crown">${window.RUSTUP_ICONS.glyph('crown')} Победитель</span>` : ''}</div>`;
       }).join('')}</div>
       ${b.status === 'open' ? `<div class="bt-actions">${mine
-        ? `${owner ? `<button class="btn btn-accent" id="btBots">🤖 Позвать ботов</button><button class="btn btn-ghost" id="btCancel">Отменить и вернуть ${coin(b.cost)}</button>` : '<p class="note">Ждём остальных игроков…</p>'}`
+        ? `${owner ? `<button class="btn btn-accent" id="btBots">${window.RUSTUP_ICONS.glyph('bot')} Позвать ботов</button><button class="btn btn-ghost" id="btCancel">Отменить и вернуть ${coin(b.cost)}</button>` : '<p class="note">Ждём остальных игроков…</p>'}`
         : `<button class="btn btn-accent" id="btJoin">Войти за ${coin(b.cost)}</button>`}</div>` : ''}
       ${b.status === 'cancel' ? '<p class="note" style="text-align:center">Баттл отменён — вход вернулся на баланс.</p>' : ''}
       ${b.status === 'done' ? '<a class="btn btn-accent" href="#/battles" style="height:48px">К баттлам</a>' : ''}`;
