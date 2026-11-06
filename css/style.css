@@ -2319,3 +2319,4 @@ html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) +
 .rv-form > small { text-align: right; }
 .rv-form .btn { height: 48px; }
 .rv-note { margin: 0; font-size: 12px; line-height: 1.35; }
+.mascot-ico { object-fit: cover; padding: 0; background: #2a1414; }

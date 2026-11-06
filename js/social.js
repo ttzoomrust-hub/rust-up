@@ -425,11 +425,13 @@
       out.push(`<button class="w-glass pf-link" type="button" data-tg-status>${I.badge('crown', 'xi-link')}<span class="refm-link-t"><b>Значок RUST UP в статусе</b><small>Рядом с вашим именем во всём Telegram</small></span>${arrow}</button>`);
     if (BRAND && BRAND.stickers)
       out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.stickers)}" data-tg-link>${I.badge('gift', 'xi-link')}<span class="refm-link-t"><b>Стикеры RUST UP</b><small>«Окуп», «Минус скин», «GG» и другие</small></span>${arrow}</a>`);
+    if (BRAND && BRAND.mascot)
+      out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.mascot)}" data-tg-link><img class="xi xi-link mascot-ico" src="assets/stickers/m00.png" alt=""><span class="refm-link-t"><b>Стикеры с Русей</b><small>Маскот RUST UP: «Окуп», «Минус скин», «Летим!»</small></span>${arrow}</a>`);
     if (BRAND && BRAND.emoji)
       out.push(`<a class="w-glass pf-link" href="https://t.me/addemoji/${esc(BRAND.emoji)}" data-tg-link>${I.badge('fire', 'xi-link')}<span class="refm-link-t"><b>Эмодзи RUST UP</b><small>Фирменные эмодзи для сообщений${isPremium() ? '' : ' (с Telegram Premium)'}</small></span>${arrow}</a>`);
     return out.join('');
   }
-  const tgLinks = () => { if (!BRAND || !BRAND.stickers) setTimeout(fetchBrand, 0); return `<div class="pf-links tg-links" id="tgLinks">${tgLinksHtml()}</div>`; };
+  const tgLinks = () => { if (!BRAND || !BRAND.mascot) setTimeout(fetchBrand, 0); return `<div class="pf-links tg-links" id="tgLinks">${tgLinksHtml()}</div>`; };
   function paintTgLinks() { const el = document.getElementById('tgLinks'); if (el) el.innerHTML = tgLinksHtml(); }
   document.addEventListener('click', e => {
     if (e.target.closest('[data-tg-home]')) { TGW().addToHomeScreen(); return; }
