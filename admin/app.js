@@ -15,7 +15,7 @@
     const m = Math.round((Date.now() - t) / 60000);
     return m < 2 ? 'сейчас в игре' : m < 60 ? `${m} мин назад` : m < 1440 ? `${Math.round(m / 60)} ч назад` : new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
-  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'], event: ['Событие', 'ok'], event_stop: ['Стоп события', 'bad'] };
+  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'], event: ['Событие', 'ok'], event_stop: ['Стоп события', 'bad'], post: ['Пост', 'ok'] };
 
   function toast(text, kind = '') {
     const li = document.createElement('li');
@@ -311,9 +311,52 @@
     });
   }
 
+  // ---------- posts: text + picture + «Играть», to the channel and / or every bot user (bot/social.js adminPost) ----------
+  let POST_IMG = null;
+  function postsPage() {
+    $('#page').innerHTML = `
+      <section class="adjust glass ev-form post-form">
+        <h3>Новый пост</h3>
+        <label>Текст<textarea id="pText" rows="6" maxlength="3500" placeholder="**жирный**, __курсив__, ссылки как есть"></textarea></label>
+        <label>Картинка (необязательно)<input type="file" id="pImg" accept="image/*"></label>
+        <div class="post-img" id="pPrev">${POST_IMG ? `<img src="${POST_IMG}" alt=""><button class="btn ghost" data-pimg-del>Убрать</button>` : ''}</div>
+        <label>Кнопка<select id="pBtn"><option value="play">🎮 Играть</option><option value="none">Без кнопки</option></select></label>
+        <label class="ev-check"><input type="checkbox" id="pChan" checked> В канал @up_rust</label>
+        <label class="ev-check"><input type="checkbox" id="pBot"> Рассылка всем в боте</label>
+        <button class="btn good wide" data-post>📣 Отправить</button>
+        <p class="muted">Сначала пост придёт вам в @${esc(window.RUSTUP_BOT || 'rustuper_bot')} как предпросмотр (нужно, чтобы вы хоть раз нажали там /start). Рассылка идёт порциями, по окончании бот пришлёт отчёт. С картинкой текст — до 1024 символов.</p>
+      </section>`;
+    $('#pImg').onchange = e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      // the picture is shrunk to 1280 px and sent as JPEG
+      const img = new Image();
+      img.onload = () => {
+        const k = Math.min(1, 1280 / Math.max(img.width, img.height)), cv = document.createElement('canvas');
+        cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+        POST_IMG = cv.toDataURL('image/jpeg', 0.88);
+        $('#pPrev').innerHTML = `<img src="${POST_IMG}" alt=""><button class="btn ghost" data-pimg-del>Убрать</button>`;
+      };
+      img.src = URL.createObjectURL(f);
+    };
+  }
+  function sendPost() {
+    const text = $('#pText').value.trim(), channel = $('#pChan').checked, bot = $('#pBot').checked;
+    if (!text && !POST_IMG) return toast('Напишите текст или добавьте картинку', 'error');
+    if (POST_IMG && text.length > 1024) return toast('С картинкой текст — до 1024 символов', 'error');
+    if (!confirm(`Отправить пост${channel ? ' в канал' : ''}${channel && bot ? ' и' : ''}${bot ? ' всем в боте' : ''}${!channel && !bot ? ' только себе (предпросмотр)' : ''}?`)) return;
+    const b = $('[data-post]'); b.disabled = true;
+    api('post', { text, img: POST_IMG, btn: $('#pBtn').value, channel, bot }).then(d => {
+      b.disabled = false;
+      if (!d.ok) return toast({ preview: 'Не дошёл предпросмотр — напишите /start основному боту', empty: 'Пустой пост', long: 'Слишком длинный текст', big: 'Картинка слишком большая' }[d.error] || 'Не удалось', 'error');
+      toast(`Предпросмотр у вас${d.channel ? ' · в канале' : channel ? ' · канал: ошибка' : ''}${d.broadcast ? (d.broadcast.id ? ` · рассылка #${d.broadcast.id} на ${int(d.broadcast.total)}` : ' · рассылка: ' + d.broadcast.error) : ''}`, 'success');
+    });
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : statsPage();
+    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -328,6 +371,8 @@
     if ('tclose' in t.dataset) return closeT();
     if ('close' in t.dataset) return closeSheet();
     if ('evAdd' in t.dataset) return addEvent();
+    if ('post' in t.dataset) return sendPost();
+    if ('pimgDel' in t.dataset) { POST_IMG = null; $('#pPrev').innerHTML = ''; $('#pImg').value = ''; return; }
     if (t.dataset.evStop) return confirm('Остановить событие?') && api('event_stop', { id: +t.dataset.evStop }).then(d => { if (!d.ok) return toast('Не удалось', 'error'); toast('Событие остановлено', 'success'); EVENTS = null; eventsPage(); });
     if (t.dataset.adj) return adjust(t.dataset.adj === 'dep' ? 'dep' : +t.dataset.adj);
     if (t.dataset.ban) return ban(t.dataset.ban === '1');
@@ -383,7 +428,7 @@
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'support', 'log', 'events', 'economy'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts'].includes(start)) tab = start;
   render();
   loadStats();
   // the waiting-tickets badge on the tab, refreshed every half a minute

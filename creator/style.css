@@ -153,3 +153,6 @@ select.input { appearance: none; -webkit-appearance: none; }
 .loading i:nth-child(2) { animation-delay: .15s; }
 .loading i:nth-child(3) { animation-delay: .3s; }
 @keyframes pulse { 50% { opacity: .2; transform: scale(.7); } }
+.promo-card .promo-code { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+.promo-card .promo-tiles { margin: 10px 0; grid-template-columns: 1fr 1fr; }
+.promo-card .link-row + .link-row { margin-top: 10px; }

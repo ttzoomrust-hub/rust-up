@@ -5,7 +5,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 125106,
-    "img": "assets/cs2/negev-mj-lnir.png",
+    "img": "assets/cs2/negev-mj-lnir.webp",
     "wear": "Field-Tested"
   },
   {
@@ -13,7 +13,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 83400.5,
-    "img": "assets/cs2/awp-the-prince.png",
+    "img": "assets/cs2/awp-the-prince.webp",
     "wear": "Field-Tested"
   },
   {
@@ -21,7 +21,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 64851.5,
-    "img": "assets/cs2/butterfly-knife-marble-fade.png",
+    "img": "assets/cs2/butterfly-knife-marble-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -29,7 +29,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 63584.75,
-    "img": "assets/cs2/m9-bayonet-fade.png",
+    "img": "assets/cs2/m9-bayonet-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -37,7 +37,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 62811.5,
-    "img": "assets/cs2/m4a4-poseidon.png",
+    "img": "assets/cs2/m4a4-poseidon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -45,7 +45,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 58582,
-    "img": "assets/cs2/ak-47-gold-arabesque.png",
+    "img": "assets/cs2/ak-47-gold-arabesque.webp",
     "wear": "Field-Tested"
   },
   {
@@ -53,7 +53,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 49690.5,
-    "img": "assets/cs2/m9-bayonet-doppler.png",
+    "img": "assets/cs2/m9-bayonet-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -61,7 +61,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 48201,
-    "img": "assets/cs2/ak-47-hydroponic.png",
+    "img": "assets/cs2/ak-47-hydroponic.webp",
     "wear": "Field-Tested"
   },
   {
@@ -69,7 +69,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 45477.5,
-    "img": "assets/cs2/awp-desert-hydra.png",
+    "img": "assets/cs2/awp-desert-hydra.webp",
     "wear": "Field-Tested"
   },
   {
@@ -77,7 +77,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 45079,
-    "img": "assets/cs2/karambit-slaughter.png",
+    "img": "assets/cs2/karambit-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -85,7 +85,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 44698.5,
-    "img": "assets/cs2/sport-gloves-arid.png",
+    "img": "assets/cs2/sport-gloves-arid.webp",
     "wear": "Field-Tested"
   },
   {
@@ -93,7 +93,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 43352.5,
-    "img": "assets/cs2/awp-fade.png",
+    "img": "assets/cs2/awp-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -101,7 +101,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 35783,
-    "img": "assets/cs2/butterfly-knife-blue-steel.png",
+    "img": "assets/cs2/butterfly-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -109,7 +109,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 34757.5,
-    "img": "assets/cs2/ak-47-fire-serpent.png",
+    "img": "assets/cs2/ak-47-fire-serpent.webp",
     "wear": "Field-Tested"
   },
   {
@@ -117,7 +117,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 33219,
-    "img": "assets/cs2/m4a1-s-welcome-to-the-jungle.png",
+    "img": "assets/cs2/m4a1-s-welcome-to-the-jungle.webp",
     "wear": "Field-Tested"
   },
   {
@@ -125,7 +125,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 32856.5,
-    "img": "assets/cs2/m4a1-s-imminent-danger.png",
+    "img": "assets/cs2/m4a1-s-imminent-danger.webp",
     "wear": "Field-Tested"
   },
   {
@@ -133,7 +133,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 31877.5,
-    "img": "assets/cs2/butterfly-knife-crimson-web.png",
+    "img": "assets/cs2/butterfly-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -141,7 +141,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 31774,
-    "img": "assets/cs2/ak-47-x-ray.png",
+    "img": "assets/cs2/ak-47-x-ray.webp",
     "wear": "Field-Tested"
   },
   {
@@ -149,7 +149,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 30957.5,
-    "img": "assets/cs2/m4a1-s-blue-phosphor.png",
+    "img": "assets/cs2/m4a1-s-blue-phosphor.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -157,7 +157,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 30759.5,
-    "img": "assets/cs2/m9-bayonet-tiger-tooth.png",
+    "img": "assets/cs2/m9-bayonet-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -165,7 +165,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 29242.5,
-    "img": "assets/cs2/butterfly-knife-lore.png",
+    "img": "assets/cs2/butterfly-knife-lore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -173,7 +173,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 27669.5,
-    "img": "assets/cs2/bayonet-gamma-doppler.png",
+    "img": "assets/cs2/bayonet-gamma-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -181,7 +181,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 27220,
-    "img": "assets/cs2/butterfly-knife-freehand.png",
+    "img": "assets/cs2/butterfly-knife-freehand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -189,7 +189,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 26999,
-    "img": "assets/cs2/skeleton-knife-fade.png",
+    "img": "assets/cs2/skeleton-knife-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -197,7 +197,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 26817,
-    "img": "assets/cs2/talon-knife-marble-fade.png",
+    "img": "assets/cs2/talon-knife-marble-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -205,7 +205,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 26064,
-    "img": "assets/cs2/awp-lightning-strike.png",
+    "img": "assets/cs2/awp-lightning-strike.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -213,7 +213,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 25466,
-    "img": "assets/cs2/desert-eagle-sunset-storm.png",
+    "img": "assets/cs2/desert-eagle-sunset-storm.webp",
     "wear": "Field-Tested"
   },
   {
@@ -221,7 +221,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 24856.5,
-    "img": "assets/cs2/moto-gloves-eclipse.png",
+    "img": "assets/cs2/moto-gloves-eclipse.webp",
     "wear": "Field-Tested"
   },
   {
@@ -229,7 +229,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 24756.5,
-    "img": "assets/cs2/falchion-knife-fade.png",
+    "img": "assets/cs2/falchion-knife-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -237,7 +237,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 24752,
-    "img": "assets/cs2/talon-knife-slaughter.png",
+    "img": "assets/cs2/talon-knife-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -245,7 +245,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 24624.5,
-    "img": "assets/cs2/aug-akihabara-accept.png",
+    "img": "assets/cs2/aug-akihabara-accept.webp",
     "wear": "Field-Tested"
   },
   {
@@ -253,7 +253,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 24607,
-    "img": "assets/cs2/butterfly-knife-night.png",
+    "img": "assets/cs2/butterfly-knife-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -261,7 +261,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 24129.5,
-    "img": "assets/cs2/driver-gloves-convoy.png",
+    "img": "assets/cs2/driver-gloves-convoy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -269,7 +269,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 24049.5,
-    "img": "assets/cs2/five-seven-neon-kimono.png",
+    "img": "assets/cs2/five-seven-neon-kimono.webp",
     "wear": "Field-Tested"
   },
   {
@@ -277,7 +277,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 23375,
-    "img": "assets/cs2/stiletto-knife-fade.png",
+    "img": "assets/cs2/stiletto-knife-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -285,7 +285,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 23340.5,
-    "img": "assets/cs2/m4a1-s-icarus-fell.png",
+    "img": "assets/cs2/m4a1-s-icarus-fell.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -293,7 +293,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 22959,
-    "img": "assets/cs2/stiletto-knife-doppler.png",
+    "img": "assets/cs2/stiletto-knife-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -301,7 +301,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 22929.5,
-    "img": "assets/cs2/karambit-night.png",
+    "img": "assets/cs2/karambit-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -309,7 +309,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 22202,
-    "img": "assets/cs2/specialist-gloves-cloud-chaser.png",
+    "img": "assets/cs2/specialist-gloves-cloud-chaser.webp",
     "wear": "Field-Tested"
   },
   {
@@ -317,7 +317,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 22050.5,
-    "img": "assets/cs2/karambit-bright-water.png",
+    "img": "assets/cs2/karambit-bright-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -325,7 +325,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 22049.5,
-    "img": "assets/cs2/huntsman-knife-doppler.png",
+    "img": "assets/cs2/huntsman-knife-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -333,7 +333,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 21698.5,
-    "img": "assets/cs2/butterfly-knife-urban-masked.png",
+    "img": "assets/cs2/butterfly-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -341,7 +341,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 21072,
-    "img": "assets/cs2/driver-gloves-diamondback.png",
+    "img": "assets/cs2/driver-gloves-diamondback.webp",
     "wear": "Field-Tested"
   },
   {
@@ -349,7 +349,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 21034.5,
-    "img": "assets/cs2/bayonet-marble-fade.png",
+    "img": "assets/cs2/bayonet-marble-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -357,7 +357,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 20693,
-    "img": "assets/cs2/butterfly-knife-safari-mesh.png",
+    "img": "assets/cs2/butterfly-knife-safari-mesh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -365,7 +365,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 20314.25,
-    "img": "assets/cs2/talon-knife-case-hardened.png",
+    "img": "assets/cs2/talon-knife-case-hardened.webp",
     "wear": "Field-Tested"
   },
   {
@@ -373,7 +373,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 19224,
-    "img": "assets/cs2/falchion-knife-doppler.png",
+    "img": "assets/cs2/falchion-knife-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -381,7 +381,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 18824.5,
-    "img": "assets/cs2/specialist-gloves-pillow-punchers.png",
+    "img": "assets/cs2/specialist-gloves-pillow-punchers.webp",
     "wear": "Field-Tested"
   },
   {
@@ -389,7 +389,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 18080,
-    "img": "assets/cs2/skeleton-knife-slaughter.png",
+    "img": "assets/cs2/skeleton-knife-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -397,7 +397,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 18047,
-    "img": "assets/cs2/m9-bayonet-rust-coat.png",
+    "img": "assets/cs2/m9-bayonet-rust-coat.webp",
     "wear": "Well-Worn"
   },
   {
@@ -405,7 +405,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 17463,
-    "img": "assets/cs2/m9-bayonet-freehand.png",
+    "img": "assets/cs2/m9-bayonet-freehand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -413,7 +413,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 16477,
-    "img": "assets/cs2/ak-47-jet-set.png",
+    "img": "assets/cs2/ak-47-jet-set.webp",
     "wear": "Field-Tested"
   },
   {
@@ -421,7 +421,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 15528.25,
-    "img": "assets/cs2/g3sg1-chronos.png",
+    "img": "assets/cs2/g3sg1-chronos.webp",
     "wear": "Field-Tested"
   },
   {
@@ -429,7 +429,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 15293.5,
-    "img": "assets/cs2/m4a4-the-coalition.png",
+    "img": "assets/cs2/m4a4-the-coalition.webp",
     "wear": "Field-Tested"
   },
   {
@@ -437,7 +437,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 14903,
-    "img": "assets/cs2/desert-eagle-hand-cannon.png",
+    "img": "assets/cs2/desert-eagle-hand-cannon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -445,7 +445,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 14200.5,
-    "img": "assets/cs2/cz75-auto-chalice.png",
+    "img": "assets/cs2/cz75-auto-chalice.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -453,7 +453,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 14134.5,
-    "img": "assets/cs2/flip-knife-slaughter.png",
+    "img": "assets/cs2/flip-knife-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -461,7 +461,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 13981.5,
-    "img": "assets/cs2/talon-knife-damascus-steel.png",
+    "img": "assets/cs2/talon-knife-damascus-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -469,7 +469,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 13794.5,
-    "img": "assets/cs2/m9-bayonet-forest-ddpat.png",
+    "img": "assets/cs2/m9-bayonet-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -477,7 +477,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 13521.75,
-    "img": "assets/cs2/mac-10-hot-snakes.png",
+    "img": "assets/cs2/mac-10-hot-snakes.webp",
     "wear": "Field-Tested"
   },
   {
@@ -485,7 +485,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 13040.5,
-    "img": "assets/cs2/m9-bayonet-scorched.png",
+    "img": "assets/cs2/m9-bayonet-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -493,7 +493,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 12750.5,
-    "img": "assets/cs2/talon-knife-ultraviolet.png",
+    "img": "assets/cs2/talon-knife-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -501,7 +501,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 12511.75,
-    "img": "assets/cs2/talon-knife-rust-coat.png",
+    "img": "assets/cs2/talon-knife-rust-coat.webp",
     "wear": "Well-Worn"
   },
   {
@@ -509,7 +509,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 12425.25,
-    "img": "assets/cs2/aug-flame-j-rmungandr.png",
+    "img": "assets/cs2/aug-flame-j-rmungandr.webp",
     "wear": "Field-Tested"
   },
   {
@@ -517,7 +517,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 12104.5,
-    "img": "assets/cs2/stiletto-knife-crimson-web.png",
+    "img": "assets/cs2/stiletto-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -525,7 +525,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 12021,
-    "img": "assets/cs2/specialist-gloves-lime-polycam.png",
+    "img": "assets/cs2/specialist-gloves-lime-polycam.webp",
     "wear": "Field-Tested"
   },
   {
@@ -533,7 +533,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 11716.25,
-    "img": "assets/cs2/flip-knife-tiger-tooth.png",
+    "img": "assets/cs2/flip-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -541,7 +541,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 11185,
-    "img": "assets/cs2/awp-oni-taiji.png",
+    "img": "assets/cs2/awp-oni-taiji.webp",
     "wear": "Field-Tested"
   },
   {
@@ -549,7 +549,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 11178.5,
-    "img": "assets/cs2/talon-knife-urban-masked.png",
+    "img": "assets/cs2/talon-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -557,7 +557,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 10973.25,
-    "img": "assets/cs2/glock-18-twilight-galaxy.png",
+    "img": "assets/cs2/glock-18-twilight-galaxy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -565,7 +565,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 10701.75,
-    "img": "assets/cs2/navaja-knife-fade.png",
+    "img": "assets/cs2/navaja-knife-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -573,7 +573,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 10651.5,
-    "img": "assets/cs2/bowie-knife-fade.png",
+    "img": "assets/cs2/bowie-knife-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -581,7 +581,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 10477,
-    "img": "assets/cs2/m4a4-eye-of-horus.png",
+    "img": "assets/cs2/m4a4-eye-of-horus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -589,7 +589,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 10167.5,
-    "img": "assets/cs2/stiletto-knife-blue-steel.png",
+    "img": "assets/cs2/stiletto-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -597,7 +597,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 10008,
-    "img": "assets/cs2/gut-knife-gamma-doppler.png",
+    "img": "assets/cs2/gut-knife-gamma-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -605,7 +605,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 9755.5,
-    "img": "assets/cs2/m4a4-buzz-kill.png",
+    "img": "assets/cs2/m4a4-buzz-kill.webp",
     "wear": "Field-Tested"
   },
   {
@@ -613,7 +613,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 9599,
-    "img": "assets/cs2/talon-knife-forest-ddpat.png",
+    "img": "assets/cs2/talon-knife-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -621,7 +621,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 9564.5,
-    "img": "assets/cs2/bloodhound-gloves-charred.png",
+    "img": "assets/cs2/bloodhound-gloves-charred.webp",
     "wear": "Field-Tested"
   },
   {
@@ -629,7 +629,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 9499.5,
-    "img": "assets/cs2/ssg-08-dragonfire.png",
+    "img": "assets/cs2/ssg-08-dragonfire.webp",
     "wear": "Field-Tested"
   },
   {
@@ -637,7 +637,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 9325,
-    "img": "assets/cs2/navaja-knife-doppler.png",
+    "img": "assets/cs2/navaja-knife-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -645,7 +645,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 9306.5,
-    "img": "assets/cs2/flip-knife-crimson-web.png",
+    "img": "assets/cs2/flip-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -653,7 +653,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 9216.5,
-    "img": "assets/cs2/dual-berettas-duelist.png",
+    "img": "assets/cs2/dual-berettas-duelist.webp",
     "wear": "Field-Tested"
   },
   {
@@ -661,7 +661,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 9194.5,
-    "img": "assets/cs2/desert-eagle-golden-koi.png",
+    "img": "assets/cs2/desert-eagle-golden-koi.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -669,7 +669,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 9127,
-    "img": "assets/cs2/specialist-gloves-big-swell.png",
+    "img": "assets/cs2/specialist-gloves-big-swell.webp",
     "wear": "Field-Tested"
   },
   {
@@ -677,7 +677,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 9116,
-    "img": "assets/cs2/m4a1-s-fade.png",
+    "img": "assets/cs2/m4a1-s-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -685,7 +685,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 9043,
-    "img": "assets/cs2/sg-553-hazard-pay.png",
+    "img": "assets/cs2/sg-553-hazard-pay.webp",
     "wear": "Field-Tested"
   },
   {
@@ -693,7 +693,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 9003.25,
-    "img": "assets/cs2/falchion-knife-tiger-tooth.png",
+    "img": "assets/cs2/falchion-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -701,7 +701,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 8707,
-    "img": "assets/cs2/m4a4-asiimov.png",
+    "img": "assets/cs2/m4a4-asiimov.webp",
     "wear": "Field-Tested"
   },
   {
@@ -709,7 +709,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 8642,
-    "img": "assets/cs2/flip-knife-blue-steel.png",
+    "img": "assets/cs2/flip-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -717,7 +717,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 8537,
-    "img": "assets/cs2/sport-gloves-frosty.png",
+    "img": "assets/cs2/sport-gloves-frosty.webp",
     "wear": "Field-Tested"
   },
   {
@@ -725,7 +725,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 8502.5,
-    "img": "assets/cs2/ssg-08-death-strike.png",
+    "img": "assets/cs2/ssg-08-death-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -733,7 +733,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 8500,
-    "img": "assets/cs2/driver-gloves-brocade-crane.png",
+    "img": "assets/cs2/driver-gloves-brocade-crane.webp",
     "wear": "Field-Tested"
   },
   {
@@ -741,7 +741,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 8413.5,
-    "img": "assets/cs2/skeleton-knife-ultraviolet.png",
+    "img": "assets/cs2/skeleton-knife-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -749,7 +749,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 8389,
-    "img": "assets/cs2/ak-47-leet-museo.png",
+    "img": "assets/cs2/ak-47-leet-museo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -757,7 +757,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 8320.5,
-    "img": "assets/cs2/shadow-daggers-doppler.png",
+    "img": "assets/cs2/shadow-daggers-doppler.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -765,7 +765,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 8230.5,
-    "img": "assets/cs2/stiletto-knife-damascus-steel.png",
+    "img": "assets/cs2/stiletto-knife-damascus-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -773,7 +773,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 8074.5,
-    "img": "assets/cs2/galil-ar-chatterbox.png",
+    "img": "assets/cs2/galil-ar-chatterbox.webp",
     "wear": "Field-Tested"
   },
   {
@@ -781,7 +781,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 8050.5,
-    "img": "assets/cs2/m4a1-s-printstream.png",
+    "img": "assets/cs2/m4a1-s-printstream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -789,7 +789,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 8038.5,
-    "img": "assets/cs2/usp-s-target-acquired.png",
+    "img": "assets/cs2/usp-s-target-acquired.webp",
     "wear": "Field-Tested"
   },
   {
@@ -797,7 +797,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 7913,
-    "img": "assets/cs2/specialist-gloves-sunburst.png",
+    "img": "assets/cs2/specialist-gloves-sunburst.webp",
     "wear": "Field-Tested"
   },
   {
@@ -805,7 +805,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 7848.5,
-    "img": "assets/cs2/ak-47-autoexec.png",
+    "img": "assets/cs2/ak-47-autoexec.webp",
     "wear": "Field-Tested"
   },
   {
@@ -813,7 +813,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 7833.5,
-    "img": "assets/cs2/glock-18-ghost-protocol.png",
+    "img": "assets/cs2/glock-18-ghost-protocol.webp",
     "wear": "Field-Tested"
   },
   {
@@ -821,7 +821,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 7771.75,
-    "img": "assets/cs2/p90-run-and-hide.png",
+    "img": "assets/cs2/p90-run-and-hide.webp",
     "wear": "Field-Tested"
   },
   {
@@ -829,7 +829,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 7737,
-    "img": "assets/cs2/driver-gloves-wave-chaser.png",
+    "img": "assets/cs2/driver-gloves-wave-chaser.webp",
     "wear": "Field-Tested"
   },
   {
@@ -837,7 +837,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 7731.5,
-    "img": "assets/cs2/desert-eagle-fennec-fox.png",
+    "img": "assets/cs2/desert-eagle-fennec-fox.webp",
     "wear": "Field-Tested"
   },
   {
@@ -845,7 +845,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 7704,
-    "img": "assets/cs2/ak-47-panthera-onca.png",
+    "img": "assets/cs2/ak-47-panthera-onca.webp",
     "wear": "Field-Tested"
   },
   {
@@ -853,7 +853,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 7663.75,
-    "img": "assets/cs2/mp9-hot-rod.png",
+    "img": "assets/cs2/mp9-hot-rod.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -861,7 +861,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 7585,
-    "img": "assets/cs2/bayonet-freehand.png",
+    "img": "assets/cs2/bayonet-freehand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -869,7 +869,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 7550,
-    "img": "assets/cs2/m4a1-s-cyrex.png",
+    "img": "assets/cs2/m4a1-s-cyrex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -877,7 +877,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 7513,
-    "img": "assets/cs2/p90-asiimov.png",
+    "img": "assets/cs2/p90-asiimov.webp",
     "wear": "Field-Tested"
   },
   {
@@ -885,7 +885,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 7454,
-    "img": "assets/cs2/five-seven-fall-hazard.png",
+    "img": "assets/cs2/five-seven-fall-hazard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -893,7 +893,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 7381,
-    "img": "assets/cs2/nomad-knife-crimson-web.png",
+    "img": "assets/cs2/nomad-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -901,7 +901,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 7359.5,
-    "img": "assets/cs2/gut-knife-slaughter.png",
+    "img": "assets/cs2/gut-knife-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -909,7 +909,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 7319.5,
-    "img": "assets/cs2/stiletto-knife-urban-masked.png",
+    "img": "assets/cs2/stiletto-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -917,7 +917,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 7050,
-    "img": "assets/cs2/specialist-gloves-tiger-strike.png",
+    "img": "assets/cs2/specialist-gloves-tiger-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -925,7 +925,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6967.5,
-    "img": "assets/cs2/gut-knife-marble-fade.png",
+    "img": "assets/cs2/gut-knife-marble-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -933,7 +933,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6947,
-    "img": "assets/cs2/survival-knife-marble-fade.png",
+    "img": "assets/cs2/survival-knife-marble-fade.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -941,7 +941,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6913.5,
-    "img": "assets/cs2/classic-knife-crimson-web.png",
+    "img": "assets/cs2/classic-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -949,7 +949,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6864,
-    "img": "assets/cs2/huntsman-knife-tiger-tooth.png",
+    "img": "assets/cs2/huntsman-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -957,7 +957,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6834.5,
-    "img": "assets/cs2/ursus-knife-tiger-tooth.png",
+    "img": "assets/cs2/ursus-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -965,7 +965,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6710.5,
-    "img": "assets/cs2/nomad-knife-blue-steel.png",
+    "img": "assets/cs2/nomad-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -973,7 +973,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6543,
-    "img": "assets/cs2/bayonet-bright-water.png",
+    "img": "assets/cs2/bayonet-bright-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -981,7 +981,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 6426,
-    "img": "assets/cs2/ak-47-consequence-of-the-jinn.png",
+    "img": "assets/cs2/ak-47-consequence-of-the-jinn.webp",
     "wear": "Field-Tested"
   },
   {
@@ -989,7 +989,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 6420,
-    "img": "assets/cs2/driver-gloves-brocade-flowers.png",
+    "img": "assets/cs2/driver-gloves-brocade-flowers.webp",
     "wear": "Field-Tested"
   },
   {
@@ -997,7 +997,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 6373,
-    "img": "assets/cs2/ak-47-fuel-injector.png",
+    "img": "assets/cs2/ak-47-fuel-injector.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1005,7 +1005,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 6300.5,
-    "img": "assets/cs2/sport-gloves-big-game.png",
+    "img": "assets/cs2/sport-gloves-big-game.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1013,7 +1013,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6296,
-    "img": "assets/cs2/bayonet-urban-masked.png",
+    "img": "assets/cs2/bayonet-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1021,7 +1021,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6211.5,
-    "img": "assets/cs2/flip-knife-night.png",
+    "img": "assets/cs2/flip-knife-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1029,7 +1029,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 6097,
-    "img": "assets/cs2/bayonet-boreal-forest.png",
+    "img": "assets/cs2/bayonet-boreal-forest.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1037,7 +1037,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 6006,
-    "img": "assets/cs2/mp5-sd-oxide-oasis.png",
+    "img": "assets/cs2/mp5-sd-oxide-oasis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1045,7 +1045,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5978.5,
-    "img": "assets/cs2/awp-man-o-war.png",
+    "img": "assets/cs2/awp-man-o-war.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1053,7 +1053,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5936,
-    "img": "assets/cs2/flip-knife-stained.png",
+    "img": "assets/cs2/flip-knife-stained.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1061,7 +1061,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5936,
-    "img": "assets/cs2/flip-knife-freehand.png",
+    "img": "assets/cs2/flip-knife-freehand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1069,7 +1069,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 5819.5,
-    "img": "assets/cs2/sport-gloves-blaze.png",
+    "img": "assets/cs2/sport-gloves-blaze.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1077,7 +1077,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 5778.5,
-    "img": "assets/cs2/specialist-gloves-field-agent.png",
+    "img": "assets/cs2/specialist-gloves-field-agent.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1085,7 +1085,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5724,
-    "img": "assets/cs2/skeleton-knife-safari-mesh.png",
+    "img": "assets/cs2/skeleton-knife-safari-mesh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1093,7 +1093,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5674.5,
-    "img": "assets/cs2/nomad-knife-stained.png",
+    "img": "assets/cs2/nomad-knife-stained.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1101,7 +1101,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5654,
-    "img": "assets/cs2/paracord-knife-tiger-tooth.png",
+    "img": "assets/cs2/paracord-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -1109,7 +1109,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5607,
-    "img": "assets/cs2/awp-cmyk.png",
+    "img": "assets/cs2/awp-cmyk.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1117,7 +1117,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5581.5,
-    "img": "assets/cs2/falchion-knife-blue-steel.png",
+    "img": "assets/cs2/falchion-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1125,7 +1125,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5573,
-    "img": "assets/cs2/awp-sovereign-flame.png",
+    "img": "assets/cs2/awp-sovereign-flame.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1133,7 +1133,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5369,
-    "img": "assets/cs2/ak-47-bloodsport.png",
+    "img": "assets/cs2/ak-47-bloodsport.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1141,7 +1141,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 5336,
-    "img": "assets/cs2/aug-copperhead.png",
+    "img": "assets/cs2/aug-copperhead.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1149,7 +1149,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 5326.5,
-    "img": "assets/cs2/awp-graphite.png",
+    "img": "assets/cs2/awp-graphite.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -1157,7 +1157,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 5299,
-    "img": "assets/cs2/mp9-pandora-s-box.png",
+    "img": "assets/cs2/mp9-pandora-s-box.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1165,7 +1165,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5262.5,
-    "img": "assets/cs2/pp-bizon-judgement-of-anubis.png",
+    "img": "assets/cs2/pp-bizon-judgement-of-anubis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1173,7 +1173,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 5225.5,
-    "img": "assets/cs2/moto-gloves-blood-pressure.png",
+    "img": "assets/cs2/moto-gloves-blood-pressure.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1181,7 +1181,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 5174,
-    "img": "assets/cs2/kukri-knife-slaughter.png",
+    "img": "assets/cs2/kukri-knife-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1189,7 +1189,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5034.5,
-    "img": "assets/cs2/m4a1-s-hyper-beast.png",
+    "img": "assets/cs2/m4a1-s-hyper-beast.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1197,7 +1197,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 5003,
-    "img": "assets/cs2/awp-asiimov.png",
+    "img": "assets/cs2/awp-asiimov.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1205,7 +1205,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4932,
-    "img": "assets/cs2/m4a1-s-chantico-s-fire.png",
+    "img": "assets/cs2/m4a1-s-chantico-s-fire.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1213,7 +1213,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4913.5,
-    "img": "assets/cs2/mac-10-neon-rider.png",
+    "img": "assets/cs2/mac-10-neon-rider.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1221,7 +1221,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4888.25,
-    "img": "assets/cs2/p2000-silver.png",
+    "img": "assets/cs2/p2000-silver.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -1229,7 +1229,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4882.5,
-    "img": "assets/cs2/huntsman-knife-crimson-web.png",
+    "img": "assets/cs2/huntsman-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1237,7 +1237,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4870.75,
-    "img": "assets/cs2/shadow-daggers-slaughter.png",
+    "img": "assets/cs2/shadow-daggers-slaughter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1245,7 +1245,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 4862,
-    "img": "assets/cs2/m4a1-s-master-piece.png",
+    "img": "assets/cs2/m4a1-s-master-piece.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1253,7 +1253,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4796,
-    "img": "assets/cs2/glock-18-wasteland-rebel.png",
+    "img": "assets/cs2/glock-18-wasteland-rebel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1261,7 +1261,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4730,
-    "img": "assets/cs2/m4a1-s-mecha-industries.png",
+    "img": "assets/cs2/m4a1-s-mecha-industries.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1269,7 +1269,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4682,
-    "img": "assets/cs2/ak-47-neon-revolution.png",
+    "img": "assets/cs2/ak-47-neon-revolution.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1277,7 +1277,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 4660.5,
-    "img": "assets/cs2/glock-18-dragon-tattoo.png",
+    "img": "assets/cs2/glock-18-dragon-tattoo.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -1285,7 +1285,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4593,
-    "img": "assets/cs2/famas-roll-cage.png",
+    "img": "assets/cs2/famas-roll-cage.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1293,7 +1293,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 4579,
-    "img": "assets/cs2/moto-gloves-smoke-out.png",
+    "img": "assets/cs2/moto-gloves-smoke-out.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1301,7 +1301,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 4501.5,
-    "img": "assets/cs2/mp9-bulldozer.png",
+    "img": "assets/cs2/mp9-bulldozer.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1309,7 +1309,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 4478.5,
-    "img": "assets/cs2/ak-47-first-class.png",
+    "img": "assets/cs2/ak-47-first-class.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1317,7 +1317,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4463,
-    "img": "assets/cs2/usp-s-neo-noir.png",
+    "img": "assets/cs2/usp-s-neo-noir.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1325,7 +1325,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 4453.75,
-    "img": "assets/cs2/p90-emerald-dragon.png",
+    "img": "assets/cs2/p90-emerald-dragon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1333,7 +1333,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4431.5,
-    "img": "assets/cs2/ak-47-the-empress.png",
+    "img": "assets/cs2/ak-47-the-empress.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1341,7 +1341,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4361.5,
-    "img": "assets/cs2/falchion-knife-lore.png",
+    "img": "assets/cs2/falchion-knife-lore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1349,7 +1349,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4306,
-    "img": "assets/cs2/nomad-knife-night-stripe.png",
+    "img": "assets/cs2/nomad-knife-night-stripe.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1357,7 +1357,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 4249.5,
-    "img": "assets/cs2/specialist-gloves-chocolate-chesterfield.png",
+    "img": "assets/cs2/specialist-gloves-chocolate-chesterfield.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1365,7 +1365,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 4247.5,
-    "img": "assets/cs2/specialist-gloves-mogul.png",
+    "img": "assets/cs2/specialist-gloves-mogul.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1373,7 +1373,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 4137,
-    "img": "assets/cs2/ssg-08-blood-in-the-water.png",
+    "img": "assets/cs2/ssg-08-blood-in-the-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1381,7 +1381,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4065,
-    "img": "assets/cs2/falchion-knife-damascus-steel.png",
+    "img": "assets/cs2/falchion-knife-damascus-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1389,7 +1389,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 4029,
-    "img": "assets/cs2/survival-knife-crimson-web.png",
+    "img": "assets/cs2/survival-knife-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1397,7 +1397,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 3916.5,
-    "img": "assets/cs2/desert-eagle-pilot.png",
+    "img": "assets/cs2/desert-eagle-pilot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1405,7 +1405,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3816.5,
-    "img": "assets/cs2/classic-knife-scorched.png",
+    "img": "assets/cs2/classic-knife-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1413,7 +1413,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3814.5,
-    "img": "assets/cs2/huntsman-knife-damascus-steel.png",
+    "img": "assets/cs2/huntsman-knife-damascus-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1421,7 +1421,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3764.5,
-    "img": "assets/cs2/p90-death-by-kitty.png",
+    "img": "assets/cs2/p90-death-by-kitty.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1429,7 +1429,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3758.25,
-    "img": "assets/cs2/navaja-knife-tiger-tooth.png",
+    "img": "assets/cs2/navaja-knife-tiger-tooth.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -1437,7 +1437,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3746.5,
-    "img": "assets/cs2/ak-47-b-the-monster.png",
+    "img": "assets/cs2/ak-47-b-the-monster.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1445,7 +1445,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 3729.25,
-    "img": "assets/cs2/famas-prime-conspiracy.png",
+    "img": "assets/cs2/famas-prime-conspiracy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1453,7 +1453,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 3717,
-    "img": "assets/cs2/desert-eagle-cobalt-disruption.png",
+    "img": "assets/cs2/desert-eagle-cobalt-disruption.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1461,7 +1461,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3637.5,
-    "img": "assets/cs2/nomad-knife-boreal-forest.png",
+    "img": "assets/cs2/nomad-knife-boreal-forest.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1469,7 +1469,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3635,
-    "img": "assets/cs2/m4a4-x-ray.png",
+    "img": "assets/cs2/m4a4-x-ray.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1477,7 +1477,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3577.5,
-    "img": "assets/cs2/m4a4-royal-paladin.png",
+    "img": "assets/cs2/m4a4-royal-paladin.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1485,7 +1485,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3568.5,
-    "img": "assets/cs2/huntsman-knife-night.png",
+    "img": "assets/cs2/huntsman-knife-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1493,7 +1493,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3562,
-    "img": "assets/cs2/r8-revolver-fade.png",
+    "img": "assets/cs2/r8-revolver-fade.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1501,7 +1501,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3541,
-    "img": "assets/cs2/nomad-knife-forest-ddpat.png",
+    "img": "assets/cs2/nomad-knife-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1509,7 +1509,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3486.5,
-    "img": "assets/cs2/m4a4-bullet-rain.png",
+    "img": "assets/cs2/m4a4-bullet-rain.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1517,7 +1517,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3454,
-    "img": "assets/cs2/cz75-auto-victoria.png",
+    "img": "assets/cs2/cz75-auto-victoria.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1525,7 +1525,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3447,
-    "img": "assets/cs2/cz75-auto-emerald-quartz.png",
+    "img": "assets/cs2/cz75-auto-emerald-quartz.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1533,7 +1533,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3427.5,
-    "img": "assets/cs2/ak-47-wasteland-rebel.png",
+    "img": "assets/cs2/ak-47-wasteland-rebel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1541,7 +1541,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3392.5,
-    "img": "assets/cs2/p2000-fire-elemental.png",
+    "img": "assets/cs2/p2000-fire-elemental.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1549,7 +1549,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 3349,
-    "img": "assets/cs2/moto-gloves-pow.png",
+    "img": "assets/cs2/moto-gloves-pow.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1557,7 +1557,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3279.5,
-    "img": "assets/cs2/aug-chameleon.png",
+    "img": "assets/cs2/aug-chameleon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1565,7 +1565,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 3234,
-    "img": "assets/cs2/galil-ar-phoenix-blacklight.png",
+    "img": "assets/cs2/galil-ar-phoenix-blacklight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1573,7 +1573,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3201.75,
-    "img": "assets/cs2/five-seven-crimson-blossom.png",
+    "img": "assets/cs2/five-seven-crimson-blossom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1581,7 +1581,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3191,
-    "img": "assets/cs2/falchion-knife-night.png",
+    "img": "assets/cs2/falchion-knife-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1589,7 +1589,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3153,
-    "img": "assets/cs2/paracord-knife-blue-steel.png",
+    "img": "assets/cs2/paracord-knife-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1597,7 +1597,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3134.5,
-    "img": "assets/cs2/falchion-knife-urban-masked.png",
+    "img": "assets/cs2/falchion-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1605,7 +1605,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3134,
-    "img": "assets/cs2/usp-s-kill-confirmed.png",
+    "img": "assets/cs2/usp-s-kill-confirmed.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1613,7 +1613,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 3131,
-    "img": "assets/cs2/classic-knife-boreal-forest.png",
+    "img": "assets/cs2/classic-knife-boreal-forest.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1621,7 +1621,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3106.5,
-    "img": "assets/cs2/xm1014-frost-borre.png",
+    "img": "assets/cs2/xm1014-frost-borre.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1629,7 +1629,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 3083.5,
-    "img": "assets/cs2/glock-18-gamma-doppler.png",
+    "img": "assets/cs2/glock-18-gamma-doppler.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1637,7 +1637,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2997,
-    "img": "assets/cs2/gut-knife-rust-coat.png",
+    "img": "assets/cs2/gut-knife-rust-coat.webp",
     "wear": "Well-Worn"
   },
   {
@@ -1645,7 +1645,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2956.5,
-    "img": "assets/cs2/falchion-knife-scorched.png",
+    "img": "assets/cs2/falchion-knife-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1653,7 +1653,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2956,
-    "img": "assets/cs2/awp-containment-breach.png",
+    "img": "assets/cs2/awp-containment-breach.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1661,7 +1661,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2917,
-    "img": "assets/cs2/ursus-knife-scorched.png",
+    "img": "assets/cs2/ursus-knife-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1669,7 +1669,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2864,
-    "img": "assets/cs2/paracord-knife-ultraviolet.png",
+    "img": "assets/cs2/paracord-knife-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1677,7 +1677,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2855.5,
-    "img": "assets/cs2/bowie-knife-forest-ddpat.png",
+    "img": "assets/cs2/bowie-knife-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1685,7 +1685,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2837,
-    "img": "assets/cs2/m4a1-s-golden-coil.png",
+    "img": "assets/cs2/m4a1-s-golden-coil.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1693,7 +1693,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2830,
-    "img": "assets/cs2/gut-knife-stained.png",
+    "img": "assets/cs2/gut-knife-stained.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1701,7 +1701,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2818.75,
-    "img": "assets/cs2/bowie-knife-rust-coat.png",
+    "img": "assets/cs2/bowie-knife-rust-coat.webp",
     "wear": "Well-Worn"
   },
   {
@@ -1709,7 +1709,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2802,
-    "img": "assets/cs2/desert-eagle-ocean-drive.png",
+    "img": "assets/cs2/desert-eagle-ocean-drive.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1717,7 +1717,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 2735.5,
-    "img": "assets/cs2/m4a1-s-dark-water.png",
+    "img": "assets/cs2/m4a1-s-dark-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1725,7 +1725,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2712.5,
-    "img": "assets/cs2/survival-knife-ultraviolet.png",
+    "img": "assets/cs2/survival-knife-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1733,7 +1733,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2680.5,
-    "img": "assets/cs2/ak-47-nightwish.png",
+    "img": "assets/cs2/ak-47-nightwish.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1741,7 +1741,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2663,
-    "img": "assets/cs2/survival-knife-damascus-steel.png",
+    "img": "assets/cs2/survival-knife-damascus-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1749,7 +1749,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2651.5,
-    "img": "assets/cs2/mp9-starlight-protector.png",
+    "img": "assets/cs2/mp9-starlight-protector.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1757,7 +1757,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2596,
-    "img": "assets/cs2/survival-knife-stained.png",
+    "img": "assets/cs2/survival-knife-stained.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1765,7 +1765,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2498.5,
-    "img": "assets/cs2/bowie-knife-black-laminate.png",
+    "img": "assets/cs2/bowie-knife-black-laminate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1773,7 +1773,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2488.5,
-    "img": "assets/cs2/huntsman-knife-safari-mesh.png",
+    "img": "assets/cs2/huntsman-knife-safari-mesh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1781,7 +1781,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2474,
-    "img": "assets/cs2/glock-18-fully-tuned.png",
+    "img": "assets/cs2/glock-18-fully-tuned.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1789,7 +1789,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2441.5,
-    "img": "assets/cs2/shadow-daggers-lore.png",
+    "img": "assets/cs2/shadow-daggers-lore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1797,7 +1797,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2429.5,
-    "img": "assets/cs2/awp-queen-s-gambit.png",
+    "img": "assets/cs2/awp-queen-s-gambit.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1805,7 +1805,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2406.5,
-    "img": "assets/cs2/survival-knife-scorched.png",
+    "img": "assets/cs2/survival-knife-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1813,7 +1813,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2403,
-    "img": "assets/cs2/five-seven-angry-mob.png",
+    "img": "assets/cs2/five-seven-angry-mob.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1821,7 +1821,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2377,
-    "img": "assets/cs2/survival-knife-urban-masked.png",
+    "img": "assets/cs2/survival-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1829,7 +1829,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2374.5,
-    "img": "assets/cs2/bowie-knife-boreal-forest.png",
+    "img": "assets/cs2/bowie-knife-boreal-forest.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1837,7 +1837,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2371,
-    "img": "assets/cs2/m4a4-the-emperor.png",
+    "img": "assets/cs2/m4a4-the-emperor.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1845,7 +1845,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2370,
-    "img": "assets/cs2/bowie-knife-bright-water.png",
+    "img": "assets/cs2/bowie-knife-bright-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1853,7 +1853,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2367.5,
-    "img": "assets/cs2/glock-18-bullet-queen.png",
+    "img": "assets/cs2/glock-18-bullet-queen.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1861,7 +1861,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2298.5,
-    "img": "assets/cs2/m4a1-s-player-two.png",
+    "img": "assets/cs2/m4a1-s-player-two.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1869,7 +1869,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2271.5,
-    "img": "assets/cs2/paracord-knife-urban-masked.png",
+    "img": "assets/cs2/paracord-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1877,7 +1877,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 2270,
-    "img": "assets/cs2/broken-fang-gloves-yellow-banded.png",
+    "img": "assets/cs2/broken-fang-gloves-yellow-banded.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1885,7 +1885,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2256.5,
-    "img": "assets/cs2/bowie-knife-safari-mesh.png",
+    "img": "assets/cs2/bowie-knife-safari-mesh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1893,7 +1893,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 2250,
-    "img": "assets/cs2/hand-wraps-duct-tape.png",
+    "img": "assets/cs2/hand-wraps-duct-tape.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1901,7 +1901,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2237,
-    "img": "assets/cs2/m4a1-s-vaporwave.png",
+    "img": "assets/cs2/m4a1-s-vaporwave.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1909,7 +1909,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2199,
-    "img": "assets/cs2/kukri-knife-scorched.png",
+    "img": "assets/cs2/kukri-knife-scorched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1917,7 +1917,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2198,
-    "img": "assets/cs2/kukri-knife-night-stripe.png",
+    "img": "assets/cs2/kukri-knife-night-stripe.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1925,7 +1925,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 2191.5,
-    "img": "assets/cs2/driver-gloves-overtake.png",
+    "img": "assets/cs2/driver-gloves-overtake.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1933,7 +1933,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2163.5,
-    "img": "assets/cs2/kukri-knife-urban-masked.png",
+    "img": "assets/cs2/kukri-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1941,7 +1941,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2145.5,
-    "img": "assets/cs2/shadow-daggers-urban-masked.png",
+    "img": "assets/cs2/shadow-daggers-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1949,7 +1949,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 2126.5,
-    "img": "assets/cs2/specialist-gloves-buckshot.png",
+    "img": "assets/cs2/specialist-gloves-buckshot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1957,7 +1957,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2118.5,
-    "img": "assets/cs2/navaja-knife-urban-masked.png",
+    "img": "assets/cs2/navaja-knife-urban-masked.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1965,7 +1965,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2109.5,
-    "img": "assets/cs2/shadow-daggers-ultraviolet.png",
+    "img": "assets/cs2/shadow-daggers-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1973,7 +1973,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 2105.5,
-    "img": "assets/cs2/ak-47-red-laminate.png",
+    "img": "assets/cs2/ak-47-red-laminate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1981,7 +1981,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2069,
-    "img": "assets/cs2/navaja-knife-stained.png",
+    "img": "assets/cs2/navaja-knife-stained.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1989,7 +1989,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2053.5,
-    "img": "assets/cs2/awp-printstream.png",
+    "img": "assets/cs2/awp-printstream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -1997,7 +1997,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2046.5,
-    "img": "assets/cs2/navaja-knife-ultraviolet.png",
+    "img": "assets/cs2/navaja-knife-ultraviolet.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2005,7 +2005,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 2046.5,
-    "img": "assets/cs2/shadow-daggers-rust-coat.png",
+    "img": "assets/cs2/shadow-daggers-rust-coat.webp",
     "wear": "Well-Worn"
   },
   {
@@ -2013,7 +2013,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2030,
-    "img": "assets/cs2/ak-47-neon-rider.png",
+    "img": "assets/cs2/ak-47-neon-rider.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2021,7 +2021,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 2003,
-    "img": "assets/cs2/famas-bad-trip.png",
+    "img": "assets/cs2/famas-bad-trip.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2029,7 +2029,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1982.5,
-    "img": "assets/cs2/desert-eagle-code-red.png",
+    "img": "assets/cs2/desert-eagle-code-red.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2037,7 +2037,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1962,
-    "img": "assets/cs2/awp-wildfire.png",
+    "img": "assets/cs2/awp-wildfire.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2045,7 +2045,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1925,
-    "img": "assets/cs2/p2000-scorpion.png",
+    "img": "assets/cs2/p2000-scorpion.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -2053,7 +2053,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1920.5,
-    "img": "assets/cs2/usp-s-whiteout.png",
+    "img": "assets/cs2/usp-s-whiteout.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2061,7 +2061,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "knife",
     "price": 1910.5,
-    "img": "assets/cs2/navaja-knife-forest-ddpat.png",
+    "img": "assets/cs2/navaja-knife-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2069,7 +2069,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 1901.5,
-    "img": "assets/cs2/moto-gloves-3rd-commando-company.png",
+    "img": "assets/cs2/moto-gloves-3rd-commando-company.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2077,7 +2077,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1868.5,
-    "img": "assets/cs2/m4a4-full-throttle.png",
+    "img": "assets/cs2/m4a4-full-throttle.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2085,7 +2085,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1860,
-    "img": "assets/cs2/ak-47-asiimov.png",
+    "img": "assets/cs2/ak-47-asiimov.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2093,7 +2093,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1803.5,
-    "img": "assets/cs2/dual-berettas-cobra-strike.png",
+    "img": "assets/cs2/dual-berettas-cobra-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2101,7 +2101,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1793,
-    "img": "assets/cs2/famas-waters-of-nephthys.png",
+    "img": "assets/cs2/famas-waters-of-nephthys.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2109,7 +2109,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1779.5,
-    "img": "assets/cs2/usp-s-printstream.png",
+    "img": "assets/cs2/usp-s-printstream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2117,7 +2117,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 1735,
-    "img": "assets/cs2/moto-gloves-transport.png",
+    "img": "assets/cs2/moto-gloves-transport.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2125,7 +2125,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1689,
-    "img": "assets/cs2/ak-47-aquamarine-revenge.png",
+    "img": "assets/cs2/ak-47-aquamarine-revenge.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2133,7 +2133,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1689,
-    "img": "assets/cs2/ak-47-inheritance.png",
+    "img": "assets/cs2/ak-47-inheritance.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2141,7 +2141,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1660.5,
-    "img": "assets/cs2/desert-eagle-starcade.png",
+    "img": "assets/cs2/desert-eagle-starcade.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2149,7 +2149,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1654.5,
-    "img": "assets/cs2/desert-eagle-printstream.png",
+    "img": "assets/cs2/desert-eagle-printstream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2157,7 +2157,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1631.5,
-    "img": "assets/cs2/m4a4-radiation-hazard.png",
+    "img": "assets/cs2/m4a4-radiation-hazard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2165,7 +2165,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1627.5,
-    "img": "assets/cs2/m4a4-red-ddpat.png",
+    "img": "assets/cs2/m4a4-red-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2173,7 +2173,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1625,
-    "img": "assets/cs2/ak-47-black-laminate.png",
+    "img": "assets/cs2/ak-47-black-laminate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2181,7 +2181,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1564.5,
-    "img": "assets/cs2/p250-whiteout.png",
+    "img": "assets/cs2/p250-whiteout.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2189,7 +2189,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1558.5,
-    "img": "assets/cs2/mac-10-stalker.png",
+    "img": "assets/cs2/mac-10-stalker.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2197,7 +2197,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1521,
-    "img": "assets/cs2/cz75-auto-emerald.png",
+    "img": "assets/cs2/cz75-auto-emerald.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -2205,7 +2205,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1517,
-    "img": "assets/cs2/usp-s-business-class.png",
+    "img": "assets/cs2/usp-s-business-class.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2213,7 +2213,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1509,
-    "img": "assets/cs2/m4a1-s-bright-water.png",
+    "img": "assets/cs2/m4a1-s-bright-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2221,7 +2221,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1509,
-    "img": "assets/cs2/awp-redline.png",
+    "img": "assets/cs2/awp-redline.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2229,7 +2229,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1495,
-    "img": "assets/cs2/glock-18-neo-noir.png",
+    "img": "assets/cs2/glock-18-neo-noir.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2237,7 +2237,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1484,
-    "img": "assets/cs2/awp-hyper-beast.png",
+    "img": "assets/cs2/awp-hyper-beast.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2245,7 +2245,7 @@ window.SKINS_CS2 = [
     "rarity": "yellow",
     "cat": "gloves",
     "price": 1455.5,
-    "img": "assets/cs2/driver-gloves-racing-green.png",
+    "img": "assets/cs2/driver-gloves-racing-green.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2253,7 +2253,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1453.5,
-    "img": "assets/cs2/ak-47-legion-of-anubis.png",
+    "img": "assets/cs2/ak-47-legion-of-anubis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2261,7 +2261,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1441,
-    "img": "assets/cs2/famas-meltdown.png",
+    "img": "assets/cs2/famas-meltdown.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2269,7 +2269,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1413,
-    "img": "assets/cs2/usp-s-road-rash.png",
+    "img": "assets/cs2/usp-s-road-rash.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2277,7 +2277,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1398.5,
-    "img": "assets/cs2/m4a4-desert-strike.png",
+    "img": "assets/cs2/m4a4-desert-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2285,7 +2285,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1395.5,
-    "img": "assets/cs2/m4a4-neo-noir.png",
+    "img": "assets/cs2/m4a4-neo-noir.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2293,7 +2293,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1365.5,
-    "img": "assets/cs2/m4a4-temukau.png",
+    "img": "assets/cs2/m4a4-temukau.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2301,7 +2301,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1357.5,
-    "img": "assets/cs2/mac-10-gold-brick.png",
+    "img": "assets/cs2/mac-10-gold-brick.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2309,7 +2309,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1357,
-    "img": "assets/cs2/awp-chromatic-aberration.png",
+    "img": "assets/cs2/awp-chromatic-aberration.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2317,7 +2317,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1356.5,
-    "img": "assets/cs2/m4a4-in-living-color.png",
+    "img": "assets/cs2/m4a4-in-living-color.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2325,7 +2325,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1329.5,
-    "img": "assets/cs2/famas-commemoration.png",
+    "img": "assets/cs2/famas-commemoration.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2333,7 +2333,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1329,
-    "img": "assets/cs2/ak-47-head-shot.png",
+    "img": "assets/cs2/ak-47-head-shot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2341,7 +2341,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1300.5,
-    "img": "assets/cs2/mp7-bloodsport.png",
+    "img": "assets/cs2/mp7-bloodsport.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2349,7 +2349,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1294,
-    "img": "assets/cs2/mac-10-propaganda.png",
+    "img": "assets/cs2/mac-10-propaganda.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2357,7 +2357,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1290,
-    "img": "assets/cs2/m4a4-the-battlestar.png",
+    "img": "assets/cs2/m4a4-the-battlestar.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2365,7 +2365,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1285.5,
-    "img": "assets/cs2/usp-s-ancient-visions.png",
+    "img": "assets/cs2/usp-s-ancient-visions.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2373,7 +2373,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1259,
-    "img": "assets/cs2/glock-18-gold-toof.png",
+    "img": "assets/cs2/glock-18-gold-toof.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2381,7 +2381,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1244,
-    "img": "assets/cs2/aug-lil-pig.png",
+    "img": "assets/cs2/aug-lil-pig.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2389,7 +2389,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1231.5,
-    "img": "assets/cs2/glock-18-brass.png",
+    "img": "assets/cs2/glock-18-brass.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2397,7 +2397,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 1202.5,
-    "img": "assets/cs2/awp-chrome-cannon.png",
+    "img": "assets/cs2/awp-chrome-cannon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2405,7 +2405,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1180,
-    "img": "assets/cs2/awp-electric-hive.png",
+    "img": "assets/cs2/awp-electric-hive.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2413,7 +2413,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1146,
-    "img": "assets/cs2/usp-s-spiral-glitch.png",
+    "img": "assets/cs2/usp-s-spiral-glitch.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2421,7 +2421,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1145.5,
-    "img": "assets/cs2/m4a4-falak.png",
+    "img": "assets/cs2/m4a4-falak.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2429,7 +2429,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1145,
-    "img": "assets/cs2/five-seven-nitro.png",
+    "img": "assets/cs2/five-seven-nitro.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2437,7 +2437,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1122.5,
-    "img": "assets/cs2/famas-mecha-industries.png",
+    "img": "assets/cs2/famas-mecha-industries.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2445,7 +2445,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1087.5,
-    "img": "assets/cs2/m4a1-s-atomic-alloy.png",
+    "img": "assets/cs2/m4a1-s-atomic-alloy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2453,7 +2453,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1064.5,
-    "img": "assets/cs2/awp-pink-ddpat.png",
+    "img": "assets/cs2/awp-pink-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2461,7 +2461,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1062.5,
-    "img": "assets/cs2/awp-crakow.png",
+    "img": "assets/cs2/awp-crakow.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2469,7 +2469,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1056,
-    "img": "assets/cs2/sawed-off-wasteland-princess.png",
+    "img": "assets/cs2/sawed-off-wasteland-princess.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2477,7 +2477,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 1053,
-    "img": "assets/cs2/usp-s-orange-anolis.png",
+    "img": "assets/cs2/usp-s-orange-anolis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2485,7 +2485,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1034,
-    "img": "assets/cs2/five-seven-fairy-tale.png",
+    "img": "assets/cs2/five-seven-fairy-tale.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2493,7 +2493,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 1016.5,
-    "img": "assets/cs2/scar-20-cyrex.png",
+    "img": "assets/cs2/scar-20-cyrex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2501,7 +2501,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 997.5,
-    "img": "assets/cs2/glock-18-pink-ddpat.png",
+    "img": "assets/cs2/glock-18-pink-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2509,7 +2509,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 981,
-    "img": "assets/cs2/ssg-08-death-s-head.png",
+    "img": "assets/cs2/ssg-08-death-s-head.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2517,7 +2517,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 978.5,
-    "img": "assets/cs2/p2000-woodsman.png",
+    "img": "assets/cs2/p2000-woodsman.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2525,7 +2525,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 964.5,
-    "img": "assets/cs2/xm1014-ancient-lore.png",
+    "img": "assets/cs2/xm1014-ancient-lore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2533,7 +2533,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 905,
-    "img": "assets/cs2/galil-ar-rainbow-spoon.png",
+    "img": "assets/cs2/galil-ar-rainbow-spoon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2541,7 +2541,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 879.5,
-    "img": "assets/cs2/m4a1-s-control-panel.png",
+    "img": "assets/cs2/m4a1-s-control-panel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2549,7 +2549,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 868,
-    "img": "assets/cs2/usp-s-monster-mashup.png",
+    "img": "assets/cs2/usp-s-monster-mashup.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2557,7 +2557,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 866,
-    "img": "assets/cs2/desert-eagle-night-heist.png",
+    "img": "assets/cs2/desert-eagle-night-heist.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2565,7 +2565,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 865.5,
-    "img": "assets/cs2/glock-18-axia.png",
+    "img": "assets/cs2/glock-18-axia.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2573,7 +2573,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 859,
-    "img": "assets/cs2/desert-eagle-conspiracy.png",
+    "img": "assets/cs2/desert-eagle-conspiracy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2581,7 +2581,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 853,
-    "img": "assets/cs2/mp9-hypnotic.png",
+    "img": "assets/cs2/mp9-hypnotic.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -2589,7 +2589,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 848.5,
-    "img": "assets/cs2/xm1014-blaze-orange.png",
+    "img": "assets/cs2/xm1014-blaze-orange.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2597,7 +2597,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 847.5,
-    "img": "assets/cs2/ssg-08-bloodshot.png",
+    "img": "assets/cs2/ssg-08-bloodshot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2605,7 +2605,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 836,
-    "img": "assets/cs2/famas-afterimage.png",
+    "img": "assets/cs2/famas-afterimage.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2613,7 +2613,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 823,
-    "img": "assets/cs2/glock-18-water-elemental.png",
+    "img": "assets/cs2/glock-18-water-elemental.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2621,7 +2621,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 818,
-    "img": "assets/cs2/awp-sun-in-leo.png",
+    "img": "assets/cs2/awp-sun-in-leo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2629,7 +2629,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 793,
-    "img": "assets/cs2/m4a4-zirka.png",
+    "img": "assets/cs2/m4a4-zirka.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2637,7 +2637,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 788.5,
-    "img": "assets/cs2/p2000-corticera.png",
+    "img": "assets/cs2/p2000-corticera.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2645,7 +2645,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 764.5,
-    "img": "assets/cs2/p2000-dispatch.png",
+    "img": "assets/cs2/p2000-dispatch.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2653,7 +2653,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 760.5,
-    "img": "assets/cs2/m4a4-hellish.png",
+    "img": "assets/cs2/m4a4-hellish.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2661,7 +2661,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 745,
-    "img": "assets/cs2/ssg-08-turbo-peek.png",
+    "img": "assets/cs2/ssg-08-turbo-peek.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2669,7 +2669,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 735.75,
-    "img": "assets/cs2/mp7-ocean-foam.png",
+    "img": "assets/cs2/mp7-ocean-foam.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -2677,7 +2677,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 733.5,
-    "img": "assets/cs2/cz75-auto-the-fuschia-is-now.png",
+    "img": "assets/cs2/cz75-auto-the-fuschia-is-now.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2685,7 +2685,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 726.5,
-    "img": "assets/cs2/tec-9-decimator.png",
+    "img": "assets/cs2/tec-9-decimator.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2693,7 +2693,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 720,
-    "img": "assets/cs2/p250-mehndi.png",
+    "img": "assets/cs2/p250-mehndi.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2701,7 +2701,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 716,
-    "img": "assets/cs2/glock-18-snack-attack.png",
+    "img": "assets/cs2/glock-18-snack-attack.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2709,7 +2709,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 687.5,
-    "img": "assets/cs2/sg-553-gator-mesh.png",
+    "img": "assets/cs2/sg-553-gator-mesh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2717,7 +2717,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 670.5,
-    "img": "assets/cs2/scar-20-magna-carta.png",
+    "img": "assets/cs2/scar-20-magna-carta.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2725,7 +2725,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 666,
-    "img": "assets/cs2/ssg-08-threat-detected.png",
+    "img": "assets/cs2/ssg-08-threat-detected.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2733,7 +2733,7 @@ window.SKINS_CS2 = [
     "rarity": "red",
     "cat": "weapon",
     "price": 666,
-    "img": "assets/cs2/ak-47-aphrodite.png",
+    "img": "assets/cs2/ak-47-aphrodite.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2741,7 +2741,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 652.5,
-    "img": "assets/cs2/ak-47-crane-flight.png",
+    "img": "assets/cs2/ak-47-crane-flight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2749,7 +2749,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 639,
-    "img": "assets/cs2/scar-20-splash-jam.png",
+    "img": "assets/cs2/scar-20-splash-jam.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2757,7 +2757,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 633,
-    "img": "assets/cs2/negev-phoenix-stencil.png",
+    "img": "assets/cs2/negev-phoenix-stencil.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2765,7 +2765,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 632.5,
-    "img": "assets/cs2/m4a4-dragon-king.png",
+    "img": "assets/cs2/m4a4-dragon-king.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2773,7 +2773,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 623,
-    "img": "assets/cs2/dual-berettas-hemoglobin.png",
+    "img": "assets/cs2/dual-berettas-hemoglobin.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2781,7 +2781,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 602.5,
-    "img": "assets/cs2/dual-berettas-demolition.png",
+    "img": "assets/cs2/dual-berettas-demolition.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2789,7 +2789,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 597,
-    "img": "assets/cs2/negev-calicamo.png",
+    "img": "assets/cs2/negev-calicamo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2797,7 +2797,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 577.5,
-    "img": "assets/cs2/five-seven-case-hardened.png",
+    "img": "assets/cs2/five-seven-case-hardened.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2805,7 +2805,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 562.5,
-    "img": "assets/cs2/mp9-setting-sun.png",
+    "img": "assets/cs2/mp9-setting-sun.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2813,7 +2813,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 558.5,
-    "img": "assets/cs2/ak-47-point-disarray.png",
+    "img": "assets/cs2/ak-47-point-disarray.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2821,7 +2821,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 546.5,
-    "img": "assets/cs2/awp-fever-dream.png",
+    "img": "assets/cs2/awp-fever-dream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2829,7 +2829,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 542.5,
-    "img": "assets/cs2/m4a1-s-decimator.png",
+    "img": "assets/cs2/m4a1-s-decimator.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2837,7 +2837,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 518,
-    "img": "assets/cs2/scar-20-bloodsport.png",
+    "img": "assets/cs2/scar-20-bloodsport.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2845,7 +2845,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 517.5,
-    "img": "assets/cs2/p250-muertos.png",
+    "img": "assets/cs2/p250-muertos.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2853,7 +2853,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 514.5,
-    "img": "assets/cs2/famas-djinn.png",
+    "img": "assets/cs2/famas-djinn.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2861,7 +2861,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 514,
-    "img": "assets/cs2/awp-elite-build.png",
+    "img": "assets/cs2/awp-elite-build.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2869,7 +2869,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 513.5,
-    "img": "assets/cs2/mp9-airlock.png",
+    "img": "assets/cs2/mp9-airlock.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2877,7 +2877,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 511,
-    "img": "assets/cs2/p2000-imperial-dragon.png",
+    "img": "assets/cs2/p2000-imperial-dragon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2885,7 +2885,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 508.5,
-    "img": "assets/cs2/cz75-auto-xiangliu.png",
+    "img": "assets/cs2/cz75-auto-xiangliu.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2893,7 +2893,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 505,
-    "img": "assets/cs2/m4a4-dark-blossom.png",
+    "img": "assets/cs2/m4a4-dark-blossom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2901,7 +2901,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 499,
-    "img": "assets/cs2/ump-45-primal-saber.png",
+    "img": "assets/cs2/ump-45-primal-saber.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2909,7 +2909,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 495,
-    "img": "assets/cs2/aug-syd-mead.png",
+    "img": "assets/cs2/aug-syd-mead.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2917,7 +2917,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 495,
-    "img": "assets/cs2/awp-the-end.png",
+    "img": "assets/cs2/awp-the-end.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2925,7 +2925,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 494,
-    "img": "assets/cs2/desert-eagle-crimson-web.png",
+    "img": "assets/cs2/desert-eagle-crimson-web.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2933,7 +2933,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 483,
-    "img": "assets/cs2/p250-crimson-kimono.png",
+    "img": "assets/cs2/p250-crimson-kimono.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2941,7 +2941,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 470,
-    "img": "assets/cs2/p250-cartel.png",
+    "img": "assets/cs2/p250-cartel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2949,7 +2949,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 470,
-    "img": "assets/cs2/xm1014-fallout-warning.png",
+    "img": "assets/cs2/xm1014-fallout-warning.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2957,7 +2957,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 467.5,
-    "img": "assets/cs2/nova-bloomstick.png",
+    "img": "assets/cs2/nova-bloomstick.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2965,7 +2965,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 458.5,
-    "img": "assets/cs2/r8-revolver-llama-cannon.png",
+    "img": "assets/cs2/r8-revolver-llama-cannon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2973,7 +2973,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 441,
-    "img": "assets/cs2/zeus-x27-dragon-snore.png",
+    "img": "assets/cs2/zeus-x27-dragon-snore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2981,7 +2981,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 439,
-    "img": "assets/cs2/nova-antique.png",
+    "img": "assets/cs2/nova-antique.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2989,7 +2989,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 437,
-    "img": "assets/cs2/famas-dark-water.png",
+    "img": "assets/cs2/famas-dark-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -2997,7 +2997,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 436,
-    "img": "assets/cs2/m4a1-s-nightmare.png",
+    "img": "assets/cs2/m4a1-s-nightmare.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3005,7 +3005,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 435,
-    "img": "assets/cs2/glock-18-ramese-s-reach.png",
+    "img": "assets/cs2/glock-18-ramese-s-reach.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3013,7 +3013,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 434,
-    "img": "assets/cs2/pp-bizon-modern-hunter.png",
+    "img": "assets/cs2/pp-bizon-modern-hunter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3021,7 +3021,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 424,
-    "img": "assets/cs2/galil-ar-amber-fade.png",
+    "img": "assets/cs2/galil-ar-amber-fade.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3029,7 +3029,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 423,
-    "img": "assets/cs2/xm1014-tranquility.png",
+    "img": "assets/cs2/xm1014-tranquility.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3037,7 +3037,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 417,
-    "img": "assets/cs2/m4a4-polysoup.png",
+    "img": "assets/cs2/m4a4-polysoup.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3045,7 +3045,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 410.5,
-    "img": "assets/cs2/ak-47-nouveau-rouge.png",
+    "img": "assets/cs2/ak-47-nouveau-rouge.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3053,7 +3053,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 409.5,
-    "img": "assets/cs2/sg-553-tornado.png",
+    "img": "assets/cs2/sg-553-tornado.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3061,7 +3061,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 406.5,
-    "img": "assets/cs2/g3sg1-the-executioner.png",
+    "img": "assets/cs2/g3sg1-the-executioner.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3069,7 +3069,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 399.5,
-    "img": "assets/cs2/ssg-08-big-iron.png",
+    "img": "assets/cs2/ssg-08-big-iron.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3077,7 +3077,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 396,
-    "img": "assets/cs2/p90-sunset-lily.png",
+    "img": "assets/cs2/p90-sunset-lily.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3085,7 +3085,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 383,
-    "img": "assets/cs2/glock-18-sand-dune.png",
+    "img": "assets/cs2/glock-18-sand-dune.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3093,7 +3093,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 381,
-    "img": "assets/cs2/p90-trigon.png",
+    "img": "assets/cs2/p90-trigon.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3101,7 +3101,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 380,
-    "img": "assets/cs2/nova-graphite.png",
+    "img": "assets/cs2/nova-graphite.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -3109,7 +3109,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 367,
-    "img": "assets/cs2/m4a1-s-basilisk.png",
+    "img": "assets/cs2/m4a1-s-basilisk.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3117,7 +3117,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 359,
-    "img": "assets/cs2/mp9-green-plaid.png",
+    "img": "assets/cs2/mp9-green-plaid.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3125,7 +3125,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 358,
-    "img": "assets/cs2/m4a4-spider-lily.png",
+    "img": "assets/cs2/m4a4-spider-lily.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3133,7 +3133,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 339.5,
-    "img": "assets/cs2/p2000-grassland-leaves.png",
+    "img": "assets/cs2/p2000-grassland-leaves.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3141,7 +3141,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 336.5,
-    "img": "assets/cs2/m4a1-s-party-animal.png",
+    "img": "assets/cs2/m4a1-s-party-animal.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3149,7 +3149,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 327.5,
-    "img": "assets/cs2/p250-black-tan.png",
+    "img": "assets/cs2/p250-black-tan.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3157,7 +3157,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 325.5,
-    "img": "assets/cs2/sg-553-colony-iv.png",
+    "img": "assets/cs2/sg-553-colony-iv.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3165,7 +3165,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 325,
-    "img": "assets/cs2/awp-green-energy.png",
+    "img": "assets/cs2/awp-green-energy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3173,7 +3173,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 324,
-    "img": "assets/cs2/mp7-smoking-kills.png",
+    "img": "assets/cs2/mp7-smoking-kills.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3181,7 +3181,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 315.75,
-    "img": "assets/cs2/dual-berettas-anodized-navy.png",
+    "img": "assets/cs2/dual-berettas-anodized-navy.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -3189,7 +3189,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 313,
-    "img": "assets/cs2/cz75-auto-tread-plate.png",
+    "img": "assets/cs2/cz75-auto-tread-plate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3197,7 +3197,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 305.5,
-    "img": "assets/cs2/g3sg1-flux.png",
+    "img": "assets/cs2/g3sg1-flux.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3205,7 +3205,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 302,
-    "img": "assets/cs2/mp9-hydra.png",
+    "img": "assets/cs2/mp9-hydra.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3213,7 +3213,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 298,
-    "img": "assets/cs2/usp-s-para-green.png",
+    "img": "assets/cs2/usp-s-para-green.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3221,7 +3221,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 288,
-    "img": "assets/cs2/nova-sobek-s-bite.png",
+    "img": "assets/cs2/nova-sobek-s-bite.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3229,7 +3229,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 286.5,
-    "img": "assets/cs2/sg-553-traveler.png",
+    "img": "assets/cs2/sg-553-traveler.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3237,7 +3237,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 286.5,
-    "img": "assets/cs2/galil-ar-dusk-ruins.png",
+    "img": "assets/cs2/galil-ar-dusk-ruins.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3245,7 +3245,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 279.5,
-    "img": "assets/cs2/p90-scarab-rush.png",
+    "img": "assets/cs2/p90-scarab-rush.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3253,7 +3253,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 268,
-    "img": "assets/cs2/p2000-space-race.png",
+    "img": "assets/cs2/p2000-space-race.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3261,7 +3261,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 264,
-    "img": "assets/cs2/p90-blind-spot.png",
+    "img": "assets/cs2/p90-blind-spot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3269,7 +3269,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 263.5,
-    "img": "assets/cs2/mp5-sd-autumn-twilly.png",
+    "img": "assets/cs2/mp5-sd-autumn-twilly.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3277,7 +3277,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 263.5,
-    "img": "assets/cs2/mp7-nemesis.png",
+    "img": "assets/cs2/mp7-nemesis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3285,7 +3285,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 261.5,
-    "img": "assets/cs2/sawed-off-bamboo-shadow.png",
+    "img": "assets/cs2/sawed-off-bamboo-shadow.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3293,7 +3293,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 258.5,
-    "img": "assets/cs2/famas-rapid-eye-movement.png",
+    "img": "assets/cs2/famas-rapid-eye-movement.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3301,7 +3301,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 258,
-    "img": "assets/cs2/glock-18-mirror-mosaic.png",
+    "img": "assets/cs2/glock-18-mirror-mosaic.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3309,7 +3309,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 254,
-    "img": "assets/cs2/p250-kintsugi.png",
+    "img": "assets/cs2/p250-kintsugi.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3317,7 +3317,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 254,
-    "img": "assets/cs2/mp9-mount-fuji.png",
+    "img": "assets/cs2/mp9-mount-fuji.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3325,7 +3325,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 253,
-    "img": "assets/cs2/aug-momentum.png",
+    "img": "assets/cs2/aug-momentum.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3333,7 +3333,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 252,
-    "img": "assets/cs2/ak-47-phantom-disruptor.png",
+    "img": "assets/cs2/ak-47-phantom-disruptor.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3341,7 +3341,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 251.5,
-    "img": "assets/cs2/xm1014-incinegator.png",
+    "img": "assets/cs2/xm1014-incinegator.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3349,7 +3349,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 247,
-    "img": "assets/cs2/p90-deathgaze.png",
+    "img": "assets/cs2/p90-deathgaze.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3357,7 +3357,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 244,
-    "img": "assets/cs2/desert-eagle-mecha-industries.png",
+    "img": "assets/cs2/desert-eagle-mecha-industries.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3365,7 +3365,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 240.5,
-    "img": "assets/cs2/mag-7-justice.png",
+    "img": "assets/cs2/mag-7-justice.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3373,7 +3373,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 238,
-    "img": "assets/cs2/galil-ar-tornado.png",
+    "img": "assets/cs2/galil-ar-tornado.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3381,7 +3381,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 227,
-    "img": "assets/cs2/nova-tempest.png",
+    "img": "assets/cs2/nova-tempest.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3389,7 +3389,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 226.5,
-    "img": "assets/cs2/awp-exoskeleton.png",
+    "img": "assets/cs2/awp-exoskeleton.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3397,7 +3397,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 221.5,
-    "img": "assets/cs2/cz75-auto-slalom.png",
+    "img": "assets/cs2/cz75-auto-slalom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3405,7 +3405,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 218,
-    "img": "assets/cs2/tec-9-cut-out.png",
+    "img": "assets/cs2/tec-9-cut-out.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3413,7 +3413,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 216.5,
-    "img": "assets/cs2/glock-18-shinobu.png",
+    "img": "assets/cs2/glock-18-shinobu.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3421,7 +3421,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 213.5,
-    "img": "assets/cs2/sawed-off-devourer.png",
+    "img": "assets/cs2/sawed-off-devourer.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3429,7 +3429,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 210,
-    "img": "assets/cs2/nova-rising-skull.png",
+    "img": "assets/cs2/nova-rising-skull.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3437,7 +3437,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 206,
-    "img": "assets/cs2/awp-atheris.png",
+    "img": "assets/cs2/awp-atheris.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3445,7 +3445,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 204.5,
-    "img": "assets/cs2/mp5-sd-phosphor.png",
+    "img": "assets/cs2/mp5-sd-phosphor.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3453,7 +3453,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 204,
-    "img": "assets/cs2/ssg-08-sand-dune.png",
+    "img": "assets/cs2/ssg-08-sand-dune.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3461,7 +3461,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 203,
-    "img": "assets/cs2/ssg-08-red-stone.png",
+    "img": "assets/cs2/ssg-08-red-stone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3469,7 +3469,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 200.5,
-    "img": "assets/cs2/p250-epicenter.png",
+    "img": "assets/cs2/p250-epicenter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3477,7 +3477,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 200,
-    "img": "assets/cs2/aug-daedalus.png",
+    "img": "assets/cs2/aug-daedalus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3485,7 +3485,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 198,
-    "img": "assets/cs2/ak-47-ice-coaled.png",
+    "img": "assets/cs2/ak-47-ice-coaled.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3493,7 +3493,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 193,
-    "img": "assets/cs2/sg-553-cyrex.png",
+    "img": "assets/cs2/sg-553-cyrex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3501,7 +3501,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 192.5,
-    "img": "assets/cs2/ump-45-neo-noir.png",
+    "img": "assets/cs2/ump-45-neo-noir.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3509,7 +3509,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 188.5,
-    "img": "assets/cs2/xm1014-jungle.png",
+    "img": "assets/cs2/xm1014-jungle.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3517,7 +3517,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 184,
-    "img": "assets/cs2/m4a1-s-black-lotus.png",
+    "img": "assets/cs2/m4a1-s-black-lotus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3525,7 +3525,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 183.5,
-    "img": "assets/cs2/galil-ar-chromatic-aberration.png",
+    "img": "assets/cs2/galil-ar-chromatic-aberration.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3533,7 +3533,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 174,
-    "img": "assets/cs2/mp9-food-chain.png",
+    "img": "assets/cs2/mp9-food-chain.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3541,7 +3541,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 171,
-    "img": "assets/cs2/aug-death-by-puppy.png",
+    "img": "assets/cs2/aug-death-by-puppy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3549,7 +3549,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 169,
-    "img": "assets/cs2/ump-45-bone-pile.png",
+    "img": "assets/cs2/ump-45-bone-pile.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3557,7 +3557,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 168,
-    "img": "assets/cs2/tec-9-brass.png",
+    "img": "assets/cs2/tec-9-brass.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3565,7 +3565,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 166,
-    "img": "assets/cs2/dual-berettas-royal-consorts.png",
+    "img": "assets/cs2/dual-berettas-royal-consorts.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3573,7 +3573,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 165.5,
-    "img": "assets/cs2/usp-s-cortex.png",
+    "img": "assets/cs2/usp-s-cortex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3581,7 +3581,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 165.25,
-    "img": "assets/cs2/p250-steel-disruption.png",
+    "img": "assets/cs2/p250-steel-disruption.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3589,7 +3589,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 165,
-    "img": "assets/cs2/ak-47-rat-rod.png",
+    "img": "assets/cs2/ak-47-rat-rod.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3597,7 +3597,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 163.5,
-    "img": "assets/cs2/mac-10-aloha.png",
+    "img": "assets/cs2/mac-10-aloha.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3605,7 +3605,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 162,
-    "img": "assets/cs2/famas-valence.png",
+    "img": "assets/cs2/famas-valence.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3613,7 +3613,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 160.5,
-    "img": "assets/cs2/glock-18-vogue.png",
+    "img": "assets/cs2/glock-18-vogue.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3621,7 +3621,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 158.5,
-    "img": "assets/cs2/m4a4-tooth-fairy.png",
+    "img": "assets/cs2/m4a4-tooth-fairy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3629,7 +3629,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 156.5,
-    "img": "assets/cs2/ump-45-houndstooth.png",
+    "img": "assets/cs2/ump-45-houndstooth.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3637,7 +3637,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 155,
-    "img": "assets/cs2/cz75-auto-green-plaid.png",
+    "img": "assets/cs2/cz75-auto-green-plaid.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3645,7 +3645,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 155,
-    "img": "assets/cs2/glock-18-blue-fissure.png",
+    "img": "assets/cs2/glock-18-blue-fissure.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3653,7 +3653,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 150.5,
-    "img": "assets/cs2/p250-visions.png",
+    "img": "assets/cs2/p250-visions.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3661,7 +3661,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 149,
-    "img": "assets/cs2/usp-s-cyrex.png",
+    "img": "assets/cs2/usp-s-cyrex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3669,7 +3669,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 146.5,
-    "img": "assets/cs2/xm1014-xoxo.png",
+    "img": "assets/cs2/xm1014-xoxo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3677,7 +3677,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 144.5,
-    "img": "assets/cs2/p250-lotus-imprint.png",
+    "img": "assets/cs2/p250-lotus-imprint.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3685,7 +3685,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 143.5,
-    "img": "assets/cs2/ssg-08-parallax.png",
+    "img": "assets/cs2/ssg-08-parallax.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3693,7 +3693,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 142,
-    "img": "assets/cs2/famas-zx-spectron.png",
+    "img": "assets/cs2/famas-zx-spectron.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3701,7 +3701,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 141.5,
-    "img": "assets/cs2/aug-stymphalian.png",
+    "img": "assets/cs2/aug-stymphalian.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3709,7 +3709,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 137,
-    "img": "assets/cs2/ump-45-wild-child.png",
+    "img": "assets/cs2/ump-45-wild-child.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3717,7 +3717,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 137,
-    "img": "assets/cs2/p2000-wicked-sick.png",
+    "img": "assets/cs2/p2000-wicked-sick.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3725,7 +3725,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 136.5,
-    "img": "assets/cs2/awp-exothermic.png",
+    "img": "assets/cs2/awp-exothermic.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3733,7 +3733,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 133.5,
-    "img": "assets/cs2/zeus-x27-olympus.png",
+    "img": "assets/cs2/zeus-x27-olympus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3741,7 +3741,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 133.5,
-    "img": "assets/cs2/m4a4-griffin.png",
+    "img": "assets/cs2/m4a4-griffin.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3749,7 +3749,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 133,
-    "img": "assets/cs2/glock-18-ifrit-lattice.png",
+    "img": "assets/cs2/glock-18-ifrit-lattice.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3757,7 +3757,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 128,
-    "img": "assets/cs2/ak-47-midnight-laminate.png",
+    "img": "assets/cs2/ak-47-midnight-laminate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3765,7 +3765,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 126.5,
-    "img": "assets/cs2/dual-berettas-twin-turbo.png",
+    "img": "assets/cs2/dual-berettas-twin-turbo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3773,7 +3773,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 125.5,
-    "img": "assets/cs2/usp-s-blood-tiger.png",
+    "img": "assets/cs2/usp-s-blood-tiger.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3781,7 +3781,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 125.5,
-    "img": "assets/cs2/sawed-off-jungle-thicket.png",
+    "img": "assets/cs2/sawed-off-jungle-thicket.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3789,7 +3789,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 122,
-    "img": "assets/cs2/mac-10-heat.png",
+    "img": "assets/cs2/mac-10-heat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3797,7 +3797,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 121.5,
-    "img": "assets/cs2/mac-10-surfwood.png",
+    "img": "assets/cs2/mac-10-surfwood.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3805,7 +3805,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 118.5,
-    "img": "assets/cs2/pp-bizon-blue-streak.png",
+    "img": "assets/cs2/pp-bizon-blue-streak.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3813,7 +3813,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 114,
-    "img": "assets/cs2/tec-9-whiteout.png",
+    "img": "assets/cs2/tec-9-whiteout.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3821,7 +3821,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 114,
-    "img": "assets/cs2/five-seven-urban-hazard.png",
+    "img": "assets/cs2/five-seven-urban-hazard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3829,7 +3829,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 110,
-    "img": "assets/cs2/p250-hive.png",
+    "img": "assets/cs2/p250-hive.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3837,7 +3837,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 109.5,
-    "img": "assets/cs2/p90-virus.png",
+    "img": "assets/cs2/p90-virus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3845,7 +3845,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 108,
-    "img": "assets/cs2/desert-eagle-mulberry.png",
+    "img": "assets/cs2/desert-eagle-mulberry.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3853,7 +3853,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 107.5,
-    "img": "assets/cs2/tec-9-remote-control.png",
+    "img": "assets/cs2/tec-9-remote-control.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3861,7 +3861,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 107.5,
-    "img": "assets/cs2/ssg-08-dark-water.png",
+    "img": "assets/cs2/ssg-08-dark-water.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3869,7 +3869,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 107,
-    "img": "assets/cs2/sg-553-desert-blossom.png",
+    "img": "assets/cs2/sg-553-desert-blossom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3877,7 +3877,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 107,
-    "img": "assets/cs2/glock-18-royal-legion.png",
+    "img": "assets/cs2/glock-18-royal-legion.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3885,7 +3885,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 107,
-    "img": "assets/cs2/five-seven-heat-treated.png",
+    "img": "assets/cs2/five-seven-heat-treated.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3893,7 +3893,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 107,
-    "img": "assets/cs2/mp9-arctic-tri-tone.png",
+    "img": "assets/cs2/mp9-arctic-tri-tone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3901,7 +3901,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 105,
-    "img": "assets/cs2/nova-forest-leaves.png",
+    "img": "assets/cs2/nova-forest-leaves.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3909,7 +3909,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 102.5,
-    "img": "assets/cs2/scar-20-stone-mosaico.png",
+    "img": "assets/cs2/scar-20-stone-mosaico.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3917,7 +3917,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 100,
-    "img": "assets/cs2/mp9-music-box.png",
+    "img": "assets/cs2/mp9-music-box.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3925,7 +3925,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 99.5,
-    "img": "assets/cs2/m4a1-s-liquidation.png",
+    "img": "assets/cs2/m4a1-s-liquidation.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3933,7 +3933,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 99,
-    "img": "assets/cs2/ssg-08-lichen-dashed.png",
+    "img": "assets/cs2/ssg-08-lichen-dashed.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3941,7 +3941,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 97,
-    "img": "assets/cs2/nova-koi.png",
+    "img": "assets/cs2/nova-koi.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3949,7 +3949,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 96,
-    "img": "assets/cs2/cz75-auto-tigris.png",
+    "img": "assets/cs2/cz75-auto-tigris.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3957,7 +3957,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 94.5,
-    "img": "assets/cs2/mag-7-seabird.png",
+    "img": "assets/cs2/mag-7-seabird.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3965,7 +3965,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 93.5,
-    "img": "assets/cs2/mp7-impire.png",
+    "img": "assets/cs2/mp7-impire.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3973,7 +3973,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 90.5,
-    "img": "assets/cs2/mp5-sd-nitro.png",
+    "img": "assets/cs2/mp5-sd-nitro.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3981,7 +3981,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 90,
-    "img": "assets/cs2/pp-bizon-osiris.png",
+    "img": "assets/cs2/pp-bizon-osiris.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3989,7 +3989,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 88.5,
-    "img": "assets/cs2/xm1014-monster-melt.png",
+    "img": "assets/cs2/xm1014-monster-melt.webp",
     "wear": "Field-Tested"
   },
   {
@@ -3997,7 +3997,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 88,
-    "img": "assets/cs2/pp-bizon-chemical-green.png",
+    "img": "assets/cs2/pp-bizon-chemical-green.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4005,7 +4005,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 87.5,
-    "img": "assets/cs2/glock-18-nuclear-garden.png",
+    "img": "assets/cs2/glock-18-nuclear-garden.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4013,7 +4013,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 87,
-    "img": "assets/cs2/desert-eagle-naga.png",
+    "img": "assets/cs2/desert-eagle-naga.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4021,7 +4021,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 87,
-    "img": "assets/cs2/mac-10-derailment.png",
+    "img": "assets/cs2/mac-10-derailment.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4029,7 +4029,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 86.25,
-    "img": "assets/cs2/scar-20-army-sheen.png",
+    "img": "assets/cs2/scar-20-army-sheen.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4037,7 +4037,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 85.5,
-    "img": "assets/cs2/negev-nuclear-waste.png",
+    "img": "assets/cs2/negev-nuclear-waste.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4045,7 +4045,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 85.5,
-    "img": "assets/cs2/mag-7-bi83-spectrum.png",
+    "img": "assets/cs2/mag-7-bi83-spectrum.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4053,7 +4053,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 85,
-    "img": "assets/cs2/sawed-off-irradiated-alert.png",
+    "img": "assets/cs2/sawed-off-irradiated-alert.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4061,7 +4061,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 85,
-    "img": "assets/cs2/dual-berettas-sweet-little-angels.png",
+    "img": "assets/cs2/dual-berettas-sweet-little-angels.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4069,7 +4069,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 84.5,
-    "img": "assets/cs2/aug-eye-of-zapems.png",
+    "img": "assets/cs2/aug-eye-of-zapems.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4077,7 +4077,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 83.5,
-    "img": "assets/cs2/xm1014-watchdog.png",
+    "img": "assets/cs2/xm1014-watchdog.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4085,7 +4085,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 83,
-    "img": "assets/cs2/p250-contamination.png",
+    "img": "assets/cs2/p250-contamination.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4093,7 +4093,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 81.5,
-    "img": "assets/cs2/galil-ar-sandstorm.png",
+    "img": "assets/cs2/galil-ar-sandstorm.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4101,7 +4101,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 78.5,
-    "img": "assets/cs2/zeus-x27-charged-up.png",
+    "img": "assets/cs2/zeus-x27-charged-up.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4109,7 +4109,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 76.75,
-    "img": "assets/cs2/aug-colony.png",
+    "img": "assets/cs2/aug-colony.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4117,7 +4117,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 76.5,
-    "img": "assets/cs2/p2000-grassland.png",
+    "img": "assets/cs2/p2000-grassland.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4125,7 +4125,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 73.5,
-    "img": "assets/cs2/mag-7-praetorian.png",
+    "img": "assets/cs2/mag-7-praetorian.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4133,7 +4133,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 72.5,
-    "img": "assets/cs2/m4a1-s-solitude.png",
+    "img": "assets/cs2/m4a1-s-solitude.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4141,7 +4141,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 63,
-    "img": "assets/cs2/pp-bizon-water-sigil.png",
+    "img": "assets/cs2/pp-bizon-water-sigil.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4149,7 +4149,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 63,
-    "img": "assets/cs2/m4a1-s-glitched-paint.png",
+    "img": "assets/cs2/m4a1-s-glitched-paint.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4157,7 +4157,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 62.5,
-    "img": "assets/cs2/pp-bizon-breaker-box.png",
+    "img": "assets/cs2/pp-bizon-breaker-box.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4165,7 +4165,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 60.5,
-    "img": "assets/cs2/desert-eagle-sputnik.png",
+    "img": "assets/cs2/desert-eagle-sputnik.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4173,7 +4173,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 60,
-    "img": "assets/cs2/ump-45-full-stop.png",
+    "img": "assets/cs2/ump-45-full-stop.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4181,7 +4181,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 59.5,
-    "img": "assets/cs2/m249-emerald-poison-dart.png",
+    "img": "assets/cs2/m249-emerald-poison-dart.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4189,7 +4189,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 57.5,
-    "img": "assets/cs2/sawed-off-highwayman.png",
+    "img": "assets/cs2/sawed-off-highwayman.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4197,7 +4197,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 57,
-    "img": "assets/cs2/glock-18-weasel.png",
+    "img": "assets/cs2/glock-18-weasel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4205,7 +4205,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 57,
-    "img": "assets/cs2/ssg-08-ghost-crusader.png",
+    "img": "assets/cs2/ssg-08-ghost-crusader.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4213,7 +4213,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 57,
-    "img": "assets/cs2/galil-ar-firefight.png",
+    "img": "assets/cs2/galil-ar-firefight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4221,7 +4221,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 56.5,
-    "img": "assets/cs2/desert-eagle-heat-treated.png",
+    "img": "assets/cs2/desert-eagle-heat-treated.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4229,7 +4229,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 56,
-    "img": "assets/cs2/aug-aristocrat.png",
+    "img": "assets/cs2/aug-aristocrat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4237,7 +4237,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 56,
-    "img": "assets/cs2/sg-553-triarch.png",
+    "img": "assets/cs2/sg-553-triarch.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4245,7 +4245,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 55.5,
-    "img": "assets/cs2/ump-45-grand-prix.png",
+    "img": "assets/cs2/ump-45-grand-prix.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4253,7 +4253,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 55,
-    "img": "assets/cs2/mac-10-last-dive.png",
+    "img": "assets/cs2/mac-10-last-dive.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4261,7 +4261,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 55,
-    "img": "assets/cs2/scar-20-powercore.png",
+    "img": "assets/cs2/scar-20-powercore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4269,7 +4269,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 53.5,
-    "img": "assets/cs2/cz75-auto-pole-position.png",
+    "img": "assets/cs2/cz75-auto-pole-position.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4277,7 +4277,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 52.5,
-    "img": "assets/cs2/r8-revolver-reboot.png",
+    "img": "assets/cs2/r8-revolver-reboot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4285,7 +4285,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 52.5,
-    "img": "assets/cs2/ssg-08-rapid-transit.png",
+    "img": "assets/cs2/ssg-08-rapid-transit.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4293,7 +4293,7 @@ window.SKINS_CS2 = [
     "rarity": "pink",
     "cat": "weapon",
     "price": 52,
-    "img": "assets/cs2/r8-revolver-amber-fade.png",
+    "img": "assets/cs2/r8-revolver-amber-fade.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4301,7 +4301,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 52,
-    "img": "assets/cs2/desert-eagle-light-rail.png",
+    "img": "assets/cs2/desert-eagle-light-rail.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4309,7 +4309,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 51.5,
-    "img": "assets/cs2/galil-ar-rocket-pop.png",
+    "img": "assets/cs2/galil-ar-rocket-pop.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4317,7 +4317,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 51.5,
-    "img": "assets/cs2/m4a1-s-electrum.png",
+    "img": "assets/cs2/m4a1-s-electrum.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4325,7 +4325,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 50.5,
-    "img": "assets/cs2/m249-nebula-crusader.png",
+    "img": "assets/cs2/m249-nebula-crusader.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4333,7 +4333,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 50.5,
-    "img": "assets/cs2/pp-bizon-fuel-rod.png",
+    "img": "assets/cs2/pp-bizon-fuel-rod.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4341,7 +4341,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 50,
-    "img": "assets/cs2/sawed-off-fubar.png",
+    "img": "assets/cs2/sawed-off-fubar.webp",
     "wear": "Well-Worn"
   },
   {
@@ -4349,7 +4349,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 50,
-    "img": "assets/cs2/sg-553-phantom.png",
+    "img": "assets/cs2/sg-553-phantom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4357,7 +4357,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 48.5,
-    "img": "assets/cs2/xm1014-teclu-burner.png",
+    "img": "assets/cs2/xm1014-teclu-burner.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4365,7 +4365,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 47.5,
-    "img": "assets/cs2/xm1014-ziggy.png",
+    "img": "assets/cs2/xm1014-ziggy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4373,7 +4373,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 47.5,
-    "img": "assets/cs2/desert-eagle-firebreathing.png",
+    "img": "assets/cs2/desert-eagle-firebreathing.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4381,7 +4381,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 46.5,
-    "img": "assets/cs2/usp-s-lead-conduit.png",
+    "img": "assets/cs2/usp-s-lead-conduit.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4389,7 +4389,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 44,
-    "img": "assets/cs2/mp7-special-delivery.png",
+    "img": "assets/cs2/mp7-special-delivery.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4397,7 +4397,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 44,
-    "img": "assets/cs2/mac-10-saib-oni.png",
+    "img": "assets/cs2/mac-10-saib-oni.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4405,7 +4405,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 44,
-    "img": "assets/cs2/xm1014-charter.png",
+    "img": "assets/cs2/xm1014-charter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4413,7 +4413,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 42,
-    "img": "assets/cs2/cz75-auto-eco.png",
+    "img": "assets/cs2/cz75-auto-eco.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4421,7 +4421,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 42,
-    "img": "assets/cs2/nova-toy-soldier.png",
+    "img": "assets/cs2/nova-toy-soldier.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4429,7 +4429,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 42,
-    "img": "assets/cs2/mp9-urban-sovereign.png",
+    "img": "assets/cs2/mp9-urban-sovereign.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4437,7 +4437,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 41.5,
-    "img": "assets/cs2/mp5-sd-acid-wash.png",
+    "img": "assets/cs2/mp5-sd-acid-wash.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4445,7 +4445,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 41.5,
-    "img": "assets/cs2/awp-pit-viper.png",
+    "img": "assets/cs2/awp-pit-viper.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4453,7 +4453,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 41.5,
-    "img": "assets/cs2/tec-9-mummy-s-rot.png",
+    "img": "assets/cs2/tec-9-mummy-s-rot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4461,7 +4461,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 41,
-    "img": "assets/cs2/p90-cocoa-rampage.png",
+    "img": "assets/cs2/p90-cocoa-rampage.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4469,7 +4469,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 41,
-    "img": "assets/cs2/glock-18-moonrise.png",
+    "img": "assets/cs2/glock-18-moonrise.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4477,7 +4477,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 41,
-    "img": "assets/cs2/mp9-old-roots.png",
+    "img": "assets/cs2/mp9-old-roots.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4485,7 +4485,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 39.5,
-    "img": "assets/cs2/mp7-amberline.png",
+    "img": "assets/cs2/mp7-amberline.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4493,7 +4493,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 39,
-    "img": "assets/cs2/m249-deep-relief.png",
+    "img": "assets/cs2/m249-deep-relief.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4501,7 +4501,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 38.5,
-    "img": "assets/cs2/galil-ar-vandal.png",
+    "img": "assets/cs2/galil-ar-vandal.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4509,7 +4509,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 38,
-    "img": "assets/cs2/scar-20-wild-berry.png",
+    "img": "assets/cs2/scar-20-wild-berry.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4517,7 +4517,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 38,
-    "img": "assets/cs2/negev-loudmouth.png",
+    "img": "assets/cs2/negev-loudmouth.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4525,7 +4525,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 37,
-    "img": "assets/cs2/r8-revolver-memento.png",
+    "img": "assets/cs2/r8-revolver-memento.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4533,7 +4533,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 37,
-    "img": "assets/cs2/mac-10-sakkaku.png",
+    "img": "assets/cs2/mac-10-sakkaku.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4541,7 +4541,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 36.5,
-    "img": "assets/cs2/nova-plume.png",
+    "img": "assets/cs2/nova-plume.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4549,7 +4549,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 34,
-    "img": "assets/cs2/mac-10-lapis-gator.png",
+    "img": "assets/cs2/mac-10-lapis-gator.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4557,7 +4557,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 34,
-    "img": "assets/cs2/m4a4-sheet-lightning.png",
+    "img": "assets/cs2/m4a4-sheet-lightning.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4565,7 +4565,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 33.5,
-    "img": "assets/cs2/galil-ar-tuxedo.png",
+    "img": "assets/cs2/galil-ar-tuxedo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4573,7 +4573,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 33.5,
-    "img": "assets/cs2/galil-ar-black-sand.png",
+    "img": "assets/cs2/galil-ar-black-sand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4581,7 +4581,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 32,
-    "img": "assets/cs2/desert-eagle-trigger-discipline.png",
+    "img": "assets/cs2/desert-eagle-trigger-discipline.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4589,7 +4589,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 32,
-    "img": "assets/cs2/mp7-cirrus.png",
+    "img": "assets/cs2/mp7-cirrus.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4597,7 +4597,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 31.5,
-    "img": "assets/cs2/xm1014-solitude.png",
+    "img": "assets/cs2/xm1014-solitude.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4605,7 +4605,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 31,
-    "img": "assets/cs2/mac-10-cat-fight.png",
+    "img": "assets/cs2/mac-10-cat-fight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4613,7 +4613,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 30,
-    "img": "assets/cs2/ssg-08-necropos.png",
+    "img": "assets/cs2/ssg-08-necropos.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4621,7 +4621,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 29.5,
-    "img": "assets/cs2/sawed-off-brake-light.png",
+    "img": "assets/cs2/sawed-off-brake-light.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -4629,7 +4629,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 29,
-    "img": "assets/cs2/pp-bizon-photic-zone.png",
+    "img": "assets/cs2/pp-bizon-photic-zone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4637,7 +4637,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 28.5,
-    "img": "assets/cs2/sg-553-darkwing.png",
+    "img": "assets/cs2/sg-553-darkwing.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4645,7 +4645,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 28.5,
-    "img": "assets/cs2/tec-9-sultan.png",
+    "img": "assets/cs2/tec-9-sultan.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4653,7 +4653,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 27,
-    "img": "assets/cs2/five-seven-buddy.png",
+    "img": "assets/cs2/five-seven-buddy.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4661,7 +4661,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 27,
-    "img": "assets/cs2/dual-berettas-heist.png",
+    "img": "assets/cs2/dual-berettas-heist.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4669,7 +4669,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 26.5,
-    "img": "assets/cs2/m4a4-converter.png",
+    "img": "assets/cs2/m4a4-converter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4677,7 +4677,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 26.5,
-    "img": "assets/cs2/galil-ar-signal.png",
+    "img": "assets/cs2/galil-ar-signal.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4685,7 +4685,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 26.25,
-    "img": "assets/cs2/tec-9-phoenix-chalk.png",
+    "img": "assets/cs2/tec-9-phoenix-chalk.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4693,7 +4693,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 26,
-    "img": "assets/cs2/sawed-off-apocalypto.png",
+    "img": "assets/cs2/sawed-off-apocalypto.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4701,7 +4701,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 25.5,
-    "img": "assets/cs2/mp9-storm.png",
+    "img": "assets/cs2/mp9-storm.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4709,7 +4709,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 25.5,
-    "img": "assets/cs2/ak-47-uncharted.png",
+    "img": "assets/cs2/ak-47-uncharted.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4717,7 +4717,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 25.5,
-    "img": "assets/cs2/nova-ocular.png",
+    "img": "assets/cs2/nova-ocular.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4725,7 +4725,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 25,
-    "img": "assets/cs2/g3sg1-dream-glade.png",
+    "img": "assets/cs2/g3sg1-dream-glade.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4733,7 +4733,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 25,
-    "img": "assets/cs2/ak-47-wintergreen.png",
+    "img": "assets/cs2/ak-47-wintergreen.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4741,7 +4741,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 25,
-    "img": "assets/cs2/usp-s-ticket-to-hell.png",
+    "img": "assets/cs2/usp-s-ticket-to-hell.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4749,7 +4749,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 24.5,
-    "img": "assets/cs2/g3sg1-black-sand.png",
+    "img": "assets/cs2/g3sg1-black-sand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4757,7 +4757,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 24.5,
-    "img": "assets/cs2/p2000-acid-etched.png",
+    "img": "assets/cs2/p2000-acid-etched.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4765,7 +4765,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 24.5,
-    "img": "assets/cs2/ump-45-continuum.png",
+    "img": "assets/cs2/ump-45-continuum.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4773,7 +4773,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 24.5,
-    "img": "assets/cs2/usp-s-royal-guard.png",
+    "img": "assets/cs2/usp-s-royal-guard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4781,7 +4781,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 23.5,
-    "img": "assets/cs2/mp9-deadly-poison.png",
+    "img": "assets/cs2/mp9-deadly-poison.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4789,7 +4789,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 22.5,
-    "img": "assets/cs2/p90-traction.png",
+    "img": "assets/cs2/p90-traction.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4797,7 +4797,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 22,
-    "img": "assets/cs2/mac-10-strats.png",
+    "img": "assets/cs2/mac-10-strats.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4805,7 +4805,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 22,
-    "img": "assets/cs2/ssg-08-abyss.png",
+    "img": "assets/cs2/ssg-08-abyss.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4813,7 +4813,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 22,
-    "img": "assets/cs2/ump-45-plastique.png",
+    "img": "assets/cs2/ump-45-plastique.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4821,7 +4821,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 22,
-    "img": "assets/cs2/m249-aztec.png",
+    "img": "assets/cs2/m249-aztec.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4829,7 +4829,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 21.5,
-    "img": "assets/cs2/g3sg1-scavenger.png",
+    "img": "assets/cs2/g3sg1-scavenger.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4837,7 +4837,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 20.5,
-    "img": "assets/cs2/ssg-08-hand-brake.png",
+    "img": "assets/cs2/ssg-08-hand-brake.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4845,7 +4845,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 19.5,
-    "img": "assets/cs2/mac-10-classic-crate.png",
+    "img": "assets/cs2/mac-10-classic-crate.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4853,7 +4853,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 19,
-    "img": "assets/cs2/desert-eagle-serpent-strike.png",
+    "img": "assets/cs2/desert-eagle-serpent-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4861,7 +4861,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 19,
-    "img": "assets/cs2/dual-berettas-flora-carnivora.png",
+    "img": "assets/cs2/dual-berettas-flora-carnivora.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4869,7 +4869,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 19,
-    "img": "assets/cs2/tec-9-flash-out.png",
+    "img": "assets/cs2/tec-9-flash-out.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4877,7 +4877,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 19,
-    "img": "assets/cs2/mp7-mischief.png",
+    "img": "assets/cs2/mp7-mischief.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4885,7 +4885,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 18.5,
-    "img": "assets/cs2/p90-wave-breaker.png",
+    "img": "assets/cs2/p90-wave-breaker.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4893,7 +4893,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 18,
-    "img": "assets/cs2/famas-decommissioned.png",
+    "img": "assets/cs2/famas-decommissioned.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4901,7 +4901,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 18,
-    "img": "assets/cs2/m249-spectre.png",
+    "img": "assets/cs2/m249-spectre.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4909,7 +4909,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 18,
-    "img": "assets/cs2/p250-x-ray.png",
+    "img": "assets/cs2/p250-x-ray.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4917,7 +4917,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 17.5,
-    "img": "assets/cs2/negev-terrain.png",
+    "img": "assets/cs2/negev-terrain.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4925,7 +4925,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 17.5,
-    "img": "assets/cs2/glock-18-block-18.png",
+    "img": "assets/cs2/glock-18-block-18.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4933,7 +4933,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 17.5,
-    "img": "assets/cs2/mag-7-monster-call.png",
+    "img": "assets/cs2/mag-7-monster-call.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4941,7 +4941,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 17.5,
-    "img": "assets/cs2/scar-20-blueprint.png",
+    "img": "assets/cs2/scar-20-blueprint.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4949,7 +4949,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 17.5,
-    "img": "assets/cs2/r8-revolver-crazy-8.png",
+    "img": "assets/cs2/r8-revolver-crazy-8.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4957,7 +4957,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 17,
-    "img": "assets/cs2/mag-7-popdog.png",
+    "img": "assets/cs2/mag-7-popdog.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4965,7 +4965,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 17,
-    "img": "assets/cs2/glock-18-sacrifice.png",
+    "img": "assets/cs2/glock-18-sacrifice.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4973,7 +4973,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 17,
-    "img": "assets/cs2/ump-45-arctic-wolf.png",
+    "img": "assets/cs2/ump-45-arctic-wolf.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4981,7 +4981,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 17,
-    "img": "assets/cs2/aug-signal-scanner.png",
+    "img": "assets/cs2/aug-signal-scanner.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4989,7 +4989,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 17,
-    "img": "assets/cs2/m4a4-etch-lord.png",
+    "img": "assets/cs2/m4a4-etch-lord.webp",
     "wear": "Field-Tested"
   },
   {
@@ -4997,7 +4997,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 16.75,
-    "img": "assets/cs2/p2000-imperial.png",
+    "img": "assets/cs2/p2000-imperial.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5005,7 +5005,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 16.5,
-    "img": "assets/cs2/mac-10-carnivore.png",
+    "img": "assets/cs2/mac-10-carnivore.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5013,7 +5013,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/dual-berettas-shred.png",
+    "img": "assets/cs2/dual-berettas-shred.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5021,7 +5021,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/mac-10-button-masher.png",
+    "img": "assets/cs2/mac-10-button-masher.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5029,7 +5029,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/nova-wild-six.png",
+    "img": "assets/cs2/nova-wild-six.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5037,7 +5037,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/mp5-sd-kitbash.png",
+    "img": "assets/cs2/mp5-sd-kitbash.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5045,7 +5045,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/r8-revolver-monarch.png",
+    "img": "assets/cs2/r8-revolver-monarch.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5053,7 +5053,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 16,
-    "img": "assets/cs2/sawed-off-analog-input.png",
+    "img": "assets/cs2/sawed-off-analog-input.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5061,7 +5061,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 15.5,
-    "img": "assets/cs2/p250-cyber-shell.png",
+    "img": "assets/cs2/p250-cyber-shell.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5069,7 +5069,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 15.5,
-    "img": "assets/cs2/p90-vent-rush.png",
+    "img": "assets/cs2/p90-vent-rush.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5077,7 +5077,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 15.5,
-    "img": "assets/cs2/p90-grim.png",
+    "img": "assets/cs2/p90-grim.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5085,7 +5085,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/ump-45-labyrinth.png",
+    "img": "assets/cs2/ump-45-labyrinth.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5093,7 +5093,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/nova-exo.png",
+    "img": "assets/cs2/nova-exo.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5101,7 +5101,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/p90-neoqueen.png",
+    "img": "assets/cs2/p90-neoqueen.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5109,7 +5109,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/scar-20-outbreak.png",
+    "img": "assets/cs2/scar-20-outbreak.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5117,7 +5117,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/cz75-auto-imprint.png",
+    "img": "assets/cs2/cz75-auto-imprint.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5125,7 +5125,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14.5,
-    "img": "assets/cs2/negev-dazzle.png",
+    "img": "assets/cs2/negev-dazzle.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5133,7 +5133,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14,
-    "img": "assets/cs2/sg-553-aerial.png",
+    "img": "assets/cs2/sg-553-aerial.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5141,7 +5141,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14,
-    "img": "assets/cs2/p2000-oceanic.png",
+    "img": "assets/cs2/p2000-oceanic.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5149,7 +5149,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14,
-    "img": "assets/cs2/xm1014-slipstream.png",
+    "img": "assets/cs2/xm1014-slipstream.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5157,7 +5157,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 14,
-    "img": "assets/cs2/usp-s-silent-shot.png",
+    "img": "assets/cs2/usp-s-silent-shot.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5165,7 +5165,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/r8-revolver-junk-yard.png",
+    "img": "assets/cs2/r8-revolver-junk-yard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5173,7 +5173,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/negev-desert-strike.png",
+    "img": "assets/cs2/negev-desert-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5181,7 +5181,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/dual-berettas-ventilators.png",
+    "img": "assets/cs2/dual-berettas-ventilators.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5189,7 +5189,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/mp5-sd-desert-strike.png",
+    "img": "assets/cs2/mp5-sd-desert-strike.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5197,7 +5197,7 @@ window.SKINS_CS2 = [
     "rarity": "fiol",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/tec-9-red-quartz.png",
+    "img": "assets/cs2/tec-9-red-quartz.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5205,7 +5205,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13.5,
-    "img": "assets/cs2/p250-valence.png",
+    "img": "assets/cs2/p250-valence.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5213,7 +5213,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13,
-    "img": "assets/cs2/mp5-sd-statics.png",
+    "img": "assets/cs2/mp5-sd-statics.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5221,7 +5221,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 13,
-    "img": "assets/cs2/glock-18-green-line.png",
+    "img": "assets/cs2/glock-18-green-line.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5229,7 +5229,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 13,
-    "img": "assets/cs2/m4a1-s-mud-spec.png",
+    "img": "assets/cs2/m4a1-s-mud-spec.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5237,7 +5237,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 13,
-    "img": "assets/cs2/dual-berettas-drift-wood.png",
+    "img": "assets/cs2/dual-berettas-drift-wood.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5245,7 +5245,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 12.5,
-    "img": "assets/cs2/m249-hypnosis.png",
+    "img": "assets/cs2/m249-hypnosis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5253,7 +5253,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 12.5,
-    "img": "assets/cs2/sawed-off-morris.png",
+    "img": "assets/cs2/sawed-off-morris.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5261,7 +5261,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 12.5,
-    "img": "assets/cs2/g3sg1-hunter.png",
+    "img": "assets/cs2/g3sg1-hunter.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5269,7 +5269,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 12,
-    "img": "assets/cs2/famas-crypsis.png",
+    "img": "assets/cs2/famas-crypsis.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5277,7 +5277,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 12,
-    "img": "assets/cs2/desert-eagle-bronze-deco.png",
+    "img": "assets/cs2/desert-eagle-bronze-deco.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5285,7 +5285,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11.5,
-    "img": "assets/cs2/r8-revolver-tango.png",
+    "img": "assets/cs2/r8-revolver-tango.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5293,7 +5293,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11.5,
-    "img": "assets/cs2/aug-triqua.png",
+    "img": "assets/cs2/aug-triqua.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5301,7 +5301,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11.5,
-    "img": "assets/cs2/p250-small-game.png",
+    "img": "assets/cs2/p250-small-game.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5309,7 +5309,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11,
-    "img": "assets/cs2/tec-9-fubar.png",
+    "img": "assets/cs2/tec-9-fubar.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5317,7 +5317,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11,
-    "img": "assets/cs2/m249-o-s-i-p-r.png",
+    "img": "assets/cs2/m249-o-s-i-p-r.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5325,7 +5325,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11,
-    "img": "assets/cs2/xm1014-scumbria.png",
+    "img": "assets/cs2/xm1014-scumbria.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5333,7 +5333,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11,
-    "img": "assets/cs2/mac-10-pipsqueak.png",
+    "img": "assets/cs2/mac-10-pipsqueak.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5341,7 +5341,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 11,
-    "img": "assets/cs2/galil-ar-sky-mandala.png",
+    "img": "assets/cs2/galil-ar-sky-mandala.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5349,7 +5349,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 10,
-    "img": "assets/cs2/sawed-off-black-sand.png",
+    "img": "assets/cs2/sawed-off-black-sand.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5357,7 +5357,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 9,
-    "img": "assets/cs2/glock-18-high-beam.png",
+    "img": "assets/cs2/glock-18-high-beam.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -5365,7 +5365,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 9,
-    "img": "assets/cs2/galil-ar-metallic-squeezer.png",
+    "img": "assets/cs2/galil-ar-metallic-squeezer.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5373,7 +5373,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 8.5,
-    "img": "assets/cs2/usp-s-desert-tactical.png",
+    "img": "assets/cs2/usp-s-desert-tactical.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5381,7 +5381,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8.5,
-    "img": "assets/cs2/five-seven-fraise-crane.png",
+    "img": "assets/cs2/five-seven-fraise-crane.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5389,7 +5389,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8.5,
-    "img": "assets/cs2/desert-eagle-mint-fan.png",
+    "img": "assets/cs2/desert-eagle-mint-fan.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5397,7 +5397,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8.5,
-    "img": "assets/cs2/zeus-x27-earth-mandala.png",
+    "img": "assets/cs2/zeus-x27-earth-mandala.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5405,7 +5405,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8,
-    "img": "assets/cs2/p2000-urban-hazard.png",
+    "img": "assets/cs2/p2000-urban-hazard.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5413,7 +5413,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8,
-    "img": "assets/cs2/five-seven-flame-test.png",
+    "img": "assets/cs2/five-seven-flame-test.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5421,7 +5421,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 8,
-    "img": "assets/cs2/m4a1-s-rose-hex.png",
+    "img": "assets/cs2/m4a1-s-rose-hex.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5429,7 +5429,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 7.5,
-    "img": "assets/cs2/xm1014-oxide-blaze.png",
+    "img": "assets/cs2/xm1014-oxide-blaze.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5437,7 +5437,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 7.5,
-    "img": "assets/cs2/p2000-royal-baroque.png",
+    "img": "assets/cs2/p2000-royal-baroque.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5445,7 +5445,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 7.5,
-    "img": "assets/cs2/mp7-astrolabe.png",
+    "img": "assets/cs2/mp7-astrolabe.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5453,7 +5453,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 7.5,
-    "img": "assets/cs2/mp5-sd-co-processor.png",
+    "img": "assets/cs2/mp5-sd-co-processor.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5461,7 +5461,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 7.5,
-    "img": "assets/cs2/p90-facility-negative.png",
+    "img": "assets/cs2/p90-facility-negative.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5469,7 +5469,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 6.5,
-    "img": "assets/cs2/p90-aeolian-light.png",
+    "img": "assets/cs2/p90-aeolian-light.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5477,7 +5477,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 5.5,
-    "img": "assets/cs2/p2000-coral-halftone.png",
+    "img": "assets/cs2/p2000-coral-halftone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5485,7 +5485,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 5.5,
-    "img": "assets/cs2/glock-18-winterized.png",
+    "img": "assets/cs2/glock-18-winterized.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5493,7 +5493,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 5,
-    "img": "assets/cs2/p250-bullfrog.png",
+    "img": "assets/cs2/p250-bullfrog.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5501,7 +5501,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4.5,
-    "img": "assets/cs2/ssg-08-mainframe-001.png",
+    "img": "assets/cs2/ssg-08-mainframe-001.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5509,7 +5509,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4.5,
-    "img": "assets/cs2/sawed-off-full-stop.png",
+    "img": "assets/cs2/sawed-off-full-stop.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5517,7 +5517,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4.5,
-    "img": "assets/cs2/m249-bock-blocks.png",
+    "img": "assets/cs2/m249-bock-blocks.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5525,7 +5525,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4.5,
-    "img": "assets/cs2/pp-bizon-rmx.png",
+    "img": "assets/cs2/pp-bizon-rmx.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5533,7 +5533,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/mp9-broken-record.png",
+    "img": "assets/cs2/mp9-broken-record.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5541,7 +5541,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/ssg-08-memorial.png",
+    "img": "assets/cs2/ssg-08-memorial.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5549,7 +5549,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/p250-cassette.png",
+    "img": "assets/cs2/p250-cassette.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5557,7 +5557,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/mac-10-monkeyflage.png",
+    "img": "assets/cs2/mac-10-monkeyflage.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5565,7 +5565,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/scar-20-carbon-fiber.png",
+    "img": "assets/cs2/scar-20-carbon-fiber.webp",
     "wear": "Minimal Wear"
   },
   {
@@ -5573,7 +5573,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/p2000-gnarled.png",
+    "img": "assets/cs2/p2000-gnarled.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5581,7 +5581,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 4,
-    "img": "assets/cs2/mac-10-calf-skin.png",
+    "img": "assets/cs2/mac-10-calf-skin.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5589,7 +5589,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/xm1014-mockingbird.png",
+    "img": "assets/cs2/xm1014-mockingbird.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5597,7 +5597,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/glock-18-death-rattle.png",
+    "img": "assets/cs2/glock-18-death-rattle.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5605,7 +5605,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/famas-meow-36.png",
+    "img": "assets/cs2/famas-meow-36.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5613,7 +5613,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/sawed-off-spirit-board.png",
+    "img": "assets/cs2/sawed-off-spirit-board.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5621,7 +5621,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/mp5-sd-savannah-halftone.png",
+    "img": "assets/cs2/mp5-sd-savannah-halftone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5629,7 +5629,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3.5,
-    "img": "assets/cs2/xm1014-copperflage.png",
+    "img": "assets/cs2/xm1014-copperflage.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5637,7 +5637,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/mp5-sd-necro-jr.png",
+    "img": "assets/cs2/mp5-sd-necro-jr.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5645,7 +5645,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/p90-freight.png",
+    "img": "assets/cs2/p90-freight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5653,7 +5653,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/desert-eagle-mudder.png",
+    "img": "assets/cs2/desert-eagle-mudder.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5661,7 +5661,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/p2000-lifted-spirits.png",
+    "img": "assets/cs2/p2000-lifted-spirits.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5669,7 +5669,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/mag-7-foresight.png",
+    "img": "assets/cs2/mag-7-foresight.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5677,7 +5677,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/mac-10-light-box.png",
+    "img": "assets/cs2/mac-10-light-box.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5685,7 +5685,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/tec-9-slag.png",
+    "img": "assets/cs2/tec-9-slag.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5693,7 +5693,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 3,
-    "img": "assets/cs2/nova-dark-sigil.png",
+    "img": "assets/cs2/nova-dark-sigil.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5701,7 +5701,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 2.5,
-    "img": "assets/cs2/p2000-granite-marbleized.png",
+    "img": "assets/cs2/p2000-granite-marbleized.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5709,7 +5709,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 2,
-    "img": "assets/cs2/tec-9-rebel.png",
+    "img": "assets/cs2/tec-9-rebel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5717,7 +5717,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 2,
-    "img": "assets/cs2/pp-bizon-candy-apple.png",
+    "img": "assets/cs2/pp-bizon-candy-apple.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5725,7 +5725,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/galil-ar-robin-s-egg.png",
+    "img": "assets/cs2/galil-ar-robin-s-egg.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5733,7 +5733,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/dual-berettas-polished-malachite.png",
+    "img": "assets/cs2/dual-berettas-polished-malachite.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5741,7 +5741,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/p90-mustard-gas.png",
+    "img": "assets/cs2/p90-mustard-gas.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5749,7 +5749,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/r8-revolver-leafhopper.png",
+    "img": "assets/cs2/r8-revolver-leafhopper.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5757,7 +5757,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/xm1014-blue-steel.png",
+    "img": "assets/cs2/xm1014-blue-steel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5765,7 +5765,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/mp9-dune-asp.png",
+    "img": "assets/cs2/mp9-dune-asp.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5773,7 +5773,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/xm1014-black-site.png",
+    "img": "assets/cs2/xm1014-black-site.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5781,7 +5781,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/tec-9-tiger-stencil.png",
+    "img": "assets/cs2/tec-9-tiger-stencil.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5789,7 +5789,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/scar-20-arctic-camo-panels.png",
+    "img": "assets/cs2/scar-20-arctic-camo-panels.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5797,7 +5797,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/m4a4-mainframe.png",
+    "img": "assets/cs2/m4a4-mainframe.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5805,7 +5805,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/negev-sour-grapes.png",
+    "img": "assets/cs2/negev-sour-grapes.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5813,7 +5813,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/negev-wall-bang.png",
+    "img": "assets/cs2/negev-wall-bang.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5821,7 +5821,7 @@ window.SKINS_CS2 = [
     "rarity": "blue",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/mac-10-ensnared.png",
+    "img": "assets/cs2/mac-10-ensnared.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5829,7 +5829,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/aug-snake-pit.png",
+    "img": "assets/cs2/aug-snake-pit.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5837,7 +5837,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/tec-9-garter-9.png",
+    "img": "assets/cs2/tec-9-garter-9.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5845,7 +5845,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1.5,
-    "img": "assets/cs2/five-seven-forest-night.png",
+    "img": "assets/cs2/five-seven-forest-night.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5853,7 +5853,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/ump-45-urban-ddpat.png",
+    "img": "assets/cs2/ump-45-urban-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5861,7 +5861,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/m4a4-steel-work.png",
+    "img": "assets/cs2/m4a4-steel-work.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5869,7 +5869,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/r8-revolver-dark-chamber.png",
+    "img": "assets/cs2/r8-revolver-dark-chamber.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5877,7 +5877,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/famas-grey-ghost.png",
+    "img": "assets/cs2/famas-grey-ghost.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5885,7 +5885,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/p2000-marsh.png",
+    "img": "assets/cs2/p2000-marsh.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5893,7 +5893,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/mp5-sd-snow-splash.png",
+    "img": "assets/cs2/mp5-sd-snow-splash.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5901,7 +5901,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/famas-vendetta.png",
+    "img": "assets/cs2/famas-vendetta.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5909,7 +5909,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/five-seven-midnight-paintover.png",
+    "img": "assets/cs2/five-seven-midnight-paintover.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5917,7 +5917,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/sg-553-basket-halftone.png",
+    "img": "assets/cs2/sg-553-basket-halftone.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5925,7 +5925,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/mp9-bee-tron.png",
+    "img": "assets/cs2/mp9-bee-tron.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5933,7 +5933,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/tec-9-urban-ddpat.png",
+    "img": "assets/cs2/tec-9-urban-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5941,7 +5941,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/xm1014-canvas-cloud.png",
+    "img": "assets/cs2/xm1014-canvas-cloud.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5949,7 +5949,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/mag-7-rust-coat.png",
+    "img": "assets/cs2/mag-7-rust-coat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5957,7 +5957,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/five-seven-coolant.png",
+    "img": "assets/cs2/five-seven-coolant.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5965,7 +5965,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/g3sg1-jungle-dashed.png",
+    "img": "assets/cs2/g3sg1-jungle-dashed.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5973,7 +5973,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/mp7-forest-ddpat.png",
+    "img": "assets/cs2/mp7-forest-ddpat.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5981,7 +5981,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/nova-sand-dune.png",
+    "img": "assets/cs2/nova-sand-dune.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5989,7 +5989,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/p90-sand-spray.png",
+    "img": "assets/cs2/p90-sand-spray.webp",
     "wear": "Field-Tested"
   },
   {
@@ -5997,7 +5997,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/r8-revolver-bone-mask.png",
+    "img": "assets/cs2/r8-revolver-bone-mask.webp",
     "wear": "Field-Tested"
   },
   {
@@ -6005,7 +6005,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/ssg-08-blue-spruce.png",
+    "img": "assets/cs2/ssg-08-blue-spruce.webp",
     "wear": "Field-Tested"
   },
   {
@@ -6013,7 +6013,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/xm1014-xooom.png",
+    "img": "assets/cs2/xm1014-xooom.webp",
     "wear": "Field-Tested"
   },
   {
@@ -6021,7 +6021,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/nova-mandrel.png",
+    "img": "assets/cs2/nova-mandrel.webp",
     "wear": "Field-Tested"
   },
   {
@@ -6029,7 +6029,7 @@ window.SKINS_CS2 = [
     "rarity": "gray",
     "cat": "weapon",
     "price": 1,
-    "img": "assets/cs2/ump-45-facility-dark.png",
+    "img": "assets/cs2/ump-45-facility-dark.webp",
     "wear": "Field-Tested"
   }
 ];

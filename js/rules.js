@@ -122,6 +122,24 @@ window.RUSTUP_RULES = {
   // events an admin starts from the panel (bot/social.js): what a multiplier applies to
   EVENT_KINDS: { xp: 'XP за ставки', tour: 'Очки турнира', season: 'Снежинки сезона', daily: 'Подарок дня', cashback: 'Кешбэк', quest: 'Награды заданий' },
   SHOWCASE_MAX: 3,
+  // «Удача дня» от Руси: one game a Moscow day (the same for everybody) gives XP × XP; the odds of the game don't change
+  LUCKY: { XP: 1.5, GAMES: ['upgrade', 'case', 'crash', 'mines', 'wheel', 'plinko', 'contract', 'battle'],
+    PHRASES: ['Руся чувствует: сегодня везёт в игре «{g}»', 'Руся гадала на гогглах — выпала игра «{g}»', 'Звёзды сошлись над игрой «{g}»', 'Сегодня Руся болеет за тебя в игре «{g}»', 'Руся шепчет: попробуй игру «{g}»'] },
+  // titles under the nick: earned by stats (gs — per-game counters of the server, k = n | wins | bx), the player picks one
+  TITLES: [
+    { id: 'crash', name: 'Король Ракетки', icon: 'crash', g: 'crash', k: 'n', v: 300, txt: '300 ставок в Ракетке' },
+    { id: 'mines', name: 'Хозяин Минёра', icon: 'mines', g: 'mines', k: 'wins', v: 100, txt: '100 выигрышей в Минёре' },
+    { id: 'plinko', name: 'Плинко-мастер', icon: 'plinko', g: 'plinko', k: 'n', v: 500, txt: '500 шаров в Плинко' },
+    { id: 'upgrader', name: 'Апгрейдер', icon: 'upgrade', g: 'upgrade', k: 'wins', v: 100, txt: '100 удачных апгрейдов' },
+    { id: 'cases', name: 'Кейсоман', icon: 'case', g: 'case', k: 'n', v: 300, txt: '300 открытых кейсов' },
+    { id: 'battle', name: 'Гладиатор', icon: 'battle', g: 'battle', k: 'wins', v: 25, txt: '25 побед в кейс-баттлах' },
+    { id: 'wheel', name: 'Повелитель Колеса', icon: 'wheel', g: 'wheel', k: 'wins', v: 100, txt: '100 выигрышей в Колесе' },
+    { id: 'lucky', name: 'Счастливчик', icon: 'star', bx: 100, txt: 'выигрыш ×100 в любой игре' },
+    { id: 'fire', name: 'Неугасимый', icon: 'fire', fire: 30, txt: 'огонёк 30 дней подряд' },
+    { id: 'legend', name: 'Легенда RUST UP', icon: 'crown', lvl: 50, txt: '50 уровень' }],
+  // a blogger's own promo code (set in the creators bot): a new player (account up to NEW_DAYS days) gets RUB ₽ once,
+  // and counts as invited by the blogger (users.ref_by) if nobody invited them before
+  CREATOR_CODE: { RUB: 25, NEW_DAYS: 3, MIN: 4, MAX: 16 },
   // rakeback: the cashback share grows with the player's level — [from level, share]; CASHBACK stays the base
   CASHBACK_LVL: [[1, 0.02], [5, 0.025], [10, 0.03], [20, 0.035], [30, 0.04], [50, 0.05]],
   // a review for the @rustuper channel: once per account, RUB ₽ after an admin approves it (for an honest review of any tone,

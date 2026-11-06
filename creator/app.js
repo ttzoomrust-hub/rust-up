@@ -74,6 +74,7 @@
       stats: { total: 1284, active: 803, today: series[n - 1].n, week: series.slice(-7).reduce((s, d) => s + d.n, 0) },
       series, days: n, balance: 312.5, earnedClips: 594, earnedRef: 18.5, withdrawn: 300, invited: 3,
       payout: { xrocket: '@ivan_rust', card: '2200 7001 2345 6789' }, balanceMin: 1, cashMin: 50, usdRub: 81.2, coinUsd: 0.02,
+      promo: { code: 'IVAN', uses: 214, week: 37, rub: 25, newDays: 3 },
       clips: [
         { id: 21, url: 'https://www.tiktok.com/@ivan_rust/video/7431002233', platform: 'tiktok', category: 'gameplay', views: 48200, created_at: now - day, status: 'wait' },
         { id: 14, url: 'https://www.tiktok.com/@ivan_rust/video/7429981122', platform: 'tiktok', category: 'gameplay', views: 131000, created_at: now - 5 * day, status: 'paid', amount: 304 },
@@ -129,6 +130,28 @@
     });
   }
 
+  // ---------- the blogger's own promo code for the game (bot/social.js creatorCode) ----------
+  // a new player enters it in the game (Бонусы → Промокод): gets a bonus and counts as invited by the blogger
+  function promoCard() {
+    const p = D.promo || { code: null, uses: 0, week: 0, rub: 25, newDays: 3 };
+    return `<section class="card link-card promo-card">
+        <div class="card-head"><h2>Ваш промокод</h2><span class="hint">для роликов и стримов</span></div>
+        ${p.code ? `<div class="link-row"><input class="input mono promo-code" readonly value="${esc(p.code)}"><button class="btn btn-ghost" data-copy="${esc(p.code)}">Копировать</button></div>
+          <div class="tiles promo-tiles"><div class="tile"><span>Активаций</span><b>${int(p.uses)}</b></div><div class="tile"><span>За 7 дней</span><b>+${int(p.week)}</b></div></div>` : ''}
+        <div class="link-row"><input class="input mono" id="promoIn" maxlength="16" placeholder="${p.code ? 'Новый код' : 'Например, IVAN'}" ${p.code && p.uses ? 'disabled' : ''}><button class="btn btn-accent" data-promo-set ${p.code && p.uses ? 'disabled' : ''}>${p.code ? 'Сменить' : 'Создать'}</button></div>
+        <p class="muted">Новый игрок (первые ${p.newDays} дня в игре) вводит код в RUST UP: <b>Бонусы → Промокод</b> — и получает ${p.rub} ₽ на баланс, а вы — его в своей статистике, как по ссылке. Латиница и цифры, 4–16 символов. ${p.code && p.uses ? 'Код уже вводили — сменить его нельзя.' : ''}</p>
+      </section>`;
+  }
+  function setPromo() {
+    const code = ($('#promoIn').value || '').trim().toUpperCase();
+    if (!/^[A-Z0-9_]{4,16}$/.test(code)) return toast('Латиница и цифры, от 4 до 16 символов', 'error');
+    if (DEMO) { D.promo = { ...(D.promo || {}), code, uses: 0, week: 0, rub: 25, newDays: 3 }; return render(); }
+    api('/api/cr/code', { code }).then(d => {
+      if (!d.ok) return toast({ taken: 'Такой код уже занят', locked: 'Код уже вводили — сменить нельзя', length: 'От 4 до 16 символов' }[d.error] || 'Не удалось', 'error');
+      D.promo = d; toast('Промокод сохранён', 'success'); render();
+    }).catch(() => toast('Нет связи с сервером', 'error'));
+  }
+
   // ---------- pages ----------
   function statsPage() {
     const s = D.stats, conv = s.total ? Math.round((s.active / s.total) * 100) : 0;
@@ -139,6 +162,7 @@
         <div class="link-row"><input class="input mono" readonly value="${esc(D.refLink)}"><button class="btn btn-ghost" data-copy="${esc(D.refLink)}">Копировать</button></div>
         <p class="muted">Каждый, кто откроет RUST UP по этой ссылке, засчитывается вам — здесь видно, сколько людей привели ваши ролики.</p>
       </section>
+      ${promoCard()}
       <section class="tiles">
         <div class="tile big"><span>Всего пришло</span><b>${int(s.total)}</b></div>
         <div class="tile big ok"><span>Зашли в игру</span><b>${int(s.active)}</b><i>${conv}%</i></div>
@@ -373,6 +397,7 @@
     if (t.dataset.tab) { tab = t.dataset.tab; haptic('light'); render(); window.scrollTo(0, 0); return; }
     if (t.dataset.days) { days = +t.dataset.days; return load(); }
     if (t.dataset.copy) return copy(t.dataset.copy);
+    if ('promoSet' in t.dataset) return setPromo();
     if ('add' in t.dataset) return addClip();
     if (t.dataset.views) return updateViews(+t.dataset.views);
     if ('withdraw' in t.dataset) return withdraw();

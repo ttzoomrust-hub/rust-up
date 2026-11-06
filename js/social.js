@@ -178,7 +178,7 @@
       const me = S().user && S().user.id === id, st = p.stats;
       box.innerHTML = `
         <div class="pp-head"><span class="pp-ava">${A().avatarHtml(p.nick, p.color || '#e5383b', 'avatar', A().avaUrl(id))}${X().lvlBadge(p.lvl, 'on-ava')}</span>
-          <span class="pp-who"><b>${esc(p.nick)}${me ? ' <i>вы</i>' : ''}</b><small>Уровень ${p.lvl} · в игре с ${dateTxt(p.since)}</small></span></div>
+          <span class="pp-who"><b>${esc(p.nick)}${me ? ' <i>вы</i>' : ''}</b>${p.title ? `<span class="pf-title sm">${esc(p.title)}</span>` : ''}<small>Уровень ${p.lvl} · в игре с ${dateTxt(p.since)}</small></span></div>
         <div class="pp-stats">
           <div><span>Ставок</span><b>${A().fmtInt(st.bets)}</b></div>
           <div><span>Лучший выигрыш</span><b>${A().moneyInt(st.best)}</b></div>
@@ -426,7 +426,9 @@
     if (BRAND && BRAND.stickers)
       out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.stickers)}" data-tg-link>${I.badge('gift', 'xi-link')}<span class="refm-link-t"><b>Стикеры RUST UP</b><small>«Окуп», «Минус скин», «GG» и другие</small></span>${arrow}</a>`);
     if (BRAND && BRAND.mascot)
-      out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.mascot)}" data-tg-link><img class="xi xi-link mascot-ico" src="assets/stickers/m00.png" alt=""><span class="refm-link-t"><b>Стикеры с Русей</b><small>Маскот RUST UP: «Окуп», «Минус скин», «Летим!»</small></span>${arrow}</a>`);
+      out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.mascot)}" data-tg-link><img class="xi xi-link mascot-ico" src="assets/stickers/web/m00.webp" alt=""><span class="refm-link-t"><b>Стикеры с Русей</b><small>Маскот RUST UP: «Окуп», «Минус скин», «Летим!»</small></span>${arrow}</a>`);
+    if (BRAND && BRAND.anim)
+      out.push(`<a class="w-glass pf-link" href="https://t.me/addstickers/${esc(BRAND.anim)}" data-tg-link><img class="xi xi-link mascot-ico" src="assets/stickers/web/m09.webp" alt=""><span class="refm-link-t"><b>Живые стикеры с Русей</b><small>Анимированные: машет, плачет, злится, прыгает</small></span>${arrow}</a>`);
     if (BRAND && BRAND.emoji)
       out.push(`<a class="w-glass pf-link" href="https://t.me/addemoji/${esc(BRAND.emoji)}" data-tg-link>${I.badge('fire', 'xi-link')}<span class="refm-link-t"><b>Эмодзи RUST UP</b><small>Фирменные эмодзи для сообщений${isPremium() ? '' : ' (с Telegram Premium)'}</small></span>${arrow}</a>`);
     return out.join('');
@@ -460,11 +462,11 @@
       if (status === 'added') return hpSet({ ...hpGet(), done: true });
       if (status === 'unsupported') return;
       // not over a window or the win animation: try again a bit later
-      if (document.querySelector('.modal-backdrop, .home-prompt')) { hpTimer = setTimeout(() => homePrompt(true), 15e3); return; }
+      if (document.querySelector('.modal-backdrop, .home-prompt, .rz-guide')) { hpTimer = setTimeout(() => homePrompt(true), 15e3); return; }
       const s = hpGet();
       hpSet({ ...s, n: (s.n || 0) + 1, t: Date.now() });
       document.body.insertAdjacentHTML('beforeend', `<div class="home-prompt" role="dialog" aria-label="RUST UP на главный экран">
-        <img class="hp-ava" src="assets/stickers/m00.png" alt="">
+        <img class="hp-ava" src="assets/stickers/web/m00.webp" alt="">
         <div class="hp-body"><b>RUST UP на главный экран</b><small>Иконка на телефоне — заходи в игру в один тап, без поиска бота в чатах</small>
           <div class="hp-btns"><button class="btn btn-accent" type="button" data-hp-add>Добавить</button><button class="btn btn-ghost" type="button" data-hp-later>Позже</button></div></div>
         <button class="hp-x" type="button" data-hp-later aria-label="Закрыть">×</button></div>`);
@@ -629,9 +631,131 @@
   }
   document.addEventListener('click', e => { if (e.target.closest('[data-review]')) reviewForm(); });
 
+  // =====================================================================================
+  // Руся in the game: reactions to wins and to a run of losses, the guide for new players, «Удача дня»
+  // =====================================================================================
+  const RZ_GAP = 25e3, RZ_LOSES = 3;
+  let rzLast = 0, rzLoses = 0, rzAlt = 0;
+  const rzOff = () => { try { return localStorage.getItem('rustup_rusya') === '0'; } catch (e) { return false; } };
+  function rusyaPop(n) {
+    if (rzOff() || Date.now() - rzLast < RZ_GAP || document.querySelector('.rz-guide')) return;
+    rzLast = Date.now();
+    document.querySelector('.rz-pop')?.remove();
+    document.body.insertAdjacentHTML('beforeend', `<img class="rz-pop" src="assets/stickers/web/m${String(n).padStart(2, '0')}.webp" alt="" aria-hidden="true">`);
+    const el = document.querySelector('.rz-pop');
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 350); }, 2600);
+  }
+  // kind 'win' { value, mult } — after the win animation (extras.brag); 'lose' — counted, Руся comes after RZ_LOSES in a row
+  function rusya(kind, o = {}) {
+    if (kind === 'win') {
+      rzLoses = 0;
+      const mult = o.mult || 0, rub = o.value * A().rubPer();
+      if (mult >= 10) return rusyaPop(3);          // «x100?!»
+      if (mult >= 2 || rub >= 100) return rusyaPop(1);   // «ОКУП»
+      if (rub >= 30) return rusyaPop(4);           // «GG»
+      return;
+    }
+    if (++rzLoses < RZ_LOSES) return;
+    rzLoses = 0;
+    rusyaPop(rzAlt++ % 2 ? 2 : 7);                 // «МИНУС СКИН» / «ДАЙ ШАНС»
+  }
+  // the result of a game action (js/app.js api): losses; the delay waits for the game's own animation
+  function onResult(action, d) {
+    const lose = (action === 'upgrade' && d.win === false && 4200) || (action === 'plinko' && d.mult < 1 && 2600) || (action === 'mines_open' && d.boom && 700)
+      || ((action === 'crash_state' || action === 'crash_cash') && d.settled && d.settled.win === false && 300)
+      || (action === 'wheel_state' && d.settled && d.settled.win === false && d.settled.round && 600);
+    if (lose) setTimeout(() => rusya('lose'), lose);
+  }
+
+  // the guide: a few words from Руся on the main places, once for a new player (nothing played yet)
+  const GUIDE = [
+    { img: 0, to: null, text: 'Привет! Я <b>Руся</b> — помогу освоиться в RUST UP. Покажу главное за минуту?' },
+    { img: 4, to: '#/cases', text: 'Здесь <b>бесплатные кейсы</b> Rust, CS2 и NFT — крути раз в 24 часа. А кейсы дня дарят рубли и скины.' },
+    { img: 6, to: '#/upgrade', text: '<b>Апгрейд</b>: ставишь скин или баланс — целишься в скин дороже. Шанс видно заранее, результат можно проверить.' },
+    { img: 1, to: '#/quests', text: '<b>Задания</b>, подарок дня и турнир недели — награды каждый день. За каждую ставку растёт уровень и кешбэк.' },
+    { img: 9, to: '#/', text: 'Готово! Удачи — а я буду рядом и порадуюсь твоим выигрышам 😉', last: true }];
+  const guideDone = () => { try { return localStorage.getItem('rustup_guide') === '1'; } catch (e) { return true; } };
+  const guideEnd = () => { try { localStorage.setItem('rustup_guide', '1'); } catch (e) { /* storage off */ } document.querySelector('.rz-guide')?.remove(); };
+  function guide(step = 0) {
+    const g = GUIDE[step];
+    if (!g) return guideEnd();
+    if (g.to && location.hash !== g.to) location.hash = g.to;
+    document.querySelector('.rz-guide')?.remove();
+    setTimeout(() => {
+      document.body.insertAdjacentHTML('beforeend', `<div class="rz-guide" role="dialog" aria-label="Руся">
+        <img class="rz-g-img" src="assets/stickers/web/m${String(g.img).padStart(2, '0')}.webp" alt="">
+        <div class="rz-g-bubble"><p>${g.text}</p>
+          <div class="rz-g-btns">${g.last ? '<button class="btn btn-accent" type="button" data-guide="end">Играть</button>'
+            : `<button class="btn btn-accent" type="button" data-guide="${step + 1}">${step ? 'Дальше' : 'Покажи'}</button><button class="btn btn-ghost" type="button" data-guide="end">${step ? 'Хватит' : 'Сам разберусь'}</button>`}</div>
+          <span class="rz-g-dots">${GUIDE.map((_, k) => `<i class="${k === step ? 'on' : ''}"></i>`).join('')}</span></div></div>`);
+    }, g.to ? 500 : 0);
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-guide]');
+    if (!b) return;
+    A().haptic('light');
+    if (b.dataset.guide === 'end') return guideEnd();
+    guide(+b.dataset.guide);
+  });
+  function maybeGuide() {
+    const s = S();
+    if (guideDone() || !s.user || (s.stats && s.stats.wagered > 0) || (s.lvl && s.lvl.xp > 0)) return;
+    setTimeout(() => { if (!document.querySelector('.modal-backdrop')) guide(0); else setTimeout(maybeGuide, 4000); }, 2500);
+  }
+
+  // «Удача дня» (the server counts it in bot/progress.js onPlay with the same pick)
+  const LK = R.LUCKY;
+  const lkHash = (seed, k) => { let h = Math.imul(seed ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul(k + 1, 0xc2b2ae35); h ^= h >>> 13; h = Math.imul(h, 0x27d4eb2f); return (h ^ (h >>> 16)) >>> 0; };
+  const mskDayN = t => Math.floor((t + MSK) / DAY);
+  const luckyGame = (t = Date.now()) => LK.GAMES.map((g, k) => [lkHash(mskDayN(t) * 17 + 3, k), g]).sort((a, b) => a[0] - b[0])[0][1];
+  const GAME_ROUTE = { upgrade: '#/upgrade', case: '#/cases', crash: '#/crash', mines: '#/mines', wheel: '#/wheel', plinko: '#/plinko', contract: '#/contract', battle: '#/battles' };
+  function luckyCard() {
+    const g = luckyGame(), d = mskDayN(Date.now()), name = (GAMES[g] || [g])[0];
+    const phrase = LK.PHRASES[d % LK.PHRASES.length].replace('{g}', name);
+    return `<a class="w-glass lucky-card" href="${GAME_ROUTE[g] || '#/'}"><img class="lucky-ava" src="assets/stickers/web/m06.webp" alt="">
+      <span class="lucky-body"><small class="lucky-k">${I.glyph('star')} Удача дня</small><b>${esc(phrase)}</b>
+      <small>${multTxt(LK.XP)} XP за ставки в этой игре до полуночи МСК · шансы игры те же</small></span>${gIco(g, 'xi-row')}</a>`;
+  }
+
+  // titles under the nick (RULES.TITLES; the server checks them in bot/progress.js earnedTitles)
+  const T_LIST = R.TITLES;
+  function titleProgress(t) {
+    const s = S(), gs = s.gs || {};
+    if (t.g) return [Math.min(t.v, (gs[t.g] || {})[t.k] || 0), t.v];
+    if (t.bx) return [Math.min(t.bx, Math.max(0, ...Object.values(gs).map(x => x.bx || 0))), t.bx];
+    if (t.fire) return [Math.min(t.fire, (s.fire && s.fire.best) || 0), t.fire];
+    if (t.lvl) return [Math.min(t.lvl, X().myLevel().l), t.lvl];
+    return [0, 1];
+  }
+  const titleName = id => (T_LIST.find(t => t.id === id) || {}).name || null;
+  const myTitle = () => { const t = T_LIST.find(x => x.id === S().title); if (!t) return null; const [a, b] = titleProgress(t); return a >= b ? t : null; };
+  function titlesCard() {
+    if (!S().user) return '';
+    const cur = myTitle();
+    return `<div class="row-head"><h2 class="home-title">Титул</h2><span class="q-timer">${cur ? esc(cur.name) : 'не выбран'}</span></div>
+      <div class="ti-grid">${T_LIST.map(t => {
+        const [a, b] = titleProgress(t), got = a >= b, on = cur && cur.id === t.id;
+        return `<button type="button" class="ti-chip w-glass${got ? ' got' : ''}${on ? ' on' : ''}" ${got ? `data-title="${on ? '' : t.id}"` : 'disabled'}>
+          ${I.badge(got ? t.icon : 'lock', 'xi-sm')}<span><b>${esc(t.name)}</b><small>${got ? (on ? 'Выбран · нажмите, чтобы снять' : 'Получен · нажмите, чтобы выбрать') : `${esc(t.txt)} · ${A().fmtInt(a)} / ${A().fmtInt(b)}`}</small></span></button>`;
+      }).join('')}</div>`;
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-title]');
+    if (!b) return;
+    b.disabled = true;
+    A().api('title', { id: b.dataset.title || null }).then(d => {
+      if (!d.ok) { b.disabled = false; return A().netToast(d); }
+      A().haptic('success');
+      A().toast(d.title ? `Титул «${esc(titleName(d.title))}» теперь под вашим ником` : 'Титул снят', 'success');
+      if (A().curPath() === '/profile') window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+  });
+
+  let guideShown = false;
   window.RUSTUP_SOCIAL = {
     '/stats': statsPage, '/refcontest': contestPage, '/provably-fair': fairPage, '/month': monthPage,
-    setEvents, eventsBar, evMult, onState: ready => { onState(ready); if (ready) { monthNudge(); if (!hpTimer) homePrompt(); } }, homePrompt, showcaseCard, openProfile, contestBanner, contestCard,
+    setEvents, eventsBar, evMult, onState: ready => { onState(ready); if (ready) { monthNudge(); if (!guideShown) { guideShown = true; maybeGuide(); } if (!hpTimer) homePrompt(); } }, homePrompt,
+    rusya, onResult, luckyCard, titlesCard, titleName, guide, showcaseCard, openProfile, contestBanner, contestCard,
     tgLinks, cashbackRate, nextCashback, pct, reviewTile, setMonthPrev: v => { MPREV = !!v; }
   };
 })();

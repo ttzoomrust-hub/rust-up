@@ -162,3 +162,8 @@ textarea { font: inherit; color: inherit; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs button { flex: 1 0 auto; padding: 0 14px; }
 .ev-form select, .ev-form input:not([type=checkbox]) { width: 100%; box-sizing: border-box; }
+.post-form textarea { width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 14px; background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 14px; line-height: 1.4; resize: vertical; outline: 0; }
+.post-form input[type=file] { height: auto !important; padding: 10px !important; font-size: 13px; }
+.post-img { display: flex; align-items: center; gap: 10px; }
+.post-img:empty { display: none; }
+.post-img img { max-width: 160px; max-height: 120px; border-radius: 12px; }

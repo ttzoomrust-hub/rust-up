@@ -236,7 +236,7 @@
   }
   function homeBanners() {
     const n = claimable(), SO = window.RUSTUP_SOCIAL;
-    return `${SO ? SO.eventsBar() : ''}<div class="x-banners">
+    return `${SO ? SO.eventsBar() + SO.luckyCard() : ''}<div class="x-banners">
       <a class="w-glass x-banner" href="#/quests">${I.badge('target', 'xi-banner')}<span><b>Задания</b><small>${n ? `Можно забрать: ${n}` : 'Награды каждый день'}</small></span>${n ? `<i class="x-dot">${n}</i>` : ''}</a>
       <a class="w-glass x-banner" href="#/tour">${I.badge('trophy', 'xi-banner')}<span><b>Турнир</b><small>Призы каждую неделю</small></span></a>
       ${seasonClaimable() ? `<a class="w-glass x-banner" href="#/season">${I.badge('snow', 'xi-banner')}<span><b>Сезон</b><small>Зимний пропуск</small></span></a>` : ''}
@@ -250,6 +250,7 @@
   let bragData = null, bragTimer = 0;
   const RUB_MIN = 30;   // a chip after a win worth at least this many rubles (a case modal has its own button)
   function brag(o, direct = false) {
+    if (o && o.value > 0 && !direct && window.RUSTUP_SOCIAL) window.RUSTUP_SOCIAL.rusya('win', o);   // Руся cheers a win
     if (!o || !(o.value > 0) || !window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) return;
     if (direct) return shareWin(o);
     if (o.value * A().rubPer() < RUB_MIN) return;

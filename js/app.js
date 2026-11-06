@@ -171,6 +171,7 @@
     funds: 'Недостаточно средств', items: 'Предметы уже не в инвентаре — обновили данные', chance: 'Шанс должен быть от 1% до 75%',
     game: 'В апгрейде предметы только одной игры', cooldown: 'Пока недоступно — подождите', opened: 'Этот кейс уже открыт',
     subs: 'Сначала подпишитесь на каналы', used: 'Промокод уже использован', not_found: 'Промокод не найден',
+    owncode: 'Это ваш собственный промокод', newonly: 'Промокод блогера — только для новых игроков (первые 3 дня)', short: 'Слишком короткий текст', limit: 'Лимит на сегодня исчерпан',
     expired: 'Срок промокода истёк — новый придёт в бота в 15:00 МСК', limit: 'Активации закончились — ждите новый промокод завтра в 15:00 МСК',
     done: 'Уже получено', empty: 'Пока пусто', mix: 'NFT-подарки и скины выводятся отдельно', busy: 'Сервер занят, попробуйте ещё раз',
     noacc: 'Профиль ещё загружается, попробуйте через секунду',
@@ -191,7 +192,7 @@
     S.lvl = st.lvl || { xp: 0 }; S.q = st.q || null; S.tour = st.tour || null; S.season = st.season || null; S.prizes = st.prizes || [];
     // stats per game, the fair log, the showcase, the comeback gift (bot/social.js, pages in js/social.js)
     S.gs = st.gs || {}; S.fair = st.fair || []; S.showcase = st.showcase || []; S.comeback = st.comeback || null;
-    S.gm = st.gm || null; S.gmPrev = st.gmPrev || null; S.review = st.review || null;
+    S.gm = st.gm || null; S.gmPrev = st.gmPrev || null; S.review = st.review || null; S.title = st.title || null;
     fireToast(prevFire, S.fire);
     const u = tgUser() || {};
     S.user = { ...(S.user || {}), ...st.user, id: u.id || (S.user && S.user.id), tg: true };
@@ -210,6 +211,8 @@
       if (d && action === 'load' && d.ok) S.twin = !!d.twin;
       if (d && d.state && !(defer && d.ok)) { applyState(d.state); renderHeader(); }
       if (d && d.error === 'items') refreshUpgrade();
+      // Руся reacts to a run of losses (js/social.js)
+      if (d && d.ok && window.RUSTUP_SOCIAL) window.RUSTUP_SOCIAL.onResult(action, d, extra);
       return d || { ok: false };
     }).catch(() => ({ ok: false, error: 'net' }));
   }
@@ -735,7 +738,7 @@
       const row = (p, i) => `<div class="top-row${p.uid === me ? ' me' : ''}" data-profile="${p.uid}">
           <span class="top-place">${i + 1}</span>
           <span class="x-ava">${avatarHtml(p.nick, p.color || AVA_COLORS[p.uid % AVA_COLORS.length], 'avatar', avaUrl(p.uid))}${window.RUSTUP_EXTRAS.lvlBadge(p.lvl, 'on-ava')}</span>
-          <span class="top-who"><b>${esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b><small>${fmtInt(p.n)} ${p.n % 10 === 1 && p.n % 100 !== 11 ? 'выигрыш' : p.n % 10 >= 2 && p.n % 10 <= 4 && (p.n % 100 < 12 || p.n % 100 > 14) ? 'выигрыша' : 'выигрышей'}${p.bestName ? ` · лучший ${esc(p.bestName)}` : ''}</small></span>
+          <span class="top-who"><b>${esc(p.nick)}${p.uid === me ? ' <i>вы</i>' : ''}</b>${p.title ? `<span class="pf-title sm">${esc(p.title)}</span>` : ''}<small>${fmtInt(p.n)} ${p.n % 10 === 1 && p.n % 100 !== 11 ? 'выигрыш' : p.n % 10 >= 2 && p.n % 10 <= 4 && (p.n % 100 < 12 || p.n % 100 > 14) ? 'выигрыша' : 'выигрышей'}${p.bestName ? ` · лучший ${esc(p.bestName)}` : ''}</small></span>
           <span class="top-won">${coin(p.won)}</span></div>`;
       const podium = d.top.slice(0, 3);
       box.innerHTML = `
@@ -1899,6 +1902,7 @@
         <div class="pf-ava">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}<span class="pf-tg">${ICON.tg}</span></div>
         <div class="pf-who">
           <h1>${esc(S.user.name)}</h1>
+          ${S.title && window.RUSTUP_SOCIAL.titleName(S.title) ? `<span class="pf-title">${esc(window.RUSTUP_SOCIAL.titleName(S.title))}</span>` : ''}
           <span class="pf-meta">${tgu.username ? `@${esc(tgu.username)} · ` : ''}ID ${S.user.id}</span>
           ${since ? `<span class="pf-meta">Играет с ${new Date(since).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>` : ''}
         </div>
@@ -1912,6 +1916,7 @@
       </div>
       ${window.RUSTUP_EXTRAS.levelCard()}
       ${window.RUSTUP_SOCIAL.showcaseCard()}
+      ${window.RUSTUP_SOCIAL.titlesCard()}
       <div class="pf-stats">
         ${stat(TXICO.upgrade, 'Апгрейдов', fmtInt(st.upgrades))}
         ${stat(TXICO.gift, 'Побед', fmtInt(st.wins), `${winRate}% удачных`)}
@@ -2731,7 +2736,7 @@
       </div>
       <div class="row-head"><h2 class="home-title">Игры</h2></div>
       <div class="games-grid">${games.map(g => `<a class="game-card ${g.cls}${g.cover ? ' covered' : ''}" href="${g.href}">
-        ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.jpg?v=3" alt="" draggable="false">` : g.art}
+        ${g.cover ? `<img class="gc-cover" src="assets/games/cover-${g.cover}.webp?v=4" alt="" draggable="false">` : g.art}
         ${g.on ? `<span class="gc-online" title="Сейчас играют" data-on="${g.on}"${gameOnline(g.on) ? '' : ' hidden'}><i class="dot-online"></i>${fmtInt(gameOnline(g.on))}</span>` : ''}
         ${g.badge ? `<span class="gc-badge">${g.badge}</span>` : ''}
         <b class="gc-title">${g.title}</b></a>`).join('')}</div>
