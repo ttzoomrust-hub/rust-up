@@ -2371,3 +2371,65 @@ html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) +
 .pf-title.sm { padding: 1px 7px; font-size: 10px; margin: 1px 0 2px; }
 .rz-g-dots { top: 12px; bottom: auto; }
 .rz-g-bubble p { padding-right: 46px; }
+
+/* ---------- top-up by SBP: step-by-step guide (like RubUP) ---------- */
+.sbp-banner { flex-direction: row; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; text-align: left; color: var(--text-title); cursor: pointer; border: 1px solid rgba(255,90,78,.35); font: inherit; }
+.sbp-banner-ico { width: 38px; height: 38px; flex: none; }
+.sbp-banner-ico svg, .sbp-banner > svg { display: block; width: 100%; height: 100%; }
+.sbp-banner > svg { width: 18px; height: 18px; flex: none; color: var(--text-other); }
+.sbp-banner-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sbp-banner-text b { font-size: 15px; }
+.sbp-banner-text small { font-size: 12px; color: var(--text-subtitle); }
+.modal-sbp { width: min(460px, 100%); }
+.modal-sbp .modal-body { gap: 12px; padding-top: 14px; }
+.sg-nav { display: flex; align-items: center; gap: 10px; }
+.sg-arr { width: 38px; height: 38px; flex: none; border-radius: 50%; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); color: var(--text-title); display: grid; place-items: center; cursor: pointer; }
+.sg-arr svg { width: 16px; height: 16px; transform: rotate(180deg); }
+.sg-arr.next svg { transform: none; }
+.sg-arr.next:not(:disabled) { border-color: rgba(255,90,78,.7); box-shadow: 0 0 0 3px rgba(229,56,59,.18); }
+.sg-arr:disabled { opacity: .35; cursor: default; }
+.sg-dots { flex: 1; display: flex; justify-content: center; gap: 7px; }
+.sg-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.22); transition: width .2s, background .2s; }
+.sg-dots i.on { width: 20px; background: var(--grad-accent); }
+.sg-count { font-size: 13px; font-weight: 700; color: var(--text-subtitle); min-width: 34px; text-align: right; }
+.sg-art { position: relative; height: 330px; border-radius: 18px; overflow: hidden; background: radial-gradient(120% 80% at 30% 0%, #2c1d2a, #121318 70%); display: flex; align-items: center; justify-content: center; padding: 14px; touch-action: pan-y; }
+.sg-step { display: flex; align-items: center; gap: 10px; }
+.sg-step b { font-size: 17px; }
+.sg-num { width: 26px; height: 26px; flex: none; border-radius: 50%; background: var(--grad-accent); display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; }
+.sg-text { margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-subtitle); }
+.sg-go { width: 100%; height: 50px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; }
+.sg-go svg { width: 18px; height: 18px; }
+.btn-ghost.sg-go svg { width: 22px; height: 22px; }
+/* mock screens */
+.sg-tg { position: relative; width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 8px; }
+.sg-cover { position: relative; height: 112px; border-radius: 14px 14px 4px 4px; overflow: hidden; background: radial-gradient(90% 120% at 70% 50%, #3b2a7a, #160f33 70%); display: flex; align-items: center; padding-left: 18px; }
+.sg-cover b { position: relative; z-index: 1; font-size: 26px; line-height: .95; font-weight: 900; letter-spacing: 1px; color: #fff; text-shadow: 0 3px 0 #6b3df0, 0 0 18px #9d7bff99; }
+.sg-orbit { position: absolute; right: 18px; top: 50%; width: 150px; height: 54px; margin-top: -27px; border: 3px solid #ffc83d; border-radius: 50%; transform: rotate(-18deg); opacity: .85; }
+.sg-cover .sg-star { position: absolute; right: 64px; top: 50%; width: 60px; height: 60px; margin-top: -30px; filter: drop-shadow(0 0 14px #ffc83daa); }
+.sg-dot { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #fff; opacity: .7; }
+.sg-dot.d1 { left: 46%; top: 18%; } .sg-dot.d2 { left: 60%; top: 78%; } .sg-dot.d3 { right: 10%; top: 14%; }
+.sg-msg { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 4px 4px 14px 14px; background: #24252c; font-size: 13.5px; line-height: 1.4; color: #e8e9ee; }
+.sg-msg.sg-big { border-radius: 14px; gap: 10px; font-size: 16px; padding: 16px; }
+.sg-hint { text-align: center; font-size: 12px; color: #9a9ca6; margin-top: 18px; }
+.sg-btn { height: 42px; border-radius: 12px; background: linear-gradient(180deg, #7d5cf0, #6142d6); color: #fff; font-weight: 700; display: grid; place-items: center; }
+.sg-kb { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.sg-kb.one { grid-template-columns: 1fr; }
+.sg-kb span { height: 40px; border-radius: 10px; background: #2c2e36; display: grid; place-items: center; font-size: 13.5px; font-weight: 700; color: #e8e9ee; }
+.sg-hl { outline: 3px solid #ff4d6d; outline-offset: 2px; box-shadow: 0 0 0 6px rgba(255,77,109,.18), 0 0 26px rgba(255,77,109,.45); position: relative; z-index: 1; }
+.sg-kb.one.sg-hl { border-radius: 12px; }
+.sg-arrow { position: absolute; right: 2px; bottom: 52px; width: 46px; height: 70px; color: #ff4d6d; filter: drop-shadow(0 2px 6px #000a); pointer-events: none; z-index: 2; }
+.sg-pay { position: relative; width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 7px; padding: 14px; border-radius: 14px; background: #f4f5f8; color: #1a1b20; }
+.sg-pay small { font-size: 12px; color: #6b6f7a; }
+.sg-sum { font-size: 24px; font-weight: 800; }
+.sg-row { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-top: 4px; }
+.sg-sbp { width: 26px; height: 26px; } .sg-sbp svg { width: 100%; height: 100%; display: block; }
+.sg-search { padding: 9px 10px; border-radius: 9px; background: #e6e8ee; font-size: 12.5px; color: #8b8f99; }
+.sg-bank { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 9px; font-size: 14px; font-weight: 600; background: #fff; }
+.sg-bank i { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 12px; font-weight: 800; color: #fff; }
+.sg-acc { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: #e8eaef; font-size: 13px; }
+.sg-paybtn { margin-top: 6px; height: 42px; border-radius: 10px; background: linear-gradient(180deg, #2fb45a, #1f9446); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 14px; }
+.sg-pay .sg-arrow { bottom: 50px; right: -10px; }
+.sg-arrow.at-kb { right: auto; left: 46%; bottom: 100px; }
+.sg-done { align-items: center; text-align: center; padding: 26px 14px; gap: 6px; }
+.sg-done svg { width: 84px; height: 64px; margin-bottom: 6px; }
+@media (max-width: 400px) { .sg-art { height: 300px; } .sg-cover { height: 96px; } .sg-cover b { font-size: 22px; } }

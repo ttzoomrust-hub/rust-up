@@ -698,7 +698,7 @@
   };
   // [id, title, min ₽, bonus %, icons, detail title, detail lines]
   const DEP_METHODS = [
-    ['rub', 'Рубли', 500, 0, ['sbp'], 'СБП и карты', ['SberPay', 'T-Pay', 'Банковская карта']],
+    ['rub', 'СБП', 100, 0, ['sbp', 'star'], 'СБП через Telegram Stars', ['Звёзды в @orbita_stars_bot за рубли', 'Оплата по QR в приложении банка', 'Пошаговый гайд — 6 шагов']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
     ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Пополнение через Telegram Stars', ['Статус оплаты и зачисления', 'Пока недоступно для реальных денег']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
@@ -709,6 +709,75 @@
   const TX_FILTERS = [['all', 'Все'], ['deposit', 'Пополнения'], ['withdraw', 'Выводы'], ['game', 'Игры'], ['bonus', 'Бонусы']];
   const WF = { tab: 'deposit', dep: 'rub', wd: 'rub', amount: 1500, out: 0, period: 30, filter: 'all', kinds: DEPOSIT_BONUSES.map(() => 'gift') };
   const NOT_YET = 'На данный момент такой возможности нет';
+
+  // ---------- top-up by SBP: a step-by-step guide (like RubUP). Stars are bought for rubles in an outside bot,
+  // then paid in through the existing Telegram Stars method — this guide only explains and links, it moves no money ----------
+  const SBP_BOT = 'orbita_stars_bot';
+  const SBP_ARROW = '<svg class="sg-arrow" viewBox="0 0 60 90"><path d="M44 4C50 30 44 58 16 78" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M8 62l6 20 20-4" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const sbpStars = '<svg class="sg-star" viewBox="0 0 40 40"><path d="M20 3l5.2 10.6 11.8 1.7-8.5 8.3 2 11.7L20 29.8 9.5 35.3l2-11.7L3 15.3l11.8-1.7z" fill="#ffc83d"/></svg>';
+  // the bot's own banner is drawn here (an orbit around a star), not copied from the bot
+  const sbpCover = `<div class="sg-cover"><span class="sg-orbit"></span>${sbpStars}<b>ORBITA<br>STARS</b><i class="sg-dot d1"></i><i class="sg-dot d2"></i><i class="sg-dot d3"></i></div>`;
+  // built on open: the texts and pictures show the amount picked in the wallet
+  const sbpSteps = () => [
+    ['Откройте бота', `Нажмите «Перейти в бот» на последнем шаге или найдите в Telegram @${SBP_BOT}. В боте нажмите «Старт».`,
+      () => `<div class="sg-tg">${sbpCover}
+        <div class="sg-msg"><b>Что умеет этот бот?</b><span>⭐ Покупка звёзд Telegram за рубли — быстро и без KYC</span></div>
+        <div class="sg-hint">Чтобы использовать бота, нажмите здесь</div>
+        <div class="sg-btn sg-hl">Старт</div>${SBP_ARROW}</div>`],
+    ['Купите звёзды', 'В меню бота выберите покупку звёзд. Звёзды покупайте себе — на свой аккаунт, не в подарок.',
+      () => `<div class="sg-tg">${sbpCover}
+        <div class="sg-msg"><b>Привет${S.user && S.user.name ? ', ' + esc(S.user.name) : ''}!</b><span>Здесь можно купить Telegram Stars на свой аккаунт за рубли</span></div>
+        <div class="sg-kb"><span class="sg-hl">⭐ Купить звёзды</span><span>Premium</span><span>Профиль</span><span>Поддержка</span></div>${SBP_ARROW.replace('sg-arrow', 'sg-arrow at-kb')}</div>`],
+    ['Укажите количество и СБП', `Введите, сколько звёзд нужно, и выберите оплату через СБП (QR). Для пополнения на ${rubFmt(WF.amount)} возьмите звёзд на эту сумму — курс бот покажет сам.`,
+      () => `<div class="sg-tg">
+        <div class="sg-msg sg-big"><span>⭐ Количество: <b>сколько нужно</b></span><span>💰 Стоимость: <b>${rubFmt(WF.amount)}</b></span><span>Выберите способ оплаты 👇</span></div>
+        <div class="sg-kb one sg-hl"><span>СБП (QR)</span></div>${SBP_ARROW}</div>`],
+    ['Выберите банк', 'Откроется страница оплаты: найдите в списке свой банк. С телефона банк откроется сам, с компьютера — отсканируйте QR-код телефоном.',
+      () => `<div class="sg-pay"><small>К оплате</small><b class="sg-sum">${rubFmt(WF.amount)}</b>
+        <div class="sg-row"><span class="sg-sbp">${WICO.sbp}</span><b>Оплата через СБП</b></div>
+        <div class="sg-search">Введите название банка</div>
+        ${[['С', '#21a038', 'Сбер'], ['Т', '#ffdd2d', 'Т-Банк'], ['А', '#ef3124', 'Альфа-Банк'], ].map(([l, c, n], i) => `<div class="sg-bank${i === 0 ? ' sg-hl' : ''}"><i style="background:${c}">${l}</i>${n}</div>`).join('')}</div>`],
+    ['Оплатите', 'В приложении банка проверьте сумму и получателя и нажмите «Оплатить». Комиссии за СБП нет.',
+      () => `<div class="sg-pay"><small>Telegram Stars</small><b class="sg-sum">${rubFmt(WF.amount)}</b><small>Без комиссии</small>
+        <div class="sg-acc"><small>Счёт списания</small><b>Ваша карта •• 0000</b></div>
+        <div class="sg-acc"><small>Назначение платежа</small><b>Оплата звёзд Telegram</b></div>
+        <div class="sg-paybtn sg-hl">Оплатить ${rubFmt(WF.amount)}</div>${SBP_ARROW}</div>`],
+    ['Готово — пополните звёздами', 'Звёзды придут за 1–2 минуты. Вернитесь в RUST UP: Кошелёк → Пополнить → Telegram Stars → сумма → «Оплатить через Telegram».',
+      () => `<div class="sg-pay sg-done"><svg viewBox="0 0 80 60"><defs><linearGradient id="sgOk" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#9be15d"/><stop offset="1" stop-color="#1fb87a"/></linearGradient></defs><path d="M8 32l20 18L72 8" fill="none" stroke="url(#sgOk)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>Операция выполнена</b><b class="sg-sum">${rubFmt(WF.amount)}</b><small>Telegram Stars</small></div>`]];
+  function sbpGuide(step = 0) {
+    const steps = sbpSteps(), n = steps.length;
+    const draw = (m, i) => {
+      const [title, text, art] = steps[i], last = i === n - 1;
+      m.querySelector('.modal-body').innerHTML = `
+        <div class="sg-nav"><button type="button" class="sg-arr" data-sg="${i - 1}" ${i ? '' : 'disabled'} aria-label="Назад">${ICON.right}</button>
+          <span class="sg-dots">${steps.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</span>
+          <span class="sg-count">${i + 1} / ${n}</span>
+          <button type="button" class="sg-arr next" data-sg="${i + 1}" ${last ? 'disabled' : ''} aria-label="Дальше">${ICON.right}</button></div>
+        <div class="sg-art">${art()}</div>
+        <div class="sg-step"><span class="sg-num">${i + 1}</span><b>${title}</b></div>
+        <p class="sg-text">${text}</p>
+        ${last ? `<a class="btn btn-accent sg-go" href="https://t.me/${SBP_BOT}" target="_blank" rel="noopener" data-tg-link>${TXICO.tg}<span>Перейти в бот</span>${ICON.right}</a>
+          <button type="button" class="btn btn-ghost sg-go" data-sg-stars>${WICO.star}<span>Пополнить звёздами</span></button>`
+        : `<button type="button" class="btn btn-accent sg-go" data-sg="${i + 1}"><span>Дальше</span>${ICON.right}</button>`}`;
+    };
+    modal('Пополнение по СБП', '', m => {
+      m.classList.add('modal-sbp');
+      let i = step;
+      draw(m, i);
+      const go = k => { if (k < 0 || k >= n || k === i) return; i = k; haptic('light'); draw(m, i); };
+      m.addEventListener('click', e => {
+        const b = e.target.closest('[data-sg], [data-sg-stars]');
+        if (!b) return;
+        // the Telegram Stars method is the existing one — the guide only switches the wallet to it
+        if ('sgStars' in b.dataset) { closeModal(); WF.dep = 'gifts'; if (!$('#walletBody')) return void (location.hash = '#/wallet?tab=deposit'); WF.tab = 'deposit'; renderWallet(); return window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        go(+b.dataset.sg);
+      });
+      let x0 = null;
+      m.addEventListener('touchstart', e => { x0 = e.target.closest('.sg-art') ? e.touches[0].clientX : null; }, { passive: true });
+      m.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); x0 = null; });
+    });
+  }
 
   // t.me links marked data-tg-link open inside Telegram instead of the in-app browser
   document.addEventListener('click', e => {
@@ -799,6 +868,9 @@
         ${bonus ? `<span class="wm-bonus">+${bonus}%</span>` : ''}${WF.dep === id ? '<span class="wm-check"></span>' : ''}<span class="wm-icons">${icons.map(i => `<i>${WICO[i]}</i>`).join('')}</span><b>${t}</b><small>от ${rubFmt(min)}</small></button>`).join('')}</div>
       <div class="wm-detail"><span class="wm-icons big">${m[4].map(i => `<i>${WICO[i]}</i>`).join('')}</span>
         <span class="wm-lines"><b>${m[5]}</b>${m[6].map(l => `<span>${l}</span>`).join('')}</span><span class="wm-min">от ${rubFmt(m[2])}</span></div>
+      ${WF.dep === 'rub' ? `<button type="button" class="w-glass sbp-banner" data-sbp-guide>
+        <span class="sbp-banner-ico">${WICO.sbp}</span>
+        <span class="sbp-banner-text"><b>Как пополнить по СБП</b><small>Звёзды в @${SBP_BOT} → баланс RUST UP · 6 шагов</small></span>${ICON.right}</button>` : ''}
       <div class="w-glass">
         <div class="w-field"><label>Сумма</label>
           <div class="dep-input"><input class="text-input" id="wAmt" inputmode="numeric" maxlength="7" value="${WF.amount || ''}"><span>₽</span></div>
@@ -860,6 +932,11 @@
     if ('wsend' in d) {
       const m = WD_METHODS.find(x => x[0] === WF.wd);
       if (WF.out < m[2]) { haptic('warning'); return toast(`Вывод от ${rubFmt(m[2])}`, 'error'); }
+    }
+    if ('sbpGuide' in d) { haptic('light'); return sbpGuide(); }
+    if ('wpay' in d && WF.dep === 'rub') {
+      if (WF.amount < 100) { haptic('warning'); return toast(`Пополнение от ${rubFmt(100)}`, 'error'); }
+      haptic('light'); return sbpGuide();
     }
     if ('wpay' in d || 'wsend' in d) { haptic('warning'); return toast(NOT_YET, 'error'); }
     if (d.wfilter) { WF.filter = d.wfilter; return renderWallet(); }
