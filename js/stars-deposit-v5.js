@@ -146,15 +146,65 @@
       if(!panel.isConnected)return;
       if(result==='paid'){
        summary.textContent='Telegram сообщил об оплате. Проверяем подтверждение сервера и зачисление.';
-       // A client callback is NOT a receipt. Always load the signed,
-       // cross-database history; no optimistic balance changes.
-       if(!historyButton.disabled)historyButton.click();
+       // Only confirmed server-side receipt & game ledger can update the wallet.
+       // Poll because the game settlement may arrive after Telegram closes invoice.
+       void pollCredit(data.orderId);
       }else if(result==='cancelled')summary.textContent='Оплата отменена.';
       else summary.textContent='Платёж не подтверждён. Проверьте историю.';
     });
    }catch(e){if(panel.isConnected)summary.textContent=errorLabel(e);}
    finally{loading=false;payButton.disabled=true;}
   });
+  // Server-authoritative post-payment reconciliation. Never infer a balance
+  // change from Telegram's client-side 'paid' callback.
+  let polling=false;
+  async function pollCredit(orderId){
+   if(polling||typeof orderId!=='string'||!/^[-a-f0-9]{36}$/i.test(orderId))return;
+   polling=true;
+   try{
+    for(let i=0;i<20&&panel.isConnected;i++){
+     try{
+      const result=await request('history',{},AbortSignal.timeout(12000));
+      const order=Array.isArray(result.orders)?
+       result.orders.find(o=>o.id===orderId):null;
+      if(order?.creditState==='credited_to_game'&&order.creditedToGame===true){
+       const app=window.RUSTUP_APP;
+       if(!app||typeof app.api!=='function')throw {status:503};
+       const game=await app.api('load');
+       if(!game?.ok||!game?.state)throw {status:503};
+       // app.api('load') already applied the authoritative server state and
+       // called renderHeader. No client-side money mutation.
+       if(panel.isConnected){
+        summary.textContent='✅ Оплата подтверждена. Баланс автоматически обновлён.';
+        if(!historyButton.disabled)historyButton.click();
+       }
+       return;
+      }
+      if(order?.creditState==='manual_review'){
+       summary.textContent='Платёж требует проверки поддержки. Баланс не изменён.';
+       return;
+      }
+      if(order?.creditState==='refund_reversed'||order?.creditState==='refunded_no_game_credit'){
+       summary.textContent='Платёж возвращён. Зачисления нет.';
+       return;
+      }
+      if(panel.isConnected)summary.textContent=
+       'Telegram подтвердил оплату. Ожидаем подтверждения зачисления…';
+     }catch(e){
+      if(e?.status===401||e?.status===403){
+       // Telegram initData cannot be renewed inside an existing WebApp.
+       // Do not bypass Telegram signature or claim a successful credit.
+       summary.textContent=errorLabel(e);
+       return;
+      }
+      if(i===19){summary.textContent=errorLabel(e);return;}
+     }
+     await new Promise(resolve=>setTimeout(resolve,3000));
+    }
+    if(panel.isConnected)
+     summary.textContent='Оплата принята. Зачисление ещё проверяется — смотрите «Мои пополнения».';
+   }finally{polling=false;}
+  }
   let historyBusy=false;
   historyButton.addEventListener('click',async()=>{
    if(historyBusy)return;
