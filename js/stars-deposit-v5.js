@@ -148,6 +148,9 @@
        summary.textContent='Telegram сообщил об оплате. Проверяем подтверждение сервера и зачисление.';
        // Only confirmed server-side receipt & game ledger can update the wallet.
        // Poll because the game settlement may arrive after Telegram closes invoice.
+       // Refresh the header immediately, then keep checking the receipt
+       // and ledger until crediting really finishes.
+       void window.RUSTUP_APP?.api?.('load');
        void pollCredit(data.orderId);
       }else if(result==='cancelled')summary.textContent='Оплата отменена.';
       else summary.textContent='Платёж не подтверждён. Проверьте историю.';
@@ -178,7 +181,6 @@
      for(const id of [...pendingCredits]){
       const order=orders.find(o=>o.id===id);
       if(order?.creditState==='credited_to_game'&&order.creditedToGame===true){
-       pendingCredits.delete(id);
        anyCredited=true;
       }else if(order?.creditState==='manual_review'||
         order?.creditState==='refund_reversed'||
@@ -191,8 +193,13 @@
      if(anyCredited){
       const game=await window.RUSTUP_APP?.api?.('load');
       if(!game?.ok||!game?.state)throw {status:503};
-      // app.api('load') applies the authoritative state and renders the
-      // header, including the current currency's formatted balance.
+      // Only after the live game API confirms the balance may this order
+      // leave the refresh queue. Otherwise retry instead of losing the event.
+      for(const id of [...pendingCredits]){
+       const order=orders.find(o=>o.id===id);
+       if(order?.creditState==='credited_to_game'&&order.creditedToGame===true)
+        pendingCredits.delete(id);
+      }
       if(panel.isConnected){
        summary.textContent='✅ Зачисление подтверждено. Баланс обновлён.';
        if(!historyButton.disabled)historyButton.click();
@@ -209,7 +216,10 @@
      if(attempt===29&&panel.isConnected)summary.textContent=
       'Проверка временно недоступна. Откройте «Мои пополнения».';
     }
-    if(pendingCredits.size>0)await new Promise(r=>setTimeout(r,2500));
+    // Fast retries for the first seconds; ease off to avoid excess requests.
+    // Never show unconfirmed credit in the header.
+    if(pendingCredits.size>0)
+     await new Promise(r=>setTimeout(r,attempt<12?450:1200));
    }
    if(pendingCredits.size&&panel.isConnected)
     summary.textContent='Зачисление ещё проверяется. Посмотрите «Мои пополнения».';
@@ -218,7 +228,11 @@
   // callback or individual history polling was delayed by the mobile client.
   async function refreshVisibleBalance(){
    if(document.hidden)return;
-   if(pendingCredits.size){if(!pollingPromise)pollCredit([...pendingCredits][0]);return;}
+   if(pendingCredits.size){
+    void window.RUSTUP_APP?.api?.('load');
+    if(!pollingPromise)pollCredit([...pendingCredits][0]);
+    return;
+   }
    // An already confirmed receipt was handled; re-read the backend balance.
    await window.RUSTUP_APP?.api?.('load');
   }
