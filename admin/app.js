@@ -15,7 +15,7 @@
     const m = Math.round((Date.now() - t) / 60000);
     return m < 2 ? 'сейчас в игре' : m < 60 ? `${m} мин назад` : m < 1440 ? `${Math.round(m / 60)} ч назад` : new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
-  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'], event: ['Событие', 'ok'], event_stop: ['Стоп события', 'bad'], post: ['Пост', 'ok'] };
+  const ACT = { give: ['Выдача', 'ok'], deposit: ['Пополнение', 'ok'], take: ['Списание', 'bad'], ban: ['Бан', 'bad'], unban: ['Разбан', 'ok'], twin: ['Твинк', 'bad'], untwin: ['Не твинк', 'ok'], event: ['Событие', 'ok'], event_stop: ['Стоп события', 'bad'], post: ['Пост', 'ok'], wd_paid: ['Вывод выплачен', 'ok'], wd_reject: ['Вывод отклонён', 'bad'] };
 
   function toast(text, kind = '') {
     const li = document.createElement('li');
@@ -354,9 +354,55 @@
     });
   }
 
+  // ---------- cash-out requests (separate server withdraw/worker.js: /wd/adm/*) ----------
+  const WD_API = 'https://rustup-withdraw.ttzoomrust.workers.dev';
+  let WDS = 'wait', WDL = null;
+  const wdApi = (path, body = {}) => DEMO ? Promise.resolve(demoWd(path)) : fetch(WD_API + '/wd/adm/' + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ initData: TG.initData, ...body }) })
+    .then(r => r.json()).catch(() => ({ ok: false, error: 'net' }));
+  const WD_ST = { wait: ['ждёт', 'wait'], paid: ['выплачено', 'ok'], rejected: ['отклонено', 'bad'] };
+  function withdrawsPage() {
+    $('#page').innerHTML = `<div class="seg glass"><button class="${WDS === 'wait' ? 'on' : ''}" data-wds="wait">Ждут выплаты</button><button class="${WDS === 'done' ? 'on' : ''}" data-wds="done">Готовые</button></div>
+      <div id="wdBox">${WDL ? wdRows() : '<div class="loading"><i></i><i></i><i></i></div>'}</div>
+      <p class="muted hint">Переведите сумму «К выплате» на реквизиты, затем нажмите «Выплачено». «Отклонить» вернёт деньги на баланс игрока, причину он получит в боте.</p>`;
+    if (!WDL) loadWd();
+  }
+  function loadWd() {
+    wdApi('list', { status: WDS }).then(d => {
+      if (!d.ok) return d.error === 'forbidden' ? denied(d) : toast('Сервер выводов недоступен', 'error');
+      WDL = d; setWdBadge(d.waiting);
+      const box = $('#wdBox'); if (box) box.innerHTML = wdRows();
+    });
+  }
+  function setWdBadge(n) { const b = $('[data-tab="withdraws"]'); if (b) b.innerHTML = `Выводы${n ? `<span class="badge">${n}</span>` : ''}`; }
+  const wdRows = () => `${WDL.enabled ? '' : '<section class="glass list wd-off"><b>Вывод выключен</b><p class="muted">Игроки сейчас не могут отправить заявку. Включается настройкой WITHDRAW_ENABLED = "true" в withdraw/wrangler.toml и выкладкой node deploy-withdraw.js.</p></section>'}
+    ${WDS === 'wait' && WDL.waiting ? `<section class="tiles"><div class="tile glass"><span>Ждут выплаты</span><b>${int(WDL.waiting)}</b><i>на ${int(WDL.waitingRub)} ₽</i></div></section>` : ''}
+    ${WDL.requests.length ? WDL.requests.map(r => `<section class="glass list wd-card">
+      <div class="wd-top"><b>#${r.id} · ${int(r.payoutRub)} ₽${r.usdt ? ` <small>≈ ${r.usdt} USDT</small>` : ''}</b><em class="tag ${WD_ST[r.status][1]}">${WD_ST[r.status][0]}</em></div>
+      <button class="row" data-user="${r.user_id}"><span class="w">${esc(r.name || r.user_id)}${r.username ? ` <small>@${esc(r.username)}</small>` : ''}<small class="sub">id ${r.user_id} · ${new Date(r.t).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</small></span></button>
+      <div class="wd-line"><span>${r.method === 'card' ? 'Карта' : 'USDT'}</span><code>${esc(r.details)}</code><button class="btn ghost wd-copy" data-wd-copy="${esc(r.details)}">Копировать</button></div>
+      <p class="muted">Списано ${int(r.amountRub)} ₽ · комиссия ${r.fee}% → к выплате <b>${int(r.payoutRub)} ₽</b>${r.status !== 'wait' ? ` · ${esc(r.admin || '')}${r.note ? ' · ' + esc(r.note) : ''}` : ''}</p>
+      ${r.status === 'wait' ? `<div class="row2"><button class="btn danger" data-wd-no="${r.id}">Отклонить</button><button class="btn good" data-wd-ok="${r.id}">✅ Выплачено</button></div>` : ''}
+    </section>`).join('') : `<section class="glass list"><p class="muted">${WDS === 'wait' ? 'Новых заявок нет' : 'Пока пусто'}</p></section>`}`;
+  function wdAct(path, id, body) {
+    document.querySelectorAll(`[data-wd-ok="${id}"], [data-wd-no="${id}"]`).forEach(b => { b.disabled = true; });
+    wdApi(path, { id, ...body }).then(d => {
+      if (!d.ok) { toast(d.error === 'state' ? 'Заявка уже обработана' : 'Не удалось', 'error'); }
+      else toast(path === 'paid' ? `#${id} — выплачено, игрок уведомлён` : `#${id} отклонена, деньги вернулись игроку`, 'success');
+      WDL = null; withdrawsPage();
+    });
+  }
+  function demoWd(path) {
+    if (path !== 'list') return { ok: true };
+    const now = Date.now();
+    return { ok: true, enabled: false, waiting: 2, waitingRub: 7920, requests: WDS === 'wait' ? [
+      { id: 12, user_id: 100, name: 'Олег', username: 'oleg_rust', method: 'card', amountRub: 5000, payoutRub: 4750, fee: 5, details: '2200 1234 5678 9010', status: 'wait', t: now - 20 * 60e3 },
+      { id: 13, user_id: 104, name: 'kotik', username: 'kotik_rust', method: 'crypto', amountRub: 3270, payoutRub: 3170, fee: 3, usdt: 39.2, details: 'TJRabPrwbZy45sbavfcjinPJC18kjpRTv8', status: 'wait', t: now - 5 * 60e3 }]
+      : [{ id: 11, user_id: 103, name: 'Neon', username: null, method: 'card', amountRub: 2000, payoutRub: 1900, fee: 5, details: '4111 1111 1111 1111', status: 'rejected', admin: '@NezoxFit', note: 'неверная карта', t: now - 86e5 }] };
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
+    tab === 'withdraws' ? withdrawsPage() : tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -366,6 +412,10 @@
     if (t.dataset.edays) { edays = +t.dataset.edays; ECON = null; return economyPage(); }
     if (t.dataset.user) return openUser(+t.dataset.user);
     if (t.dataset.ticket) return openTicket(+t.dataset.ticket);
+    if (t.dataset.wds) { WDS = t.dataset.wds; WDL = null; return withdrawsPage(); }
+    if (t.dataset.wdOk) return confirm(`Отметить заявку #${t.dataset.wdOk} выплаченной? Сначала переведите деньги.`) && wdAct('paid', +t.dataset.wdOk);
+    if (t.dataset.wdNo) { const note = prompt('Причина отказа (игрок увидит её в боте):', 'неверные реквизиты'); return note !== null && wdAct('reject', +t.dataset.wdNo, { note }); }
+    if (t.dataset.wdCopy) { navigator.clipboard.writeText(t.dataset.wdCopy).then(() => toast('Скопировано', 'success'), () => toast(t.dataset.wdCopy)); return; }
     if (t.dataset.tst) { TST = t.dataset.tst; TICKETS = null; return supportPage(); }
     if ('tsend' in t.dataset) return sendReply();
     if ('tclose' in t.dataset) return closeT();
@@ -428,9 +478,11 @@
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts', 'withdraws'].includes(start)) tab = start;
   render();
   loadStats();
+  // waiting cash-out requests on the tab
+  wdApi('list', { status: 'wait' }).then(d => { if (d.ok) setWdBadge(d.waiting); });
   // the waiting-tickets badge on the tab, refreshed every half a minute
   api('tickets', { status: 'open' }).then(d => { if (d.ok) setBadge(d.waiting); });
   if (!DEMO) setInterval(() => { if (!document.hidden) api('tickets', { status: 'open' }).then(d => { if (d.ok) { setBadge(d.waiting); if (tab === 'support' && TST === 'open') { TICKETS = d; const l = $('#tlist'); if (l) l.innerHTML = ticketRows(); } } }); }, 30000);

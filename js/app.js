@@ -899,7 +899,23 @@
       <div class="wm-grid">${WD_METHODS.map(([id, t, min, fee, icon]) => `<button type="button" class="wm${WF.wd === id ? ' on' : ''}" data-wwd="${id}">
         ${WF.wd === id ? '<span class="wm-check"></span>' : ''}<span class="wm-icons"><i>${WICO[icon]}</i></span><b>${t}</b><small>${min ? `от ${rubFmt(min)}` : 'NFT и скины'}</small></button>`).join('')}</div>
       <div class="w-glass w-panel">${body}</div>
-      <div class="w-glass w-panel"><h3 class="w-h3">Заявки на вывод</h3>${reqs || '<p class="muted w-empty">Заявок пока нет</p>'}</div>`;
+      <div class="w-glass w-panel"><h3 class="w-h3">Заявки на вывод</h3><div id="wdMoney">${wdHtml()}</div>${reqs || (wdHtml() ? '' : '<p class="muted w-empty">Заявок пока нет</p>')}</div>`;
+  }
+  // cash-out requests live on the withdraw server (js/withdraw.js); the list refreshes itself when it arrives
+  const WD = () => window.RUSTUP_WD;
+  const wdHtml = () => { if (!WD()) return ''; WD().load(); return WD().html(); };
+  function wdSend(m) {
+    const details = ($('#wReq') || {}).value || '';
+    const b = $('[data-wsend]');
+    if (b) b.disabled = true;
+    WD().send(m[0] === 'rub' ? 'card' : 'crypto', WF.out, details).then(d => {
+      if (b) b.disabled = false;
+      if (!d.ok) { haptic('warning'); return toast(WD().error(d.error), 'error'); }
+      haptic('success');
+      toast(`Заявка #${d.request.id} отправлена · к получению ${rubFmt(d.request.payoutRub)}`, 'success');
+      WF.out = 0;
+      api('load').then(() => { if (WF.tab === 'withdraw') renderWallet(); });
+    });
   }
   function walletHistory() {
     const since = WF.period ? Date.now() - WF.period * 864e5 : 0;
@@ -932,6 +948,7 @@
     if ('wsend' in d) {
       const m = WD_METHODS.find(x => x[0] === WF.wd);
       if (WF.out < m[2]) { haptic('warning'); return toast(`Вывод от ${rubFmt(m[2])}`, 'error'); }
+      if (WD()) return wdSend(m);
     }
     if ('sbpGuide' in d) { haptic('light'); return sbpGuide(); }
     if ('wpay' in d && WF.dep === 'rub') {
