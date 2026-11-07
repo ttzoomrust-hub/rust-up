@@ -2951,5 +2951,29 @@
     });
   }
   cloudLoad(() => startGame());
+
+  // Provider refunds and moderation adjustments happen outside the browser.
+  // Never invent balance deltas: reload the canonical account state from /api/game.
+  // Faster when the wallet is displayed, less frequent elsewhere.
+  let accountBalanceRefreshBusy=false;
+  let nextAccountBalanceRefreshAt=0;
+  async function refreshAccountBalance(force=false){
+    if(!gameReady||document.hidden||accountBalanceRefreshBusy)return;
+    const now=Date.now();
+    if(!force&&now<nextAccountBalanceRefreshAt)return;
+    accountBalanceRefreshBusy=true;
+    nextAccountBalanceRefreshAt=now+
+      (location.hash.startsWith('#/wallet')?2000:6000);
+    try{
+      const data=await api('load');
+      // api('load') already updates S.balance and the header on success.
+      if(!data?.ok)nextAccountBalanceRefreshAt=Date.now()+6000;
+    }finally{accountBalanceRefreshBusy=false;}
+  }
+  setInterval(()=>{void refreshAccountBalance();},1000);
+  window.addEventListener('focus',()=>{void refreshAccountBalance(true);});
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden)void refreshAccountBalance(true);
+  });
   setInterval(() => { renderHeader(); scheduleTgPromo(0); }, 60e3);
 })();
