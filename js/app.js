@@ -700,7 +700,7 @@
   const DEP_METHODS = [
     ['rub', 'СБП', 100, 0, ['sbp', 'star'], 'СБП через Telegram Stars', ['Звёзды в @orbita_stars_bot за рубли', 'Оплата по QR в приложении банка', 'Пошаговый гайд — 6 шагов']],
     ['crypto', 'Криптовалюта', 10, 5, ['usdt', 'ton'], 'USDT · TON', ['@xRocket', '@CryptoBot', 'Кошелёк TON']],
-    ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Пополнение через Telegram Stars', ['Статус оплаты и зачисления', 'Пока недоступно для реальных денег']]];
+    ['gifts', 'Telegram Stars', 10, 0, ['star'], 'Пополнение через Telegram Stars', ['Статус оплаты и зачисления']]];
   // [id, title, min ₽, fee %, icon, input label, placeholder]
   const WD_METHODS = [
     ['rub', 'Рубли', 2000, 5, 'card', 'Номер карты', '0000 0000 0000 0000'],
@@ -2032,6 +2032,8 @@
         <a class="w-glass pf-link" href="#/refcontest"><span class="tx-ico">${TXICO.friends}</span><b>Конкурс рефералов</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="https://t.me/${esc(window.RUSTUP_SUPPORT || 'rustuperhelp_bot')}" data-tg-link><span class="tx-ico">${ICON.tg}</span><b>Поддержка</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/docs?tab=terms"><span class="tx-ico">${TXICO.case}</span><b>Пользовательское соглашение</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/docs?tab=privacy"><span class="tx-ico">${ICON.shield}</span><b>Конфиденциальность</b>${ICON.right}</a>
       </div>
       ${window.RUSTUP_SOCIAL.tgLinks()}
     </div>`;
@@ -2223,12 +2225,11 @@
     modal(nft ? 'Вывод в Telegram' : 'Вывод в Steam', nft ? `${head} Подарки придут на ваш Telegram-аккаунт.</p>
       <div class="field"><label for="trade">Telegram-юзернейм получателя</label>
         <input id="trade" class="text-input" placeholder="@username" value="${esc(tgName ? '@' + tgName.replace(/^@/, '') : '')}"></div>
-      <button class="btn btn-tg" id="doWithdraw" style="height:48px">${ICON.tg}<span>Вывести (демо)</span></button>
-      <p class="note">Демо-режим: настоящий подарок не отправляется, предметы просто списываются из инвентаря и попадают в историю выводов.</p>` : `${head} Бот пришлёт трейд-оффер на вашу ссылку обмена.</p>
+      <button class="btn btn-tg" id="doWithdraw" style="height:48px">${ICON.tg}<span>Вывести</span></button>` : `${head} Бот пришлёт трейд-оффер на вашу ссылку обмена.</p>
       <div class="field"><label for="trade">Ссылка на обмен Steam</label>
         <input id="trade" class="text-input mono" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=...&token=..." value="${esc(S.user.tradeLink || '')}"></div>
-      <button class="btn btn-steam" id="doWithdraw" style="height:48px">${ICON.steam}<span>Вывести (демо)</span></button>
-      <p class="note">Демо-режим: настоящий трейд не отправляется, предметы просто списываются из инвентаря и попадают в историю выводов. Ссылку можно найти в Steam: Инвентарь → Предложения обмена → «Кто может отправлять мне предложения».</p>`,
+      <button class="btn btn-steam" id="doWithdraw" style="height:48px">${ICON.steam}<span>Вывести</span></button>
+      <p class="note">Ссылку можно найти в Steam: Инвентарь → Предложения обмена → «Кто может отправлять мне предложения».</p>`,
     m => {
       $('#doWithdraw', m).onclick = () => {
         const link = $('#trade', m).value.trim();
@@ -2250,7 +2251,7 @@
       <td>${new Date(w.t).toLocaleString('ru-RU')}</td>
       <td>${w.items.slice(0, 3).map(esc).join(', ')}${w.items.length > 3 ? ` и ещё ${w.items.length - 3}` : ''}</td>
       <td>${coin(w.value)}</td>
-      <td class="${w.real && w.status !== 'sent' ? 'muted' : 'ok'}">${w.real ? (w.status === 'sent' ? 'Отправлен на аккаунт' : 'Ожидает отправки') : 'Отправлено (демо)'}</td></tr>`).join('');
+      <td class="${w.real && w.status !== 'sent' ? 'muted' : 'ok'}">${w.real ? (w.status === 'sent' ? 'Отправлен на аккаунт' : 'Ожидает отправки') : 'Отправлено'}</td></tr>`).join('');
     $('#invPageBody').innerHTML = `<div class="panel" style="padding:0"><div class="table-wrap">${rows
       ? `<table class="table"><thead><tr><th>Заявка</th><th>Время</th><th>Предметы</th><th>Сумма</th><th>Статус</th></tr></thead><tbody>${rows}</tbody></table>`
       : '<p class="muted" style="padding:24px;margin:0">Выводов пока не было</p>'}</div></div>`;
@@ -2855,11 +2856,6 @@
     }, 5000);
   }
 
-  // ---------- static text pages ----------
-  function textPage(title, body) {
-    $('#page').innerHTML = `<div class="page"><h2 class="section-title">${title}</h2><div class="panel prose">${body}</div></div>`;
-  }
-
   // ---------- router ----------
   function route() {
     let [path, query] = (location.hash.replace(/^#/, '') || '/').split('?');
@@ -2892,8 +2888,10 @@
       case '/month': if (/prev=1/.test(query || '')) window.RUSTUP_SOCIAL.setMonthPrev(true); window.RUSTUP_SOCIAL['/month'](); break;
       // game modes live in js/modes.js
       case '/crash': case '/contract': case '/battles': case '/mines': case '/wheel': case '/plinko': window.RUSTUP_MODES[path](); break;
-      case '/tos': textPage('Условия использования', '<p>RUST UP — демонстрационный интерфейс. Баланс, скины и результаты виртуальные и не имеют денежной стоимости, их нельзя вывести или обменять.</p><p>Проект не связан с Valve, Steam и Facepunch Studios. Изображения предметов принадлежат их правообладателям.</p>'); break;
-      case '/privacy': textPage('Политика конфиденциальности', '<p>Демо-версия не отправляет данные на сервер. Ник, баланс, инвентарь и история хранятся только в localStorage вашего браузера. Очистка данных сайта полностью удаляет их.</p>'); break;
+      // agreement, privacy policy, contacts (js/docs.js); old links #/tos and #/privacy open their tab
+      case '/docs': window.RUSTUP_DOCS.page(query); break;
+      case '/tos': window.RUSTUP_DOCS.page('tab=terms'); break;
+      case '/privacy': window.RUSTUP_DOCS.page('tab=privacy'); break;
       default: if (path.startsWith('/case/')) casePage(path.slice(6)); else if (path.startsWith('/battle/')) window.RUSTUP_MODES.battle(path.slice(8)); else homePage();
     }
     window.scrollTo({ top: 0 });
