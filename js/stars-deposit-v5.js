@@ -157,53 +157,79 @@
   });
   // Server-authoritative post-payment reconciliation. Never infer a balance
   // change from Telegram's client-side 'paid' callback.
-  let polling=false;
-  async function pollCredit(orderId){
-   if(polling||typeof orderId!=='string'||!/^[-a-f0-9]{36}$/i.test(orderId))return;
-   polling=true;
-   try{
-    for(let i=0;i<20&&panel.isConnected;i++){
-     try{
-      const result=await request('history',{},AbortSignal.timeout(12000));
-      const order=Array.isArray(result.orders)?
-       result.orders.find(o=>o.id===orderId):null;
+  // Keep every paid invoice in the reconciliation queue. A single boolean
+  // previously discarded payments made before the first one was credited.
+  // No client-side balance changes: only the authenticated game server does that.
+  const pendingCredits=new Set();
+  let pollingPromise=null;
+  function pollCredit(orderId){
+   if(typeof orderId!=='string'||!/^[-a-f0-9]{36}$/i.test(orderId))return;
+   pendingCredits.add(orderId);
+   if(!pollingPromise){
+    pollingPromise=reconcileCredits().finally(()=>{pollingPromise=null;});
+   }
+  }
+  async function reconcileCredits(){
+   for(let attempt=0;attempt<30&&pendingCredits.size>0;attempt++){
+    try{
+     const result=await request('history',{},AbortSignal.timeout(12000));
+     const orders=Array.isArray(result.orders)?result.orders:[];
+     let anyCredited=false;
+     for(const id of [...pendingCredits]){
+      const order=orders.find(o=>o.id===id);
       if(order?.creditState==='credited_to_game'&&order.creditedToGame===true){
-       const app=window.RUSTUP_APP;
-       if(!app||typeof app.api!=='function')throw {status:503};
-       const game=await app.api('load');
-       if(!game?.ok||!game?.state)throw {status:503};
-       // app.api('load') already applied the authoritative server state and
-       // called renderHeader. No client-side money mutation.
-       if(panel.isConnected){
-        summary.textContent='✅ Оплата подтверждена. Баланс автоматически обновлён.';
-        if(!historyButton.disabled)historyButton.click();
-       }
-       return;
+       pendingCredits.delete(id);
+       anyCredited=true;
+      }else if(order?.creditState==='manual_review'||
+        order?.creditState==='refund_reversed'||
+        order?.creditState==='refunded_no_game_credit'){
+       pendingCredits.delete(id);
+       if(panel.isConnected)summary.textContent=
+        'Платёж требует проверки или был возвращён. Откройте «Мои пополнения».';
       }
-      if(order?.creditState==='manual_review'){
-       summary.textContent='Платёж требует проверки поддержки. Баланс не изменён.';
-       return;
-      }
-      if(order?.creditState==='refund_reversed'||order?.creditState==='refunded_no_game_credit'){
-       summary.textContent='Платёж возвращён. Зачисления нет.';
-       return;
-      }
-      if(panel.isConnected)summary.textContent=
-       'Telegram подтвердил оплату. Ожидаем подтверждения зачисления…';
-     }catch(e){
-      if(e?.status===401||e?.status===403){
-       // Telegram initData cannot be renewed inside an existing WebApp.
-       // Do not bypass Telegram signature or claim a successful credit.
-       summary.textContent=errorLabel(e);
-       return;
-      }
-      if(i===19){summary.textContent=errorLabel(e);return;}
      }
-     await new Promise(resolve=>setTimeout(resolve,3000));
+     if(anyCredited){
+      const game=await window.RUSTUP_APP?.api?.('load');
+      if(!game?.ok||!game?.state)throw {status:503};
+      // app.api('load') applies the authoritative state and renders the
+      // header, including the current currency's formatted balance.
+      if(panel.isConnected){
+       summary.textContent='✅ Зачисление подтверждено. Баланс обновлён.';
+       if(!historyButton.disabled)historyButton.click();
+      }
+     }else if(panel.isConnected&&pendingCredits.size){
+      summary.textContent='Проверяем оплату и зачисление на игровой счёт…';
+     }
+    }catch(e){
+     if(e?.status===401||e?.status===403){
+      // Never bypass expired/invalid Telegram authentication.
+      if(panel.isConnected)summary.textContent=errorLabel(e);
+      return;
+     }
+     if(attempt===29&&panel.isConnected)summary.textContent=
+      'Проверка временно недоступна. Откройте «Мои пополнения».';
     }
-    if(panel.isConnected)
-     summary.textContent='Оплата принята. Зачисление ещё проверяется — смотрите «Мои пополнения».';
-   }finally{polling=false;}
+    if(pendingCredits.size>0)await new Promise(r=>setTimeout(r,2500));
+   }
+   if(pendingCredits.size&&panel.isConnected)
+    summary.textContent='Зачисление ещё проверяется. Посмотрите «Мои пополнения».';
+  }
+  // When returning from the Telegram invoice, refresh even if the payment
+  // callback or individual history polling was delayed by the mobile client.
+  async function refreshVisibleBalance(){
+   if(document.hidden)return;
+   if(pendingCredits.size){if(!pollingPromise)pollCredit([...pendingCredits][0]);return;}
+   // An already confirmed receipt was handled; re-read the backend balance.
+   await window.RUSTUP_APP?.api?.('load');
+  }
+  window.__rustupStarsRefreshVisible=()=>{
+   if(panel.isConnected)void refreshVisibleBalance();
+  };
+  if(!window.__rustupStarsVisibilityListener){
+   window.__rustupStarsVisibilityListener=true;
+   document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden)window.__rustupStarsRefreshVisible?.();
+   });
   }
   let historyBusy=false;
   historyButton.addEventListener('click',async()=>{
