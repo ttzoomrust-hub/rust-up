@@ -180,3 +180,11 @@ textarea { font: inherit; color: inherit; }
 .wd-copy { height: 32px; padding: 0 12px; font-size: 12px; flex: none; }
 .wd-card .row2 { grid-template-columns: 1fr 1.4fr; }
 .wd-off { border: 1px solid rgba(255,209,102,.35); padding: 12px; }
+/* TikTok authors report */
+.au-card .wd-top em.tag { font-style: normal; }
+.au-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 4px; }
+.au-grid span { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); min-width: 0; }
+.au-grid i { font-style: normal; font-size: 11px; color: #9aa0ab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.au-grid b { font-size: 16px; font-weight: 800; }
+.au-grid small { font-size: 11px; color: #8a8f99; }
+.au-grid small.plus { color: #4fc27a; } .au-grid small.minus { color: #ff6b66; }

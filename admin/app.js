@@ -392,6 +392,15 @@
     });
   }
   function demoWd(path) {
+    if (path === 'authors') {
+      const now = Date.now(), A = (id, name, username, code, players, fresh, active, payers, rub, rubPeriod, clips, approved, costRub) =>
+        ({ id, name, username, code, since: now - 20 * 864e5, seen: now - 3600e3, players, fresh, active, banned: 0, payers, payersPeriod: payers, rub, rubPeriod, deposits: payers,
+          clips, clipsApproved: approved, clipsWaiting: clips - approved, views: approved * 41000, costUsd: costRub / 80, costRub, roi: costRub ? Math.round(rub / costRub * 100) / 100 : null });
+      const authors = [A(301, 'Kirill TT', 'kirill_tt', 'KIRILL', 64, 22, 31, 9, 18400, 12900, 6, 4, 4800), A(302, 'Masha Shorts', 'masha_sh', null, 23, 11, 12, 2, 2700, 2700, 3, 1, 3200),
+        A(303, 'Vadim', null, 'VADIM', 5, 1, 2, 0, 0, 0, 1, 0, 0)];
+      const s = k => authors.reduce((x, r) => x + r[k], 0);
+      return { ok: true, days: adays, usdRub: 80, authors, total: { authors: 3, players: s('players'), fresh: s('fresh'), active: s('active'), payers: s('payers'), rub: s('rub'), rubPeriod: s('rubPeriod'), costRub: s('costRub'), clips: s('clips') } };
+    }
     if (path !== 'list') return { ok: true };
     const now = Date.now();
     return { ok: true, enabled: false, waiting: 2, waitingRub: 7920, requests: WDS === 'wait' ? [
@@ -400,9 +409,46 @@
       : [{ id: 11, user_id: 103, name: 'Neon', username: null, method: 'card', amountRub: 2000, payoutRub: 1900, fee: 5, details: '4111 1111 1111 1111', status: 'rejected', admin: '@NezoxFit', note: 'неверная карта', t: now - 86e5 }] };
   }
 
+  // ---------- TikTok authors: who brought players and money (withdraw/worker.js /wd/adm/authors, read-only) ----------
+  let AUTH = null, adays = 30;
+  function authorsPage() {
+    if (!AUTH) { $('#page').innerHTML = '<div class="loading"><i></i><i></i><i></i></div>'; return loadAuthors(); }
+    const t = AUTH.total, per = adays ? `за ${adays} дн.` : 'за всё время';
+    const tile = (k, v, sub = '', cls = '') => `<div class="tile glass ${cls}"><span>${k}</span><b>${v}</b>${sub ? `<i>${sub}</i>` : ''}</div>`;
+    const rubR = v => int(v) + ' ₽';
+    const roi = r => r.roi == null ? (r.rub > 0 ? '∞' : '—') : '×' + String(r.roi).replace('.', ',');
+    $('#page').innerHTML = `
+      <div class="seg glass">${[[7, '7 дней'], [30, '30 дней'], [0, 'Всё время']].map(([d, l]) => `<button class="${adays === d ? 'on' : ''}" data-adays="${d}">${l}</button>`).join('')}</div>
+      <section class="tiles">
+        ${tile('Пополнения от игроков авторов', rubR(t.rubPeriod) , per, t.rubPeriod > 0 ? 'live' : '')}
+        ${tile('Новые игроки', int(t.fresh), `${per} · всего ${int(t.players)}`)}
+        ${tile('Платящие', int(t.payers), `активны за неделю: ${int(t.active)}`)}
+        ${tile('Выплачено авторам', rubR(t.costRub), `${int(t.clips)} роликов прислано`)}
+      </section>
+      ${AUTH.authors.length ? AUTH.authors.map(r => `<section class="glass list au-card">
+        <div class="wd-top"><b>${esc(r.name || r.id)}${r.username ? ` <small>@${esc(r.username)}</small>` : ''}</b>${r.code ? `<em class="tag">${esc(r.code)}</em>` : ''}</div>
+        <div class="au-grid">
+          <span><i>Игроки</i><b>${int(r.players)}</b><small>+${int(r.fresh)} ${per}</small></span>
+          <span><i>Активны 7 дн.</i><b>${int(r.active)}</b><small>${r.banned ? `бан/твинк: ${int(r.banned)}` : '&nbsp;'}</small></span>
+          <span><i>Платящие</i><b>${int(r.payers)}</b><small>${int(r.payersPeriod)} ${per}</small></span>
+          <span><i>Пополнения</i><b>${rubR(r.rubPeriod)}</b><small>всего ${rubR(r.rub)}</small></span>
+          <span><i>Ролики</i><b>${int(r.clipsApproved)}/${int(r.clips)}</b><small>${r.clipsWaiting ? `ждут: ${int(r.clipsWaiting)}` : `${int(r.views)} просм.`}</small></span>
+          <span><i>Выплачено · окуп.</i><b>${rubR(r.costRub || 0)}</b><small class="${r.roi != null && r.roi < 1 ? 'minus' : 'plus'}">${roi(r)}</small></span>
+        </div>
+        <button class="row" data-user="${r.id}"><span class="w"><small class="sub">id ${r.id} · автор с ${new Date(r.since).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })} · был ${ago(r.seen)}</small></span></button>
+      </section>`).join('') : '<section class="glass list"><p class="muted">Авторов пока нет</p></section>'}
+      <p class="muted hint">Игроки автора — пришли по его ссылке или ввели его промокод. Пополнения — зачисленные оплаты этих игроков без возвратов. Окупаемость — все пополнения его игроков, делённые на выплаты автору за ролики.</p>`;
+  }
+  function loadAuthors() {
+    wdApi('authors', { days: adays }).then(d => {
+      if (!d.ok) return d.error === 'forbidden' ? denied(d) : toast('Отчёт недоступен', 'error');
+      AUTH = d; if (tab === 'authors') authorsPage();
+    });
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'withdraws' ? withdrawsPage() : tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
+    tab === 'authors' ? authorsPage() : tab === 'withdraws' ? withdrawsPage() : tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -410,6 +456,7 @@
     if (t.dataset.tab) { tab = t.dataset.tab; window.scrollTo(0, 0); return render(); }
     if (t.dataset.days) { days = +t.dataset.days; STATS = null; statsPage(); return loadStats(); }
     if (t.dataset.edays) { edays = +t.dataset.edays; ECON = null; return economyPage(); }
+    if (t.dataset.adays) { adays = +t.dataset.adays; AUTH = null; return authorsPage(); }
     if (t.dataset.user) return openUser(+t.dataset.user);
     if (t.dataset.ticket) return openTicket(+t.dataset.ticket);
     if (t.dataset.wds) { WDS = t.dataset.wds; WDL = null; return withdrawsPage(); }
@@ -478,7 +525,7 @@
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts', 'withdraws'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts', 'withdraws', 'authors'].includes(start)) tab = start;
   render();
   loadStats();
   // waiting cash-out requests on the tab
