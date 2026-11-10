@@ -2803,11 +2803,8 @@
         <button class="btn btn-accent" id="cwUp" style="flex:1">В апгрейд</button>
       </div>
       ${next ? `<a class="btn btn-ghost" href="#/case/${next.id}" id="cwNext">Открыть ${next.name}</a>` : ''}
-      <button class="btn btn-ghost brag-btn" id="cwBrag">${window.RUSTUP_ICONS.glyph('camera')} Похвастаться</button>${window.RUSTUP_EXTRAS.canStory() ? `<button class="btn btn-ghost brag-btn" id="cwStory">${window.RUSTUP_ICONS.glyph('star')} В сторис</button>` : ''}
       ${again ? `<button class="btn btn-ghost" id="cwAgain">Открыть ещё${n > 1 ? ` ${n} шт.` : ''} за ${coinInt(casePrice(c) * n)}</button>` : ''}`,
     m => {
-      $('#cwBrag', m).onclick = () => window.RUSTUP_EXTRAS.brag({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' }, true);
-      if ($('#cwStory', m)) $('#cwStory', m).onclick = () => window.RUSTUP_EXTRAS.storyWin({ value: total, name: n === 1 ? wins[0].name : '', title: 'КЕЙС «' + c.name.toUpperCase() + '»' });
       const ag = $('#cwAgain', m);
       if (ag) ag.onclick = () => {
         closeModal();

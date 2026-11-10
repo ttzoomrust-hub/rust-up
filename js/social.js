@@ -552,8 +552,7 @@
       <h1 class="up-title">Мой месяц</h1>
       ${S().gmPrev && S().gmPrev.n ? `<div class="wallet-tabs mo-tabs"><button type="button" class="wtab${MPREV ? '' : ' on'}" data-mprev="0">${MONTHS[mIdx((S().gm || {}).m || '')] ? MONTHS[mIdx(S().gm.m)].replace(/^./, x => x.toUpperCase()) : 'Этот месяц'}</button><button type="button" class="wtab${MPREV ? ' on' : ''}" data-mprev="1">${MONTHS[mIdx(S().gmPrev.m)].replace(/^./, x => x.toUpperCase())}</button></div>` : ''}
       ${has ? `<div class="mo-card w-glass"><img id="moImg" alt="Мой месяц в RUST UP"></div>
-        <div class="mo-btns"><button class="btn btn-accent" type="button" id="moShare">${I.glyph('camera')} Отправить друзьям</button>
-        ${window.RUSTUP_EXTRAS.canStory() ? `<button class="btn btn-ghost" type="button" id="moStory">${I.glyph('star')} В сторис</button>` : ''}</div>`
+        <div class="mo-btns"><button class="btn btn-accent" type="button" id="moShare">${I.glyph('camera')} Отправить друзьям</button></div>`
         : `<div class="w-glass pf-empty"><b>Пока пусто</b><span class="muted">Сыграйте в ${MONTHS_PREP[new Date().getMonth()]} — здесь появится ваша карточка месяца</span><a class="btn btn-accent w-go" href="#/">Играть</a></div>`}
       <p class="w-note">Карточка собирается из ваших ставок за месяц по МСК. В начале нового месяца прошлый остаётся здесь, чтобы им можно было поделиться.</p>
     </div>`);
@@ -636,7 +635,7 @@
   // =====================================================================================
   const RZ_GAP = 25e3, RZ_LOSES = 3;
   let rzLast = 0, rzLoses = 0, rzAlt = 0;
-  const rzOff = () => { try { return localStorage.getItem('rustup_rusya') === '0'; } catch (e) { return false; } };
+  const rzOff = () => true;   // owner's decision 2026-11-11: Руся no longer pops up after wins and losses (covered the controls)
   function rusyaPop(n) {
     if (rzOff() || Date.now() - rzLast < RZ_GAP || document.querySelector('.rz-guide')) return;
     rzLast = Date.now();

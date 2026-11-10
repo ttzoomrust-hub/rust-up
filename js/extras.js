@@ -252,6 +252,7 @@
   let bragData = null, bragTimer = 0;
   const RUB_MIN = 30;   // a chip after a win worth at least this many rubles (a case modal has its own button)
   function brag(o, direct = false) {
+    return;   // owner's decision 2026-11-11: no «Похвастаться / В сторис» chip and no Руся sticker after wins (they covered the controls)
     if (o && o.value > 0 && !direct && window.RUSTUP_SOCIAL) window.RUSTUP_SOCIAL.rusya('win', o);   // Руся cheers a win
     if (!o || !(o.value > 0) || !window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) return;
     if (direct) return shareWin(o);
