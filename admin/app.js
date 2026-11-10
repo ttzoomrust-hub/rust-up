@@ -392,6 +392,10 @@
     });
   }
   function demoWd(path) {
+    if (path === 'bonuses') return { ok: true,
+      wheel: { today: { spins: 84, rub: 352 }, week: { spins: 512, players: 190, rub: 2140 }, prizes: [[1, 40], [2, 25], [3, 15], [5, 10], [10, 6], [25, 3], [100, 1]] },
+      comeback: { codes: 140, delivered: 131, used: 22, rub: 660, returned: 37, rule: { AWAY_DAYS: 7, MAX_AWAY_DAYS: 45, RUB: 30, VALID_H: 72, EVERY_DAYS: 30 } },
+      firstDep: { n: 9, dep: 7400, rub: 3700, rule: { PCT: 50, MAX_RUB: 1000, WINDOW_DAYS: 7 } }, reminders: { sent: 18, paid: 5 } };
     if (path === 'authors') {
       const now = Date.now(), A = (id, name, username, code, players, fresh, active, payers, rub, rubPeriod, clips, approved, costRub) =>
         ({ id, name, username, code, since: now - 20 * 864e5, seen: now - 3600e3, players, fresh, active, banned: 0, payers, payersPeriod: payers, rub, rubPeriod, deposits: payers,
@@ -446,9 +450,39 @@
     });
   }
 
+  // ---------- bonuses of the extra server: daily wheel, comeback codes, first deposit +50%, payment reminders ----------
+  let BON = null;
+  function bonusesPage() {
+    if (!BON) {
+      $('#page').innerHTML = '<div class="loading"><i></i><i></i><i></i></div>';
+      return wdApi('bonuses').then(d => { if (!d.ok) return d.error === 'forbidden' ? denied(d) : toast('Сервер бонусов недоступен', 'error'); BON = d; if (tab === 'bonuses') bonusesPage(); });
+    }
+    const rr = v => int(v) + ' ₽', w = BON.wheel, c = BON.comeback, f = BON.firstDep, m = BON.reminders;
+    const tile = (k, v, sub = '', cls = '') => `<div class="tile glass ${cls}"><span>${k}</span><b>${v}</b>${sub ? `<i>${sub}</i>` : ''}</div>`;
+    const pct = (a, b) => (b ? Math.round(a / b * 100) : 0) + '%';
+    $('#page').innerHTML = `
+      <section class="glass list"><h3>🎡 Колесо дня</h3><section class="tiles">
+        ${tile('Спинов сегодня', int(w.today.spins), `выдано ${rr(w.today.rub)}`)}
+        ${tile('За 7 дней', int(w.week.spins), `${int(w.week.players)} игроков · ${rr(w.week.rub)}`)}</section>
+        <p class="muted">Призы: ${w.prizes.map(([r, wt]) => `${r} ₽ — ${wt}%`).join(', ')}. В среднем ≈ ${(w.prizes.reduce((s, [r, wt]) => s + r * wt, 0) / 100).toFixed(1).replace('.', ',')} ₽ за спин.</p></section>
+      <section class="glass list"><h3>👋 Личные промокоды вернувшимся (30 дней)</h3><section class="tiles">
+        ${tile('Отправлено', int(c.delivered || 0), `всего кодов ${int(c.codes || 0)}`)}
+        ${tile('Вернулись', int(c.returned || 0), pct(c.returned || 0, c.delivered || 0) + ' от отправленных', 'live')}
+        ${tile('Активировали', int(c.used || 0), `выдано ${rr(c.rub || 0)}`)}</section>
+        <p class="muted">Каждый день в 12:00 МСК — тем, кто не заходил ${c.rule.AWAY_DAYS}–${c.rule.MAX_AWAY_DAYS} дней: код на ${c.rule.RUB} ₽ на ${c.rule.VALID_H / 24} дня, не чаще раза в ${c.rule.EVERY_DAYS} дней.</p></section>
+      <section class="glass list"><h3>🎁 +${f.rule.PCT}% к первому пополнению (30 дней)</h3><section class="tiles">
+        ${tile('Получили бонус', int(f.n), `пополнили на ${rr(f.dep)}`, f.n ? 'live' : '')}
+        ${tile('Выдано бонусом', rr(f.rub), `до ${rr(f.rule.MAX_RUB)} одному игроку`)}</section>
+        <p class="muted">Новым игрокам в первые ${f.rule.WINDOW_DAYS} дней после регистрации, один раз. Начисляется само в течение 5 минут после оплаты.</p></section>
+      <section class="glass list"><h3>💳 Напоминания о незавершённой оплате (30 дней)</h3><section class="tiles">
+        ${tile('Отправлено', int(m.sent))}
+        ${tile('Оплатили после', int(m.paid), pct(m.paid, m.sent) + ' · в течение 3 дней', m.paid ? 'live' : '')}</section>
+        <p class="muted">Через час после открытой и не оплаченной оплаты Stars — одно сообщение, не чаще раза в 3 дня.</p></section>`;
+  }
+
   function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    tab === 'authors' ? authorsPage() : tab === 'withdraws' ? withdrawsPage() : tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
+    tab === 'bonuses' ? bonusesPage() : tab === 'authors' ? authorsPage() : tab === 'withdraws' ? withdrawsPage() : tab === 'users' ? usersPage() : tab === 'log' ? logPage() : tab === 'support' ? supportPage() : tab === 'economy' ? economyPage() : tab === 'events' ? eventsPage() : tab === 'posts' ? postsPage() : statsPage();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('button, [data-close]');
@@ -525,7 +559,7 @@
   if (TG) { TG.ready(); TG.expand(); try { TG.setHeaderColor('#08080a'); TG.setBackgroundColor('#08080a'); } catch (e) { /* old client */ } }
   if (!TG && !DEMO) { tab = 'stats'; denied({ error: 'auth' }); return; }
   const start = new URLSearchParams(location.search).get('tab');
-  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts', 'withdraws', 'authors'].includes(start)) tab = start;
+  if (['stats', 'users', 'support', 'log', 'events', 'economy', 'posts', 'withdraws', 'authors', 'bonuses'].includes(start)) tab = start;
   render();
   loadStats();
   // waiting cash-out requests on the tab

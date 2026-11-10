@@ -860,6 +860,8 @@
       box.append(panel);
       window.RUSTUP_STARS_VARIABLE_V4.render(box);
     }
+    // +50% to the first deposit: banner with a countdown on top of the deposit tab (js/bonus2.js)
+    if (WF.tab === 'deposit' && window.RUSTUP_B2) window.RUSTUP_B2.mountBanner(box, () => { const i = $('#wAmt'); if (i) i.focus(); });
   }
   function walletDeposit() {
     const m = DEP_METHODS.find(x => x[0] === WF.dep);
@@ -1919,6 +1921,7 @@
         <span class="hero-art">${roadNfts.map((s, i) => `<img class="hr-${i} nft" src="${s.img}" alt="" draggable="false">`).join('')}</span>
       </button>
 
+      <div id="fdSlot"></div>
       <div class="row-head"><h2 class="home-title">Бонусы за пополнение</h2>
         <span class="strip-nav"><button type="button" class="chip chip-icon" data-strip="-1" aria-label="Назад">${ICON.right}</button><button type="button" class="chip chip-icon" data-strip="1" aria-label="Вперёд">${ICON.right}</button></span></div>
       <div class="dep-bonuses page-bonuses" id="pageBonuses">${DEPOSIT_BONUSES.map((b, i) => depCard(b, i, 0, 'gift')).join('')}</div>
@@ -1926,6 +1929,7 @@
       ${window.RUSTUP_EXTRAS.homeBanners()}
       <div class="row-head"><h2 class="home-title">Ежедневные</h2></div>
       <div class="bonus-grid">
+        ${window.RUSTUP_B2 ? window.RUSTUP_B2.wheelTile() : ''}
         ${tile('bt-daily', `<img src="${giftImg('Подарок')}" alt="" draggable="false">`, `Подарок дня${dailyEv > 1 ? ` <i class="ev-x">${window.RUSTUP_ICONS.glyph('bolt')}×${dailyEv}</i>` : ''}`, coin(dailyBonus() * dailyEv),
           `День ${dailyStep() + 1} из ${DAILY_DAYS} · +${Math.round(DAILY_GROWTH * 100)}% каждый день подряд
           <span class="daily-week">${Array.from({ length: DAILY_DAYS }, (_, i) => `<i class="${i < dailyStep() ? 'done' : i === dailyStep() ? 'now' : ''}"></i>`).join('')}</span>`,
@@ -1957,6 +1961,7 @@
     $('[data-to-road]').onclick = () => $('#refRoad').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     $('#claimDaily').onclick = claimDaily;
+    if (window.RUSTUP_B2) { window.RUSTUP_B2.mountWheel(); window.RUSTUP_B2.mountBanner($('#fdSlot')); }   // js/bonus2.js
     renderRefPanel();
     renderRoad();
     refSync();
@@ -1978,6 +1983,16 @@
     const btn = $('#applyPromo');
     if (btn) btn.disabled = true;
     api('promo', { code }).then(d => {
+      // personal comeback codes BACK… live on the extra server (js/bonus2.js)
+      if (!d.ok && d.error === 'not_found' && /^BACK/.test(code) && window.RUSTUP_B2) {
+        return window.RUSTUP_B2.redeem(code).then(r => {
+          if (!r.ok) return toast(window.RUSTUP_B2.errText(r.error), 'error');
+          sfxWin(); haptic('success');
+          toast(`Промокод активирован: +${r.rub} ₽`, 'success');
+          if ($('#promo')) $('#promo').value = '';
+          return api('load').then(() => { bumpBalance(); refreshUpgrade(); });
+        });
+      }
       if (!d.ok) return netToast(d);
       sfxWin(); haptic('success'); bumpBalance();
       toast(`Промокод активирован: ${coinInt(d.amount)}`, 'success');
