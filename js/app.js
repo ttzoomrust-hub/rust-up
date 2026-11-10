@@ -351,6 +351,7 @@
       if (d.credited > 0) { sfxWin(); toast(`Бонус за вход по ссылке друга: ${coinInt(d.credited)}`, 'success'); }
       if (d.granted > 0) { sfxWin(); haptic('success'); toast(`Начислено администрацией: ${coinInt(d.granted)}${d.grantNote ? ` — ${esc(d.grantNote)}` : ''}`, 'success'); }
       if ($('#refPanel')) renderRefPanel();
+      if ($('.pf5')) profilePage();          // the profile shows the referral numbers and the link
       syncRoadWithdrawals();
       if ($('#refRoad')) renderRoad();
     }).catch(() => { /* offline: try again on next visit */ }).finally(() => { refBusy = false; });
@@ -2025,60 +2026,61 @@
       $('#page').innerHTML = `<div class="page"><div class="panel" style="text-align:center;padding:60px 24px"><h2 style="margin-top:0">Профиль</h2><p class="muted">Войдите, чтобы увидеть профиль</p><button class="btn btn-steam" data-login>${ICON.steam}<span>Войти через Steam</span></button></div></div>`;
       return;
     }
-    // glass profile: the Telegram photo and name, stats, best wins, recent upgrades, links
+    // Look v5 profile (like the owner's example визуал3): balance on top with a red glow, «Пополнить» + history,
+    // the free NFT case banner, two stat tiles, the referral card with the link, the best win; level, fire and links below
     const st = S.stats, tgu = tgUser() || {};
-    const winRate = st.upgrades ? ((st.wins / st.upgrades) * 100).toFixed(1) : '0';
-    const invValue = sum(S.inventory.map(i => (byName[i.name] ? byName[i.name].price : 0)));
-    const since = S.history.length ? S.history[S.history.length - 1].t : 0;
-    // best wins: every won upgrade target and every case prize from the ledger, priciest first
     const wins = [];
-    S.history.filter(h => h.win).forEach(h => h.targets.forEach(n => byName[n] && wins.push({ skin: byName[n], t: h.t, how: `Апгрейд · ${h.chance.toFixed(1)}%` })));
-    const best = wins.sort((a, b) => b.skin.price - a.skin.price).slice(0, 6);
-    const recent = S.history.slice(0, 8).map(h => `<div class="tx ${h.win ? 'tx-bonus' : 'tx-game'}">
-        <span class="tx-ico">${TXICO.upgrade}</span>
-        <span class="tx-body"><b>${h.targets.map(esc).join(', ')}</b><small>${new Date(h.t).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · шанс ${h.chance.toFixed(2)}% · выпало ${h.roll.toFixed(2)}</small></span>
-        <span class="tx-sum ${h.win ? 'plus' : 'minus'}">${h.win ? `+${coin(h.tv)}` : `−${coin(h.inValue)}`}</span></div>`).join('');
-    const stat = (ico, k, v, sub = '') => `<div class="pf-stat w-glass"><span class="pf-stat-ico">${ico}</span><span class="pf-k">${k}</span><b class="pf-v">${v}</b>${sub ? `<span class="pf-sub">${sub}</span>` : ''}</div>`;
-    $('#page').innerHTML = `<div class="page wallet-page profile-page">
-      <span class="w-glow g1"></span><span class="w-glow g2"></span><span class="w-glow g3"></span>
-      <div class="pf-hero w-glass">
-        <div class="pf-ava">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}<span class="pf-tg">${ICON.tg}</span></div>
-        <div class="pf-who">
-          <h1>${esc(S.user.name)}</h1>
-          ${S.title && window.RUSTUP_SOCIAL.titleName(S.title) ? `<span class="pf-title">${esc(window.RUSTUP_SOCIAL.titleName(S.title))}</span>` : ''}
-          <span class="pf-meta">${tgu.username ? `@${esc(tgu.username)} · ` : ''}ID ${S.user.id}</span>
-          ${since ? `<span class="pf-meta">Играет с ${new Date(since).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>` : ''}
-        </div>
-        <div class="pf-balance"><span>Баланс</span><b>${coin(S.balance)}</b></div>
-        <button class="pf-fire fire-chip ${fireNow().state}" type="button" data-fire>${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')}<b>${fireNow().n}</b><span>${plural(fireNow().n, 'день', 'дня', 'дней')} подряд${S.fire && S.fire.best ? ` · рекорд ${S.fire.best}` : ''}</span></button>
-        <div class="pf-actions">
-          <a class="btn btn-accent" href="#/wallet?tab=deposit">Пополнить</a>
-          <a class="btn btn-ghost" href="#/inventory">Инвентарь</a>
-          <button class="btn btn-ghost" id="rename" type="button">Сменить ник</button>
-        </div>
+    S.history.filter(h => h.win).forEach(h => h.targets.forEach(n => byName[n] && wins.push({ skin: byName[n], t: h.t, how: `Апгрейд · шанс ${h.chance.toFixed(1)}%` })));
+    const top = wins.sort((a, b) => b.skin.price - a.skin.price)[0];
+    const nftCase = CASES.find(c => c.game === 'nft') || CASES[0];
+    const SVG = {
+      wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/></svg>',
+      history: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.7 9.7 0 00-6.7 2.8L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>',
+      plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+      share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>',
+      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>',
+      edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+      users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 19c1-3.5 3.5-5 6.5-5s5.5 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14c2 .6 3.2 2.2 3.8 5"/></svg>',
+      crown: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>'
+    };
+    const ref = REF, link = ref ? ref.link : '';
+    $('#page').innerHTML = `<div class="page profile-page pf5">
+      <div class="pf5-top">
+        <span class="pf5-who">${avatarHtml(S.user.name, S.user.color, 'avatar', myPhoto())}
+          <span><b>${esc(S.user.name)}</b>${S.title && window.RUSTUP_SOCIAL.titleName(S.title) ? `<small class="pf5-title">${esc(window.RUSTUP_SOCIAL.titleName(S.title))}</small>` : `<small>${tgu.username ? '@' + esc(tgu.username) : 'ID ' + S.user.id}</small>`}</span>
+          <button class="pf5-edit" id="rename" type="button" aria-label="Сменить ник">${SVG.edit}</button></span>
+        <a class="pf5-wallet" href="#/wallet?tab=deposit">${SVG.wallet}<span>Кошелёк</span></a>
       </div>
+      <div class="pf5-bal"><span>Ваш баланс</span><b>${coin(S.balance, 34)}</b></div>
+      <div class="pf5-actions"><a class="btn btn-accent pf5-dep" href="#/wallet?tab=deposit">Пополнить</a><a class="pf5-round" href="#/wallet?tab=history" aria-label="История">${SVG.history}</a></div>
+      <a class="pf5-case" href="#/case/${nftCase.id}"><span class="pf5-case-art"><img src="${caseItems(nftCase)[0].skin.img}" alt="" draggable="false"></span><b>Бесплатный NFT-кейс</b>${ICON.right}</a>
+      <div class="pf5-two">
+        <div class="pf5-tile"><span class="pf5-ico">${TXICO.deposit}</span><b>${coin(st.won)}</b><small>Выиграно</small></div>
+        <div class="pf5-tile"><span class="pf5-ico">${TXICO.upgrade}</span><b>${fmtInt(st.upgrades)}</b><small>Апгрейдов</small></div>
+      </div>
+      <div class="pf5-ref">
+        <div class="pf5-ref-head"><span class="pf5-ico">${SVG.users}</span><span><b>Реферальная программа</b><small>${REF_PCT}% от пополнений рефералов</small></span></div>
+        <div class="pf5-two in">
+          <div class="pf5-tile"><b>${ref ? fmtInt(ref.invited) : '—'}</b><small>Рефералов</small><button class="pf5-plus" type="button" data-pf-share aria-label="Пригласить">${SVG.plus}</button></div>
+          <div class="pf5-tile"><b>${ref ? coin(ref.earned) : '—'}</b><small>Заработано</small><a class="pf5-go" href="#/friends" aria-label="Друзья">${SVG.arrow}</a></div>
+        </div>
+        <div class="pf5-link"><input class="mono" id="refLink" readonly value="${esc(link || 'Ссылка появится в Telegram-боте')}"><button type="button" data-pf-share aria-label="Поделиться">${SVG.share}</button><button type="button" data-pf-copy aria-label="Копировать">${SVG.copy}</button></div>
+      </div>
+      <div class="pf5-best">
+        <div class="pf5-ref-head"><span class="pf5-ico gold">${SVG.crown}</span><b>Лучший выигрыш</b></div>
+        ${top ? `<div class="pf5-best-item"><img src="${top.skin.img}" class="${imgCls(top.skin).trim()}" alt="" draggable="false"><b>${esc(top.skin.name)}</b><span>${coin(top.skin.price)} · ${esc(top.how)}</span></div>`
+          : `<div class="pf5-best-item empty">${WEAPON_SVG}<span>Отобразится после первого выигрыша</span><a class="btn btn-accent" href="#/upgrade">К апгрейду</a></div>`}
+      </div>
+      <button class="pf-fire fire-chip ${fireNow().state}" type="button" data-fire>${window.RUSTUP_ICONS.glyph('fire', 'xg-fire')}<b>${fireNow().n}</b><span>${plural(fireNow().n, 'день', 'дня', 'дней')} подряд${S.fire && S.fire.best ? ` · рекорд ${S.fire.best}` : ''}</span></button>
       ${window.RUSTUP_EXTRAS.levelCard()}
       ${window.RUSTUP_SOCIAL.showcaseCard()}
       ${window.RUSTUP_SOCIAL.titlesCard()}
-      <div class="pf-stats">
-        ${stat(TXICO.upgrade, 'Апгрейдов', fmtInt(st.upgrades))}
-        ${stat(TXICO.gift, 'Побед', fmtInt(st.wins), `${winRate}% удачных`)}
-        ${stat(TXICO.cashback, 'Поставлено', coin(st.wagered))}
-        ${stat(TXICO.case, 'Лучший выигрыш', coin(st.best))}
-        ${stat(TXICO.shop, 'Инвентарь', coin(invValue), `${fmtInt(S.inventory.length)} предметов`)}
-        ${stat(TXICO.deposit, 'Выиграно всего', coin(st.won))}
-      </div>
-      <div class="row-head"><h2 class="home-title">Лучшие выигрыши</h2></div>
-      ${best.length ? `<div class="pf-best">${best.map(w => `<div class="pf-best-card">${card(w.skin, { static: true })}<span>${esc(w.how)}</span></div>`).join('')}</div>`
-        : `<div class="w-glass pf-empty"><b>Пока без побед</b><span class="muted">Сделайте первый апгрейд — лучшие выигрыши появятся здесь</span><a class="btn btn-accent w-go" href="#/upgrade">К апгрейду</a></div>`}
-      <div class="row-head"><h2 class="home-title">Последние апгрейды</h2><a href="#/wallet?tab=history">Вся история ${ICON.right}</a></div>
-      ${recent ? `<div class="tx-list w-glass">${recent}</div>` : '<div class="w-glass pf-empty"><span class="muted">Апгрейдов пока не было</span></div>'}
       <div class="pf-links">
+        <a class="w-glass pf-link" href="#/inventory"><span class="tx-ico">${TXICO.shop}</span><b>Инвентарь</b>${ICON.right}</a>
+        <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/stats"><span class="tx-ico">${TXICO.upgrade}</span><b>Моя статистика</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/month"><span class="tx-ico">${TXICO.gift}</span><b>Мой месяц в RUST UP</b>${ICON.right}</a>
-        <a class="w-glass pf-link" href="#/wallet?tab=history"><span class="tx-ico">${TXICO.deposit}</span><b>Кошелёк и история</b>${ICON.right}</a>
-        <a class="w-glass pf-link" href="#/top"><span class="tx-ico">${TXICO.upgrade}</span><b>Топ игроков</b>${ICON.right}</a>
-        <a class="w-glass pf-link" href="#/friends"><span class="tx-ico">${TXICO.friends}</span><b>Друзья и рефералы</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/refcontest"><span class="tx-ico">${TXICO.friends}</span><b>Конкурс рефералов</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="https://t.me/${esc(window.RUSTUP_SUPPORT || 'rustuperhelp_bot')}" data-tg-link><span class="tx-ico">${ICON.tg}</span><b>Поддержка</b>${ICON.right}</a>
         <a class="w-glass pf-link" href="#/provably-fair"><span class="tx-ico">${ICON.shield}</span><b>Проверка честности</b>${ICON.right}</a>
@@ -2091,8 +2093,10 @@
       const n = prompt('Новый ник', S.user.name);
       if (n && n.trim()) api('nick', { name: n.trim().slice(0, 20) }).then(d => { if (!d.ok) return netToast(d); renderHeader(); profilePage(); });
     };
+    document.querySelectorAll('[data-pf-share]').forEach(b => { b.onclick = () => (REF ? shareRef() : toast('Ссылка работает в Telegram-боте', 'error')); });
+    const cp = document.querySelector('[data-pf-copy]'); if (cp) cp.onclick = () => (REF ? copyRef() : toast('Ссылка работает в Telegram-боте', 'error'));
+    if (!REF) refSync();
   }
-
   // ---------- inventory page ----------
   const CATS = {
     weapon: /\b(ak47|ar|mp5|sar|sap|thompson|lr|m39|sks|revolver|shotgun|lmg|hmlmg|rocket launcher|bow|eoka|sword|longsword|bat|rifle)\b/i,
@@ -2867,8 +2871,8 @@
       { href: '#/upgrade?game=cs2', cls: 'gc-cs2', title: 'Апгрейд CS2', on: 'cs2', cover: 'upgrade-cs2', art: `<img class="gc-art" src="assets/games/upgrade-cs2.png" alt="" draggable="false">` },
       { href: '#/upgrade?game=nft', cls: 'gc-nft', title: 'Апгрейд NFT', on: 'nft', cover: 'upgrade-nft', art: `<img class="gc-art" src="assets/games/upgrade-nft.png" alt="" draggable="false">` },
       { href: '#/cases', cls: 'gc-cases', title: 'Кейсы', on: 'cases', badge: 'FREE', cover: 'cases', art: CASES.map((c, i) => { const s = caseItems(c)[0].skin; return `<img class="gc-mini m${i}${imgCls(s)}" src="${s.img}" alt="" draggable="false">`; }).join('') },
-      // game modes (js/modes.js)
-      ...window.RUSTUP_MODES.tiles(),
+      // game modes (js/modes.js), minus the hidden ones (js/hidden.js)
+      ...window.RUSTUP_MODES.tiles().filter(t => !(window.RUSTUP_HIDDEN && window.RUSTUP_HIDDEN.has(t.on))),
       // Бонусы and Друзья are not games: no «playing» counter on them
       { href: '#/rewards', cls: 'gc-bonus', title: 'Бонусы', cover: 'bonus', art: `<img class="gc-img gift" src="${giftImg('Подарок')}" alt="" draggable="false">` },
       { href: '#/friends', cls: 'gc-friends', title: 'Друзья', badge: 'NFT', cover: 'friends', art: `<img class="gc-img gift" src="${giftImg('Мишка')}" alt="" draggable="false">` }
@@ -2913,6 +2917,8 @@
     const game = new URLSearchParams(query || '').get('game');
     if (game && GAMES.some(g => g.id === game)) setGame(game);
     if (path === '/' && game) path = '/upgrade';
+    // hidden games (js/hidden.js): old links lead to the upgrade
+    if (window.RUSTUP_HIDDEN_ROUTE && window.RUSTUP_HIDDEN_ROUTE(path)) { location.replace('#/upgrade'); return; }
     const navKey = ['/upgrade', '/crash', '/contract', '/battles', '/mines', '/wheel', '/plinko'].includes(path) || path.startsWith('/battle/') ? '/' : path.startsWith('/case/') ? '/cases' : path.startsWith('/earn') ? '/earn' : path;
     if (window.RUSTUP_MODES) window.RUSTUP_MODES.leave(path);
     document.querySelectorAll('.nav-item[data-route]').forEach(a => a.classList.toggle('active', a.dataset.route === navKey));

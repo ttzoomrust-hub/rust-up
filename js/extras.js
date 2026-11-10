@@ -53,7 +53,9 @@
       const got = daily ? today && (q.dc || []).includes(x.id) : week && (q.wc || []).includes(x.id);
       return { ...x, daily, p: Math.min(p, x.n), state: got ? 'done' : p >= x.n ? 'claim' : 'wait' };
     };
-    return { daily: dailyQuests(now).map(x => row(x, true)), weekly: weeklyQuests(now).map(x => row(x, false)), all: today && q.all };
+    // quests of hidden games (js/hidden.js) are not shown: they cannot be played on the site
+    const shown = x => !(window.RUSTUP_HIDDEN && window.RUSTUP_HIDDEN.has(x.t));
+    return { daily: dailyQuests(now).filter(shown).map(x => row(x, true)), weekly: weeklyQuests(now).filter(shown).map(x => row(x, false)), all: today && q.all };
   }
   const claimable = () => {
     if (!S().user) return 0;

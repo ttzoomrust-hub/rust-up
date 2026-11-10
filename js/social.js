@@ -711,6 +711,7 @@
   const GAME_ROUTE = { upgrade: '#/upgrade', case: '#/cases', crash: '#/crash', mines: '#/mines', wheel: '#/wheel', plinko: '#/plinko', contract: '#/contract', battle: '#/battles' };
   function luckyCard() {
     const g = luckyGame(), d = mskDayN(Date.now()), name = (GAMES[g] || [g])[0];
+    if (window.RUSTUP_HIDDEN && window.RUSTUP_HIDDEN.has(g)) return '';   // the lucky game of the day is hidden (js/hidden.js)
     const phrase = LK.PHRASES[d % LK.PHRASES.length].replace('{g}', name);
     return `<a class="w-glass lucky-card" href="${GAME_ROUTE[g] || '#/'}"><img class="lucky-ava" src="assets/stickers/web/m06.webp" alt="">
       <span class="lucky-body"><small class="lucky-k">${I.glyph('star')} Удача дня</small><b>${esc(phrase)}</b>

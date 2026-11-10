@@ -2609,3 +2609,56 @@ body::after, .app::before { display: none !important; }
 .case-page .back-link { font-family: var(--head); }
 .slot-chev { width: min(70%, 170px); opacity: .95; }
 .slot-chevs.out { align-items: start; padding-top: 14%; } .slot-chevs.in { align-items: start; padding-top: 10%; }
+
+/* ---------- Look v5: profile like the owner's example (визуал3) ---------- */
+.pf5 { display: flex; flex-direction: column; gap: 12px; position: relative; }
+.pf5::before { content: ""; position: absolute; left: -16px; right: -16px; top: -90px; height: 360px; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 60% 70% at 50% 30%, rgba(229,56,59,.55), rgba(150,20,28,.22) 45%, transparent 75%); }
+.pf5-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pf5-who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pf5-who .avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; }
+.pf5-who b { display: block; font-family: var(--head); font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+.pf5-who small { display: block; color: #b9b9c2; font-size: 12px; }
+.pf5-edit, .pf5-round, .pf5-link button { display: grid; place-items: center; border: 0; cursor: pointer; color: #fff; background: rgba(20,20,22,.8); border-radius: 50%; }
+.pf5-edit { width: 30px; height: 30px; } .pf5-edit svg { width: 15px; height: 15px; opacity: .8; }
+.pf5-wallet { display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; background: #121214; color: #fff; font-weight: 700; font-size: 13px; text-decoration: none; }
+.pf5-wallet svg { width: 18px; height: 18px; color: #ff3b3f; }
+.pf5-bal { text-align: center; margin-top: 6px; } .pf5-bal span { display: block; color: #d6c8c8; font-size: 13px; font-weight: 600; }
+.pf5-bal b { display: inline-flex; align-items: center; gap: 8px; font-family: var(--head); font-size: 40px; font-weight: 900; letter-spacing: -1px; margin-top: 4px; }
+.pf5-bal b svg { width: 34px; height: 34px; }
+.pf5-actions { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.pf5-dep { height: 52px; padding: 0 44px; font-size: 16px; font-weight: 800; display: inline-flex; align-items: center; }
+.pf5-round { width: 52px; height: 52px; background: #1a1a1d; border: 1px solid rgba(255,255,255,.08); } .pf5-round svg { width: 22px; height: 22px; }
+.pf5-case { display: flex; align-items: center; gap: 14px; height: 80px; padding: 0 18px 0 0; border-radius: 24px; background: radial-gradient(ellipse 40% 90% at 8% 50%, rgba(229,56,59,.35), transparent 70%), #1a1a1d; color: #fff; text-decoration: none; overflow: hidden; }
+.pf5-case-art { width: 90px; height: 80px; flex-shrink: 0; display: grid; place-items: center; overflow: hidden; }
+.pf5-case-art > * { transform: scale(.72); }
+.pf5-case b { flex: 1; font-family: var(--head); font-size: 15px; font-weight: 800; } .pf5-case > svg { width: 18px; height: 18px; }
+.pf5-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pf5-tile { position: relative; padding: 14px; border-radius: 22px; background: #1a1a1d; border: 1px solid rgba(255,255,255,.045); min-height: 92px; }
+.pf5-two.in .pf5-tile { background: #232327; border-color: rgba(255,255,255,.05); }
+.pf5-tile b { display: flex; align-items: center; gap: 6px; font-family: var(--head); font-size: 20px; font-weight: 800; margin-top: 8px; }
+.pf5-tile small { display: block; color: #8b8b93; font-size: 12px; font-weight: 600; margin-top: 2px; }
+.pf5-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: rgba(229,56,59,.16); color: #ff3b3f; }
+.pf5-ico svg { width: 17px; height: 17px; } .pf5-ico.gold { background: rgba(255,209,102,.16); color: #ffd166; }
+.pf5-plus { position: absolute; right: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; color: #fff; cursor: pointer;
+  background: linear-gradient(180deg, #ff5a5e, #c4232a); box-shadow: 0 6px 16px rgba(229,56,59,.35); } .pf5-plus svg { width: 20px; height: 20px; }
+.pf5-go { position: absolute; right: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #8b8b93; background: #1a1a1d; } .pf5-go svg { width: 18px; height: 18px; }
+.pf5-ref, .pf5-best { padding: 14px; border-radius: 26px; background: #1a1a1d; border: 1px solid rgba(255,255,255,.045); display: flex; flex-direction: column; gap: 12px; }
+.pf5-ref-head { display: flex; align-items: center; gap: 10px; } .pf5-ref-head b { font-family: var(--head); font-size: 14px; font-weight: 800; display: block; }
+.pf5-ref-head small { display: block; color: #8b8b93; font-size: 11px; margin-top: 2px; }
+.pf5-link { display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 6px 0 16px; border-radius: 18px; background: #232327; }
+.pf5-link input { flex: 1; min-width: 0; background: transparent; border: 0; color: #9a9aa2; font-size: 12px; outline: none; }
+.pf5-link button { width: 40px; height: 40px; flex-shrink: 0; background: #1a1a1d; } .pf5-link button svg { width: 18px; height: 18px; }
+.pf5-best-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 10px 8px; text-align: center;
+  background: radial-gradient(ellipse 55% 60% at 50% 42%, rgba(229,56,59,.4), transparent 70%); border-radius: 20px; }
+.pf5-best-item img { width: 150px; height: 120px; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,.6)); }
+.pf5-best-item img.nft { border-radius: 20px; object-fit: cover; width: 120px; }
+.pf5-best-item b { font-size: 15px; } .pf5-best-item span { color: #9a9aa2; font-size: 12px; }
+.pf5-best-item.empty .placeholder-weapon { width: 160px; opacity: 1; filter: brightness(0); }
+.pf5-best-item.empty .btn { height: 42px; padding: 0 22px; margin-top: 6px; }
+.pf5 .pf-fire { align-self: flex-start; }.pf5-bal .coin { display: inline-flex; align-items: center; gap: 10px; font-size: 40px; }
+.pf5-bal .coin svg { width: 34px; height: 34px; }
+.pf5-case-art img { width: 72px; height: 72px; object-fit: cover; border-radius: 18px; transform: rotate(-8deg); box-shadow: 0 8px 18px rgba(0,0,0,.5); }
+.pf5-case-art > * { transform: none; }
+.pf5-case-art img { transform: rotate(-8deg); }
+.pf5-bal .coin > span { font-family: var(--head); font-size: 40px; font-weight: 900; letter-spacing: -1px; }
