@@ -2476,3 +2476,136 @@ html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) +
 @media (max-width: 380px) { .doc-toc { grid-template-columns: 1fr; } }
 /* cash-out requests (js/withdraw.js) */
 .w-req-st.bad { color: var(--error); }
+/* ================= Look v5 (2026-11-10): black + red like the owner's examples (пример/визуал1-4) =================
+   Near-black page, matte graphite cards with big radii, red only as accent (buttons, glow at the top, prices),
+   wide bold headings (Unbounded), bottom nav = separate round icon buttons. Overrides every look above; remove this block to roll back. */
+:root {
+  --bg-global: #0e0e10; --bg-block: #1a1a1d; --bg-block-hover: #202024; --bg-secondary: #232327; --bg-empty: #232327;
+  --border-block: rgba(255,255,255,.05); --text-other: #8b8b93;
+  --lg-fill: linear-gradient(#1a1a1d, #1a1a1d); --lg-sheen: linear-gradient(transparent, transparent); --lg-rim: rgba(255,255,255,.045);
+  --lg-shadow: none; --lg-blur: none; --lg-input: #121214;
+  --head: 'Unbounded', Montserrat, sans-serif;
+}
+html { background: #0e0e10 !important; }
+/* one soft red glow at the top instead of the moving blobs */
+body::before { width: 150vw; height: 64vh; left: -25vw; top: -36vh; filter: blur(20px); animation: none; border-radius: 50%;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(229,56,59,.34) 0%, rgba(150,20,28,.14) 45%, transparent 72%); }
+body::after, .app::before { display: none !important; }
+.snow i { opacity: .28; }
+.header-wrap, html.lite .header-wrap { background: rgba(14,14,16,.78) !important; border-bottom: 0 !important; box-shadow: none !important; }
+
+/* matte cards */
+.panel, .case-card, .timer-case, .drop, .inv, .item-panel, .balance-bar, .game-switch, .subs-panel, .bonus-tile, .dep-bonus,
+.friend-step, .w-glass, .wm, .wm-detail, .wallet-tabs, .pf-stat, .cur-menu, .inv-toolbar, .inv-grid, .inv-pager, .road-step .skin-card,
+.earn-offer, .clip-row, .sub-row, .case-items .skin-card, .roulette, .tg-only .btn-ghost {
+  background: #1a1a1d !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(255,255,255,.045) !important; box-shadow: none !important;
+}
+.panel, .case-card, .timer-case, .bonus-tile, .dep-bonus, .w-glass, .earn-offer, .item-panel, .subs-panel, .game-switch, .wallet-tabs, .wm-detail { border-radius: 24px !important; }
+.wm, .pf-stat, .drop, .friend-step { border-radius: 20px !important; }
+.wm.on, .dep-bonus.on, .wm-detail, .item-panel.left {
+  background: radial-gradient(ellipse 110% 80% at 50% 0%, rgba(229,56,59,.24), transparent 70%), #1a1a1d !important;
+  border-color: rgba(229,56,59,.5) !important; box-shadow: 0 10px 26px rgba(229,56,59,.12) !important;
+}
+.skin-card { background: radial-gradient(ellipse 80% 60% at 50% 100%, var(--rc60), transparent 70%), #1a1a1d; border: 1px solid rgba(255,255,255,.05); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 20px; }
+.skin-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 18px rgba(229,56,59,.3); }
+.drop { background: linear-gradient(120deg, color-mix(in srgb, var(--rc) 18%, transparent) 0%, transparent 70%), #1a1a1d !important; }
+.drop.best { background: linear-gradient(135deg, rgba(229,56,59,.24), transparent 70%), #1a1a1d !important; border-color: rgba(229,56,59,.45) !important; }
+
+/* pills: balance, online, ghost buttons, chips, tabs */
+.balance, .online-pill, .btn-ghost, .btn-icon, .controls-bar .btn-icon, button.chip, .mult, .dep-sum, .dep-way, .cc-btn, .case-btn.locked, .road-btn, .wm-min, .pf-balance, .strip-nav .chip-icon,
+.case-card.locked .case-btn, .case-card.opened .case-btn, .timer-case.cooldown .case-btn, .case-card.cooldown .case-btn, .fire-chip, .lang-btn, .socials a {
+  background: #232327 !important; border: 1px solid rgba(255,255,255,.06) !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+.wtab:not(.on) { background: transparent !important; border-color: transparent !important; }
+/* red controls: flat red gradient, soft red shadow, no gloss */
+.btn-accent, .btn-wallet, .case-btn:not(.locked), .hero-btn, .upgrade-btn:not(:disabled), button.chip.on, .mult.on, .wtab.on, .game-tab.active, .dep-seg button.on, .btn.road-btn {
+  background: linear-gradient(180deg, #ff5a5e 0%, #e5383b 55%, #c4232a 100%) !important; border: 0 !important; color: #fff !important;
+  box-shadow: 0 6px 20px rgba(229,56,59,.3) !important;
+}
+.btn-deposit, .hero-btn, .btn-pill { border-radius: 999px !important; }
+.upgrade-btn:disabled { background: #232327 !important; border: 1px solid rgba(255,255,255,.06) !important; box-shadow: none !important; }
+.dep-sum.on, .dep-way.on { background: rgba(229,56,59,.2) !important; border-color: rgba(229,56,59,.7) !important; color: #fff; }
+.btn-tg { background: linear-gradient(180deg, #46b8f0, #1d8fcf) !important; border: 0 !important; box-shadow: 0 6px 20px rgba(34,158,217,.3) !important; }
+.timer-case:not(.cooldown):not(.login) .case-btn, .case-card.daily:not(.cooldown):not(.login) .case-btn { background: linear-gradient(180deg, #5fdc8f, #2f9e5c) !important; border: 0 !important; box-shadow: 0 6px 20px rgba(79,194,122,.28) !important; }
+/* inputs */
+.text-input, .select, .wallet-page .text-input { background: #121214 !important; border: 1px solid rgba(255,255,255,.07) !important; box-shadow: none !important; }
+.text-input:focus { border-color: rgba(229,56,59,.8) !important; }
+.tx-ico, .w-req-ico, .pf-link .tx-ico { box-shadow: none; }
+/* popups */
+.modal { background: #18181b !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,.06) !important; box-shadow: 0 24px 60px rgba(0,0,0,.6) !important; border-radius: 26px !important; }
+.modal-backdrop { background: rgba(0,0,0,.6); }
+.toast { background: #1f1f23 !important; border: 1px solid rgba(255,255,255,.07); box-shadow: 0 12px 30px rgba(0,0,0,.5); backdrop-filter: none !important; }
+.toast.success { background: linear-gradient(90deg, rgba(79,194,122,.2), transparent), #1f1f23 !important; }
+.toast.error { background: linear-gradient(90deg, rgba(229,56,59,.22), transparent), #1f1f23 !important; }
+.tg-promo { background: #1a1a1d !important; backdrop-filter: none !important; border: 1px solid rgba(255,255,255,.06) !important; box-shadow: 0 18px 46px rgba(0,0,0,.55) !important; }
+.cur-menu { background: #1d1d20 !important; box-shadow: 0 18px 46px rgba(0,0,0,.55) !important; }
+/* wide bold headings like the examples */
+.home-title, .up-title, .hero-title, .page-title, .bt-title, .modal-head h3, .modal-title, .wallet-page h1, .page h1 { font-family: var(--head); font-weight: 800; letter-spacing: -.2px; }
+.home-title, .up-title { font-size: 21px; }
+.logo { font-family: var(--head); font-weight: 900; letter-spacing: -.5px; }
+
+/* bottom nav: separate round icon buttons, the active one is a wide pill (index.html: .nav-item > svg + .nav-t) */
+.nav-mobile { background: transparent !important; border: 0 !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  width: auto !important; padding: 0 !important; gap: 10px; height: 64px; justify-content: center; }
+.nav-mobile .nav-item { flex: 0 0 64px; width: 64px; height: 64px; border-radius: 50%; padding: 0;
+  background: rgba(30,30,34,.95); border: 1px solid rgba(255,255,255,.08); color: #9a9aa2;
+  box-shadow: 0 10px 26px rgba(0,0,0,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: flex-basis .2s, width .2s, border-radius .2s, color .2s, background .2s; }
+.nav-mobile .nav-item svg { width: 25px; height: 25px; flex-shrink: 0; }
+.nav-mobile .nav-item .nav-t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nav-mobile .nav-item.active { flex-basis: 90px; width: 90px; border-radius: 32px; background: #2a2a2e; color: #ff3b3f; border-color: rgba(255,255,255,.16);
+  box-shadow: 0 10px 26px rgba(0,0,0,.55), 0 0 18px rgba(229,56,59,.22); }
+.nav-mobile .nav-item:hover { color: #fff; }
+.nav-mobile .nav-free, .nav-mobile .nav-badge { position: absolute; top: -9px; right: -10px; left: auto; transform: none; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 8px; letter-spacing: 0; box-shadow: 0 3px 8px rgba(0,0,0,.5); }
+.nav-mobile .nav-free { background: #2ec46b; color: #fff; }
+.nav-mobile .nav-badge { background: #e5383b; color: #fff; }
+.nav-mobile .nav-dot { top: 8px; right: 10px; }
+@media (max-width: 360px) { .nav-mobile .nav-item { flex-basis: 56px; width: 56px; height: 56px; } .nav-mobile .nav-item.active { flex-basis: 76px; width: 76px; } }
+/* ---------- Look v5: upgrader (thin ring, small needle, chevron panels, toned chance chips) ---------- */
+.wheel-svg.v5 .wheel-mark { font: 800 8px Montserrat, sans-serif; fill: #6c6c74; }
+.wheel-wrap::before { inset: 10%; background: radial-gradient(circle, rgba(229,56,59,.22), transparent 68%); filter: blur(26px); }
+.wheel-arrow svg { top: 2.5%; width: 9%; filter: drop-shadow(0 0 8px rgba(255,59,63,.7)); }
+.wheel-ring-glow { opacity: .0; }
+.chance-percent { font-family: var(--head); font-weight: 800; letter-spacing: -.5px; }
+.item-panel { border-radius: 26px !important; overflow: hidden; }
+.item-panel .item-slot { position: relative; }
+.slot-chevs { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.slot-chev { width: min(62%, 150px); height: auto; color: #e5383b; filter: drop-shadow(0 0 18px rgba(229,56,59,.55)); }
+.slot-chevs.in .slot-chev { transform: rotate(180deg); }
+.item-panel .placeholder-weapon { position: relative; z-index: 1; opacity: .9; filter: brightness(0) drop-shadow(0 6px 10px rgba(0,0,0,.6)); }
+.item-panel:not(.left) { background: radial-gradient(ellipse 80% 55% at 50% 55%, rgba(229,56,59,.16), transparent 72%), #1a1a1d !important; }
+.item-panel.left { background: radial-gradient(ellipse 80% 55% at 50% 55%, rgba(229,56,59,.2), transparent 72%), #1a1a1d !important; border-color: rgba(255,255,255,.05) !important; box-shadow: none !important; }
+/* the hint sits in a dark pill at the bottom of the empty panel */
+.item-panel .panel-labels { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2; padding: 10px 12px; border-radius: 16px; background: rgba(14,14,16,.88); align-items: flex-start; text-align: left; }
+.item-panel .panel-labels .panel-title { font-size: 12px; } .item-panel .panel-labels .panel-sub { font-size: 10px; }
+.item-panel { position: relative; }
+.mult { background: #1d1d20 !important; border: 1.5px solid rgba(255,255,255,.06) !important; box-shadow: none !important; border-radius: 999px !important; }
+.mult[data-tone] { border-color: color-mix(in srgb, var(--c100) 70%, transparent) !important; }
+.mult[data-tone]::after { display: none; }
+.mult.on { background: linear-gradient(180deg, #ff5a5e, #c4232a) !important; border-color: transparent !important; }
+.upgrade-btn { border-radius: 999px !important; min-height: 60px; font-family: var(--head); font-size: 19px; font-weight: 800; }
+.upgrade-btn::after { display: none; }
+.controls-bar .btn-icon { border-radius: 50% !important; }
+.balance-bar { border-radius: 24px !important; }
+
+/* ---------- Look v5: cases (roulette with chevrons, item cards filled with the rarity color) ---------- */
+.roulette { background: #141416 !important; border-radius: 26px !important; padding: 26px 0 !important; }
+.roll-cell { background: #1d1d21; border: 1px solid rgba(255,255,255,.05); border-radius: 22px; }
+.roll-cell::before { opacity: .3; }
+.roll-cell::after { width: 34%; height: 3px; box-shadow: none; }
+.roulette-marker { width: 0 !important; margin-left: 0 !important; background: none !important; box-shadow: none !important; }
+.roulette-marker::before, .roulette-marker::after { margin-left: -11px; width: 22px; height: 14px; border: 0; background: #ff3b3f;
+  filter: drop-shadow(0 0 6px rgba(255,59,63,.8)); }
+.roulette-marker::before { top: 4px; clip-path: polygon(0 0, 50% 100%, 100% 0, 78% 0, 50% 55%, 22% 0); }
+.roulette-marker::after { bottom: 4px; clip-path: polygon(0 100%, 50% 0, 100% 100%, 78% 100%, 50% 45%, 22% 100%); }
+.case-items .skin-card { background: linear-gradient(165deg, color-mix(in srgb, var(--rc) 62%, #101012) 0%, color-mix(in srgb, var(--rc) 28%, #101012) 100%) !important;
+  border: 0 !important; border-radius: 22px; overflow: hidden; }
+.case-items .skin-card .card-desc { background: rgba(14,14,16,.9); margin: 0; padding: 8px 10px; border-radius: 0 0 22px 22px; align-items: flex-start; text-align: left; }
+.case-items .skin-card .card-name { color: #fff; font-weight: 800; }
+.chance-tag { top: 8px; left: 8px; padding: 3px 8px; border-radius: 10px; background: rgba(14,14,16,.82); color: #fff; font-weight: 800; }
+.case-hero .case-art.big { border-radius: 24px; }
+.case-kicker { border-radius: 999px; }
+.case-page .back-link { font-family: var(--head); }
+.slot-chev { width: min(70%, 170px); opacity: .95; }
+.slot-chevs.out { align-items: start; padding-top: 14%; } .slot-chevs.in { align-items: start; padding-top: 10%; }

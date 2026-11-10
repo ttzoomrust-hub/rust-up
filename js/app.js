@@ -1334,7 +1334,23 @@
   }
 
   // ---------- upgrade page ----------
+  // Look v5 wheel (like the owner's example): a thin progress ring with 0/25/50/75% marks around a dark disc
   function wheelSvg() {
+    const marks = [[0, '0%'], [90, '25%'], [180, '50%'], [270, '75%']].map(([deg, t]) => {
+      const a = (deg - 90) * Math.PI / 180, r = deg === 0 || deg === 180 ? 99 : 101;
+      return `<text x="${100 + r * Math.cos(a)}" y="${100 + r * Math.sin(a) + 2.4}" text-anchor="middle" class="wheel-mark">${t}</text>`;
+    }).join('');
+    return `<svg class="wheel-svg v5" viewBox="-12 -12 224 224">
+      <defs><radialGradient id="wInner" cx="50%" cy="38%" r="70%"><stop offset="0" stop-color="#202024"/><stop offset="1" stop-color="#121214"/></radialGradient></defs>
+      <circle cx="100" cy="100" r="96" fill="#141416" stroke="#232327" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="86" fill="none" stroke="#1f1f23" stroke-width="7"/>
+      <circle class="wheel-ring-glow" cx="100" cy="100" r="86" fill="none" stroke-width="9"/>
+      <circle id="wSector" class="wheel-sector" cx="100" cy="100" r="86" fill="none" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 100 100)"/>
+      <circle cx="100" cy="100" r="74" fill="url(#wInner)" stroke="#26262b" stroke-width="1.5"/>
+      ${marks}
+    </svg>`;
+  }
+  function wheelSvgOld() {
     const ticks = Array.from({ length: 60 }, (_, i) => {
       const a = (i * 6 - 90) * Math.PI / 180, r1 = i % 5 ? 95 : 93, r2 = 98;
       return `<line x1="${100 + r1 * Math.cos(a)}" y1="${100 + r1 * Math.sin(a)}" x2="${100 + r2 * Math.cos(a)}" y2="${100 + r2 * Math.sin(a)}" stroke="${i % 5 ? '#3a3d45' : '#5d616b'}" stroke-width="${i % 5 ? 0.8 : 1.4}"/>`;
@@ -1424,7 +1440,7 @@
         <div class="wheel-cell"><div class="wheel-wrap" id="wheel">
           ${wheelSvg()}
           <div class="wheel-arrow" id="wArrow" style="transform:rotate(${U.angle % 360}deg)">
-            <svg viewBox="0 0 40 46"><path d="M20 44L4 8a4 4 0 013.6-6h24.8A4 4 0 0136 8z" fill="#f4f5f7" stroke="#141518" stroke-width="2"/><path d="M20 36L10 10h20z" fill="#e5383b"/></svg>
+            <svg viewBox="0 0 40 46"><path d="M20 40L9 12h22z" fill="#ff3b3f" stroke="#0e0e10" stroke-width="2.5" stroke-linejoin="round"/><circle cx="20" cy="8" r="4" fill="#ff3b3f" stroke="#0e0e10" stroke-width="2"/></svg>
           </div>
           <div class="wheel-overlay"><span class="chance-percent" id="wPercent">0.00 %</span><span class="chance-label" id="wLabel">Выберите предметы</span></div>
         </div></div>
@@ -1474,7 +1490,7 @@
     }
     if (!skins.length && !U.balanceAdd) {
       const what = U.game === 'nft' ? 'подарки' : 'скины';
-      p.innerHTML = `<div class="panel-labels"><span class="panel-title">Выберите ${what} или ${what} и баланс</span><span class="panel-sub">Можно выбрать несколько предметов</span></div><div class="item-slot">${slotArt()}</div>`;
+      p.innerHTML = `<div class="panel-labels"><span class="panel-title">Выберите ${what} или ${what} и баланс</span><span class="panel-sub">Можно выбрать несколько предметов</span></div><div class="item-slot">${slotArt('in')}</div>`;
       return;
     }
     const cards = skins.map(i => card(byName[i.name], { static: true, remove: `data-unselect="${i.uid}"` }));
@@ -1482,7 +1498,9 @@
     p.innerHTML = selGrid(cards, 'Ваша ставка', inputValue());
   }
   // empty-slot silhouette: a gun for skins, a gift box for Telegram NFT
-  const slotArt = () => (U.game === 'nft' ? GAME_ICON.nft.replace('<svg', '<svg class="placeholder-weapon placeholder-gift"') : WEAPON_SVG);
+  // Look v5: big red chevrons behind the silhouette — down on the stake side, up on the target side (like the owner's example)
+  const CHEVRONS = '<svg class="slot-chev" viewBox="0 0 120 120"><path d="M8 88L60 30l52 58-20 16-32-36-32 36z" fill="currentColor"/></svg>';
+  const slotArt = (side = 'out') => `<span class="slot-chevs ${side}">${CHEVRONS}</span>` + (U.game === 'nft' ? GAME_ICON.nft.replace('<svg', '<svg class="placeholder-weapon placeholder-gift"') : WEAPON_SVG);
   function selGrid(cards, label, total) {
     return `<div class="sel-grid" data-count="${cards.length}">${cards.join('')}</div>
       <div class="panel-total"><span class="label">${label}</span>${coin(total)}</div>`;
@@ -1497,7 +1515,7 @@
       return;
     }
     if (!U.targets.length) {
-      p.innerHTML = `<div class="panel-labels"><span class="panel-title">Выберите предмет для апгрейда</span><span class="panel-sub">Или нажмите множитель ниже</span></div><div class="item-slot">${slotArt()}</div>`;
+      p.innerHTML = `<div class="panel-labels"><span class="panel-title">Выберите предмет для апгрейда</span><span class="panel-sub">Или нажмите множитель ниже</span></div><div class="item-slot">${slotArt('out')}</div>`;
       return;
     }
     p.innerHTML = selGrid(U.targets.map((n, i) => card(byName[n], { static: true, remove: `data-untarget="${i}"` })), 'Вы получите', targetValue());
