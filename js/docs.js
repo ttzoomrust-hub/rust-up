@@ -1,7 +1,10 @@
 // ---------- documents: user agreement, privacy policy, contacts (like RubUP: tabs, numbered sections, contents) ----------
 // Route #/docs?tab=terms|privacy|contacts (old #/tos and #/privacy lead here). Texts describe what the app and the bot really do.
 (() => {
-  const EDITION = '7 ноября 2026 года';
+  const EDITION = '17 ноября 2026 года';
+  // operator of the service (legal entity)
+  const ORG = { name: 'ОсОО «СильверКи»', reg: '323026-3301-ООО', inn: '00112202510348' };
+  const ORG_LINE = `${ORG.name} (рег. номер ${ORG.reg}, ИНН Кыргызской Республики ${ORG.inn})`;
   const BOT = 'rustuper_bot', HELP = window.RUSTUP_SUPPORT || 'rustuperhelp_bot';
   const tg = u => `<a href="https://t.me/${u}" data-tg-link>@${u}</a>`;
   const doc = t => `<a href="#/docs?tab=${t}">${t === 'privacy' ? 'Политики конфиденциальности' : 'Соглашения'}</a>`;
@@ -10,6 +13,7 @@
   const TERMS = [
     ['Общие положения', [
       `RUST UP — бот ${tg(BOT)} и мини-приложение Telegram с апгрейдом, кейсами и мини-играми на скины Rust и CS2, подарки и NFT Telegram. К Сервису относятся также бот поддержки ${tg(HELP)}, бот для авторов ${tg('rustuptiktok_bot')} и каналы ${tg('up_rust')}, ${tg('rustuper')}, ${tg('rustuptiktok')}.`,
+      `Оператор Сервиса — ${ORG_LINE}.`,
       `Запуск приложения или сайта и использование любых функций означают полное принятие Соглашения и ${doc('privacy')}. Если вы не согласны — не пользуйтесь Сервисом.`,
       'Сервис предназначен только для совершеннолетних (18+). Пользователь сам отвечает за то, чтобы участие было разрешено законами его страны.',
       'RUST UP не связан с Valve, Steam, Facepunch Studios и Telegram. Названия и изображения предметов принадлежат их правообладателям.']],
@@ -63,6 +67,7 @@
   const PRIVACY = [
     ['Общие положения', [
       `Политика описывает, как RUST UP (бот ${tg(BOT)}, мини-приложение, боты поддержки и авторов) обрабатывает данные пользователей.`,
+      `Оператор данных — ${ORG_LINE}.`,
       'Пользуясь Сервисом, вы соглашаетесь на обработку данных по этой Политике. У Telegram, Steam, банков и платёжных сервисов свои правила обработки данных.']],
     ['Какие данные мы получаем', [
       'Данные Telegram: ID, имя, username, язык, фото профиля и признак Premium. Номер телефона Telegram нам не передаёт.',
@@ -112,13 +117,17 @@
   function body(tab) {
     if (tab === 'contacts') return `<h1 class="doc-h1">Контакты</h1>
       <p class="doc-lead">Официальные боты и каналы RUST UP. Других аккаунтов поддержки у нас нет — администрация никогда не пишет первой с просьбой перевести деньги или прислать коды.</p>
-      <div class="doc-contacts">${CONTACTS.map(([u, t, d]) => `<a class="doc-contact" href="https://t.me/${u}" data-tg-link><b>${t}</b><span>@${u}</span><small>${d}</small></a>`).join('')}</div>`;
+      <div class="doc-contacts">${CONTACTS.map(([u, t, d]) => `<a class="doc-contact" href="https://t.me/${u}" data-tg-link><b>${t}</b><span>@${u}</span><small>${d}</small></a>`).join('')}</div>
+      <section class="doc-sec doc-org"><h2>Юридическое лицо</h2>
+        <p><b>${ORG.name}</b></p>
+        <p>Регистрационный номер: ${ORG.reg}</p>
+        <p>ИНН Кыргызской Республики: ${ORG.inn}</p></section>`;
     const privacy = tab === 'privacy', secs = privacy ? PRIVACY : TERMS, pre = privacy ? 'p' : 't';
     return `<h1 class="doc-h1">${privacy ? 'Политика конфиденциальности' : 'Пользовательское соглашение'}</h1>
       <p class="doc-ed">Редакция от ${EDITION}</p>
       <p class="doc-lead">${privacy
         ? `Здесь описано, какие данные RUST UP получает, зачем, кому их передаёт и как вы можете ими управлять. Политика — часть ${doc('terms')}.`
-        : `Соглашение регулирует отношения между администрацией RUST UP («Сервис») и любым лицом, которое пользуется ботом ${tg(BOT)}, мини-приложением, сайтом и ботами RUST UP («Пользователь»).`}</p>
+        : `Соглашение регулирует отношения между ${ORG.name}, оператором RUST UP («Сервис»), и любым лицом, которое пользуется ботом ${tg(BOT)}, мини-приложением, сайтом и ботами RUST UP («Пользователь»).`}</p>
       ${toc(pre, secs)}
       ${secs.map((s, i) => sectionHtml(pre, s, i)).join('')}`;
   }
@@ -129,7 +138,7 @@
     document.querySelector('#page').innerHTML = `<div class="page doc-page">
       <div class="doc-tabs">${TABS.map(([id, t]) => `<a class="doc-tab${id === tab ? ' on' : ''}" href="#/docs?tab=${id}">${t}</a>`).join('')}</div>
       <article class="doc-body">${body(tab)}</article>
-      <div class="doc-foot"><span class="doc-18">18+</span>RUST UP · ${TABS.map(([id, t]) => `<a href="#/docs?tab=${id}">${t}</a>`).join(' · ')}</div>
+      <div class="doc-foot"><span class="doc-18">18+</span>RUST UP · ${ORG.name} ·${TABS.map(([id, t]) => `<a href="#/docs?tab=${id}">${t}</a>`).join(' · ')}</div>
     </div>`;
   }
   document.addEventListener('click', e => {

@@ -2474,6 +2474,13 @@ html.tg-fs .header-wrap { padding-top: calc(var(--tg-safe-area-inset-top, 0px) +
 .doc-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); font-size: 13px; color: var(--text-subtitle); }
 .doc-18 { padding: 3px 7px; border-radius: 7px; font-size: 11px; font-weight: 800; border: 1px solid rgba(255,255,255,.2); margin-right: 4px; }
 @media (max-width: 380px) { .doc-toc { grid-template-columns: 1fr; } }
+.doc-org p { margin-bottom: 4px; }
+.footer-org { display: flex; flex-direction: column; gap: 10px; }
+.footer-req { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.footer-req div { padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+.footer-req dt { font-size: 11px; color: var(--text-other); }
+.footer-req dd { margin: 2px 0 0; font-size: 14px; font-weight: 700; color: var(--text-title); word-break: break-word; }
+.footer-org .footer-note .doc-18 { display: inline-block; margin-right: 6px; }
 /* cash-out requests (js/withdraw.js) */
 .w-req-st.bad { color: var(--error); }
 /* ================= Look v5 (2026-11-10): black + red like the owner's examples (пример/визуал1-4) =================
